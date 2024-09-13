@@ -6,7 +6,7 @@
 #    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/13 16:30:12 by paulmart         ###   ########.fr        #
+#    Updated: 2024/09/13 17:47:19 by paulmart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRC		=	main.c
 
 NAME	=	minishell
 
-FLAGS	=	-Wall -Wextra -Werror -lreadline
+FLAGS	=	-Wall -Wextra -Werror -lreadline lib/libft.a
 
 RM		= rm -f
 
@@ -26,7 +26,7 @@ OBJS	=	$(SRCS:.c=.o)
 
 HEADER	=	minishell.h
 
-all: $(NAME) $(LIB_DIR) $(LIBFT)
+all: $(LIB_DIR) $(LIBFT) $(NAME)
 
 .c.o :
 	@cc -Wall -Wextra -Werror -c $< -o ${<:.c=.o}
