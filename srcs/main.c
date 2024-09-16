@@ -3,25 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/13 17:36:52 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/16 21:45:20 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+
+
 int	main(void)
 {
 	char	*rl;
+	char	**parth;
 
 	isatty(1);
 	while (1)
 	{
 		rl = readline("minishell > ");
+		parth = ft_split(rl, ' ');
+		if (!parth)
+			return (NULL); //TODO cas d'erreur
 		add_history(rl);
-		printf("%s\n", ft_split(rl, ' ')[0]);
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
+#    By: palu <palu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/13 17:47:19 by paulmart         ###   ########.fr        #
+#    Updated: 2024/09/16 13:01:49 by palu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRC		=	main.c
 
 NAME	=	minishell
 
-FLAGS	=	-Wall -Wextra -Werror -lreadline lib/libft.a
+FLAGS	=	-Wall -Wextra -Werror -lreadline lib/libft.a -std=c99
 
 RM		= rm -f
 
