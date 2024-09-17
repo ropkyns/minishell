@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/17 12:23:22 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/17 15:53:45 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ typedef struct s_test
 
 int					ft_pwd(void);
 int					ft_cd(t_test *test, char **args);
+bool				syntax_is_correct(char *lexer_tokens[]);
 
 #endif
