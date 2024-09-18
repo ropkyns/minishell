@@ -3,26 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/17 12:23:16 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/18 11:54:27 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	check_args(char **args)
-{
-	int	i;
 
-	i = 0;
-	while (args[i])
-		i++;
-	return (i);
-}
-
-static void	update_old_pwd(t_test test)
+static void	update_old_pwd(t_global *test)
 {
 	t_list	*temp;
 	char	*check;
@@ -49,7 +40,7 @@ static void	update_old_pwd(t_test test)
 	free(test);
 }
 
-static void	update_pwd(t_test test, char *args)
+static void	update_pwd(t_global *test, char *args)
 {
 	char	cwd[PATH_MAX];
 	char	*pwd;
@@ -63,21 +54,17 @@ static void	update_pwd(t_test test, char *args)
 	pwd = ft_strjoin("PWD=", cwd);
 	if (!pwd)
 		return (ERR_MALLOC);
-	export(pwd, &test->envi);
+	export(pwd, test->envi);
 	free(pwd);
 }
-int	ft_cd(t_test *test, char **args)
+int	ft_cd(t_global *test, char *args)
 {
 	int	ret;
 
-	if (check_args(args) == 2)
-	{
 		ret = chdir(args[1]);
 		if (ret == 0)
 			update_pwd(test, args[1]);
 		if (ret < 0)
 			perror(args[1]);
 		return (ret);
-	}
-	return (FAIL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/17 15:53:45 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/18 13:17:17 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <curses.h>
 # include <dirent.h>
 # include <errno.h>
+# include <linux/limits.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -31,20 +32,39 @@
 # define FAIL 1
 # define SUCCESS 0
 
-typedef struct s_list
+typedef enum e_token
+{
+	CMD,
+	PIPE,
+	ARG,
+	INPUT,
+	OUTPUT,
+	HEREDOC,
+	APPEND,
+}			t_token;
+
+typedef struct s_structok
+{
+	char			*value;
+	int				token;
+	struct s_token	*next;
+}				t_structok;
+
+typedef struct s_env
 {
 	char			*str;
-	struct s_list	*prev;
-	struct s_list	*next;
-}					t_list;
+	struct s_env	*next;
+	struct s_env	*prev;
+}				t_env;
 
-typedef struct s_test
+typedef struct s_global
 {
-	t_list			*envi;
-}					t_test;
+	char			*line;
+	t_env			*env;
+}					t_global;
 
 int					ft_pwd(void);
-int					ft_cd(t_test *test, char **args);
+int					ft_cd(t_global *test, char *args);
 bool				syntax_is_correct(char *lexer_tokens[]);
 
 #endif

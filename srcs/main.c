@@ -3,29 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/16 21:45:20 by palu             ###   ########.fr       */
+/*   Updated: 2024/09/18 12:10:43 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-
-
-int	main(void)
+t_env	*init_env(char **env)
 {
-	char	*rl;
-	char	**parth;
+	
+}
 
+int	main(int argc, char **argv, char **env)
+{
+	char		*rl;
+	t_global	*glob;
+
+	(void)argc;
+	(void)argv;
+	glob->env = init_env(env);
 	isatty(1);
 	while (1)
 	{
-		rl = readline("minishell > ");
-		parth = ft_split(rl, ' ');
-		if (!parth)
-			return (NULL); //TODO cas d'erreur
+		glob->line = readline("minishell > ");
+		if (!glob->line)
+			return (1); //TODO cas d'erreur
 		add_history(rl);
 	}
 	return (1);
