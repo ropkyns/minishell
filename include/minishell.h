@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/18 13:17:17 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:51:04 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ typedef struct s_global
 	t_env			*env;
 }					t_global;
 
-int					ft_pwd(void);
-int					ft_cd(t_global *test, char *args);
+/* int					ft_pwd(void);
+int					ft_cd(t_global *test, char *args); */
 bool				syntax_is_correct(char *lexer_tokens[]);
+t_env				*init_env(char **env);
 
 #endif

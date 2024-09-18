@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:33 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/18 11:09:35 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:35:32 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ On l'affiche ensuite avec printf
 Le contenu de la chaine cwd est indefinie en cas d'erreur, donc on peut changer
 (J'ai mit un ptit perror pwd du cul)
 */
-int	ft_pwd(void)
+/* int	ft_pwd(void)
 {
 	char	cwd[PATH_MAX];
 
@@ -34,4 +34,4 @@ int	ft_pwd(void)
 		perror("pwd");
 		return (FAIL);
 	}
-}
+} */
