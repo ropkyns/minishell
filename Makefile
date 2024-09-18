@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
+#    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/18 14:36:07 by paulmart         ###   ########.fr        #
+#    Updated: 2024/09/17 11:45:25 by mjameau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	main.c cd.c pwd.c env.c error.c
+SRC		=	main.c cd.c pwd.c
 
 NAME	=	minishell
 

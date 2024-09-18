@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/18 13:51:04 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:22:17 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <curses.h>
 # include <dirent.h>
 # include <errno.h>
-# include <linux/limits.h>
 # include <limits.h>
+# include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -41,31 +41,31 @@ typedef enum e_token
 	OUTPUT,
 	HEREDOC,
 	APPEND,
-}			t_token;
+}						t_token;
 
 typedef struct s_structok
 {
-	char			*value;
-	int				token;
-	struct s_token	*next;
-}				t_structok;
+	char				*value;
+	struct t_structok	*next;
+	struct t_structok	*prev;
+	t_token				type;
+}						t_structok;
 
 typedef struct s_env
 {
-	char			*str;
-	struct s_env	*next;
-	struct s_env	*prev;
-}				t_env;
+	char				*str;
+	struct s_env		*next;
+	struct s_env		*prev;
+}						t_env;
 
 typedef struct s_global
 {
-	char			*line;
-	t_env			*env;
-}					t_global;
+	char				*line;
+	t_env				*env;
+}						t_global;
 
-/* int					ft_pwd(void);
-int					ft_cd(t_global *test, char *args); */
-bool				syntax_is_correct(char *lexer_tokens[]);
-t_env				*init_env(char **env);
+int						ft_pwd(void);
+int						ft_cd(t_global *test, char *args);
+bool					syntax_is_correct(char *lexer_tokens[]);
 
 #endif
