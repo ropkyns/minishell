@@ -6,14 +6,14 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/18 11:54:27 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:09:54 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 
-static void	update_old_pwd(t_global *test)
+/* static void	update_old_pwd(t_global *test)
 {
 	t_list	*temp;
 	char	*check;
@@ -67,4 +67,4 @@ int	ft_cd(t_global *test, char *args)
 		if (ret < 0)
 			perror(args[1]);
 		return (ret);
-}
+} */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/19 09:35:36 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/19 12:03:25 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ int	add_token(t_structok **token_list, char *s, int type)
  avec add_token.
  Ensuite on incremente de la longueur du token pour passer a la suite
  */
-bool	add_operator_token(t_structok **head, char **command)
+bool	add_operator_token(t_structok **head, char *command)
 {
 	int	checker;
 
-	checker = is_special(*command);
+	checker = is_special(command);
 	if (!checker)
 		return (false);
 	if ((checker == INPUT && !add_token(head, ft_strdup("<"), INPUT))
@@ -72,9 +72,9 @@ bool	add_operator_token(t_structok **head, char **command)
 		|| checker == HEREDOC && !add_token(head, ft_strdup("<<"), HEREDOC))
 		return (false);
 	if (checker == INPUT || checker == OUTPUT || checker == PIPE)
-		*command++;
+		command++;
 	else if (checker == HEREDOC || checker == APPEND)
-		*command += 2;
+		command += 2;
 	return (true);
 }
 
@@ -99,7 +99,7 @@ bool	do_list_token(t_structok **head, char *command)
 			return (false);
 		}
 		else if (command[i] && !is_special(command[i])
-			&& !add_operator_token(head, command))
+			&& !add_operator_token(head, &command))
 		{
 			if (*head)
 				free_tok(head);
