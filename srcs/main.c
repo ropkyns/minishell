@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/19 12:22:43 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:30:58 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	init_global(t_global *glob, int argc, char **argv)
 
 int	main(int argc, char **argv, char **env)
 {
-	char		*rl;
 	t_global	*glob;
 
 	glob = malloc(sizeof(t_global));
@@ -34,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 		glob->line = readline("minishell > ");
 		if (!(glob->line))
 			return (1); //TODO cas d'erreur
-		add_history(rl);
+		add_history(glob->line);
 	}
 	return (1);
 }

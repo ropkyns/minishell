@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/19 12:40:14 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:44:40 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_env	*init_env(char **env)
 	current = malloc(sizeof(t_env));
 	*current = (t_env){0};
 	tmp = NULL;
-	*tmp = (t_env){0};
 	while (env[++i])
 	{
 		tmp = malloc(sizeof(t_env));
@@ -30,14 +29,15 @@ t_env	*init_env(char **env)
 		printf("%s\n", current->str);
 		fflush(stdout);
 		tmp = current;
-		printf("test\n");
-		fflush(stdout);
+		/* printf("test\n");
+		fflush(stdout); */
+		current->next = malloc(sizeof(t_env));
 		current = current->next;
-		printf("test\n");
-		fflush(stdout);
+		/* printf("test\n");
+		fflush(stdout); */
 		current->prev = tmp;
-		printf("test\n");
-		fflush(stdout);
+		/* printf("test\n");
+		fflush(stdout); */
 		free(tmp->str);
 		free(tmp);
 	}
