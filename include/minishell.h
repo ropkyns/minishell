@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/18 15:22:17 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/19 09:25:39 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef enum e_token
 typedef struct s_structok
 {
 	char				*value;
-	struct t_structok	*next;
-	struct t_structok	*prev;
+	struct s_structok	*next;
+	struct s_structok	*prev;
 	t_token				type;
 }						t_structok;
 
@@ -64,8 +64,19 @@ typedef struct s_global
 	t_env				*env;
 }						t_global;
 
+// COMMANDS
 int						ft_pwd(void);
 int						ft_cd(t_global *test, char *args);
+
+// UTILS
+bool					is_space(char c);
+int						is_special(char *token);
 bool					syntax_is_correct(char *lexer_tokens[]);
+
+// TOKENS
+int						new_token(t_structok **new, char *s, t_token type);
+int						add_token(t_structok **token_list, char *s, int type);
+bool					add_operator_token(t_structok **head, char **command);
+void					free_tok(t_structok **token_list);
 
 #endif

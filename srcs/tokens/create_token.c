@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/18 16:08:43 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/19 09:35:36 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,60 @@ int	add_token(t_structok **token_list, char *s, int type)
 }
 
 /*
- * TODO
+ * On ajoute un token operateur a la liste chainee avec add_token
+ On check si la command a un operateur avec is_special, si oui en fonction
+ de ce que la fonction nous retourne on fait un strdup de ce token et on l'ajoute
+ avec add_token.
+ Ensuite on incremente de la longueur du token pour passer a la suite
  */
 bool	add_operator_token(t_structok **head, char **command)
 {
-	int checker;
+	int	checker;
 
 	checker = is_special(*command);
-	// en fonction de ce que nous retourne la fonction is_special
-	// faire un strdup de l'operateur, ex ;
-	// if (is_special(checker) == INPUT)
-	// 		add_token(*command, ft_strdup('<'), INPUT)
+	if (!checker)
+		return (false);
+	if ((checker == INPUT && !add_token(head, ft_strdup("<"), INPUT))
+		|| checker == OUTPUT && !add_token(head, ft_strdup(">"), OUTPUT)
+		|| checker == PIPE && !add_token(head, ft_strdup("|"), PIPE)
+		|| checker == APPEND && !add_token(head, ft_strdup(">>"), APPEND)
+		|| checker == HEREDOC && !add_token(head, ft_strdup("<<"), HEREDOC))
+		return (false);
+	if (checker == INPUT || checker == OUTPUT || checker == PIPE)
+		*command++;
+	else if (checker == HEREDOC || checker == APPEND)
+		*command += 2;
+	return (true);
+}
+
+/*
+ * TODOoooooOOoo et pas tout doux mdr
+ */
+bool	do_list_token(t_structok **head, char *command)
+{
+	int i;
+	i = 0;
+
+	*head == NULL;
+	while (command[i])
+	{
+		while (is_space(command[i]))
+			i++;
+		if (command[i] && !is_special(command[i]) &&
+			//faire fonction pour la commande mskine)
+		{
+			if (*head)
+				free_tok(head);
+			return (false);
+		}
+		else if (command[i] && !is_special(command[i])
+			&& !add_operator_token(head, command))
+		{
+			if (*head)
+				free_tok(head);
+			return (false);
+		}
+		i++;
+	}
+	return (true);
 }
