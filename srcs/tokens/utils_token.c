@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:23:36 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 15:54:00 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:54:07 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,25 @@ int	len_cmd(char *command, int *quote)
 	int	i;
 
 	i = 0;
-	while (command[i] && !is_space(command[i] && !is_special(command)))
+	*quote = 0;
+	while (command[i] && !is_space(command[i] && !is_special(command + i)))
 	{
 		if (command[i] == '"' || command[i] == '"')
 		{
-			quote++;
+			(*quote)++;
 			if (command[i++] == '"')
 				while (command[i] && command[i] != '"')
-					i++;
+					++i;
 			else
 				while (command[i] && command[i] != '\'')
 					++i;
 			if (command[i])
-				i++;
+				++i;
 		}
 		if (command[i] && command[i] != '"' && command[i] != '\''
-			&& !is_space(command[i]) && !is_special(command))
-			i++;
+			&& !is_space(command[i]) && !is_special(command + i))
+			++i;
+		i++;
 	}
 	return (i);
 }
@@ -119,13 +121,13 @@ void	get_words_to_token(char *command, int len, char *str, int i)
 		if (command[i + j] == '\'' && ++j)
 		{
 			while (command[i + j] != '\'' && ++i)
-				str[i - 1] = command[i - 1 + j];
+				str[i - 1] = command[(i - 1) + j];
 			j++;
 		}
-		if (command[i + j] == '"' && ++j)
+		else if (command[i + j] == '"' && ++j)
 		{
 			while (command[i + j] != '"' && ++i)
-				str[i - 1] = command[i - 1 + j];
+				str[i - 1] = command[(i - 1) + j];
 			j++;
 		}
 		else
@@ -134,5 +136,12 @@ void	get_words_to_token(char *command, int len, char *str, int i)
 			i++;
 		}
 	}
-	str[i] = '\0';
+	str[i] = 0;
+}
+
+void	add_first_token(t_structok **token_list, t_structok *new)
+{
+	(*token_list) = new;
+	(*token_list)->prev = *token_list;
+	(*token_list)->next = *token_list;
 }

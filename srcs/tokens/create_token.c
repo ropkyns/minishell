@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 16:02:08 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:47:47 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	new_token(t_structok **new, char *s, t_token type)
 * On ajoute le nouveau token en appelant la fonction new_token
 on refait aussi les liens de la nouvelle node (on l'ajoute a l'indice
 precedant l'indice pointe par *token_list) ainsi que les liens de token_list
-vu qu'on la decale.
+vu qu'on la decale.TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo
 */
 int	add_token(t_structok **token_list, char *s, int type)
 {
@@ -44,10 +44,19 @@ int	add_token(t_structok **token_list, char *s, int type)
 
 	if (!new_token(&new, s, type))
 		return (0);
-	new->prev = (*token_list)->prev;
-	new->next = (*token_list);
-	(*token_list)->prev->next = new;
-	(*token_list)->next = new;
+	if (!(*token_list))
+		add_first_token(token_list, new);
+	else
+	{
+		fprintf(stderr, "NA\n");
+		fflush(stderr);
+		new->prev = (*token_list)->prev;
+		new->next = (*token_list);
+		(*token_list)->prev->next = new;
+		(*token_list)->next = new;
+	}
+	fprintf(stderr, "DA\n");
+	fflush(stderr);
 	return (1);
 }
 
@@ -58,11 +67,11 @@ int	add_token(t_structok **token_list, char *s, int type)
  avec add_token.
  Ensuite on incremente de la longueur du token pour passer a la suite
  */
-bool	add_operator_token(t_structok **head, char *command)
+bool	add_operator_token(t_structok **head, char **command)
 {
 	int	checker;
 
-	checker = is_special(command);
+	checker = is_special(*command);
 	if (!checker)
 		return (false);
 	if (((checker == INPUT && (!add_token(head, ft_strdup("<"), INPUT)))
@@ -101,12 +110,12 @@ bool	add_cmd_arg(t_structok **head, char **command)
 	if (!str)
 		return ((false));
 	i = 0;
-	while (is_space(*command[i]))
-		i++;
+	// while (is_space(*command[i]))
+	// 	i++;
 	get_words_to_token(*command, len - (2 * quote), str, i);
 	if (!add_token(head, str, 0))
 		return (false);
-	if ((*head)->prev == *head || (*head)->prev->prev->type == PIPE)
+	if ((*head)->prev == (*head) || (*head)->prev->prev->type == PIPE)
 		(*head)->prev->type = CMD;
 	else
 		(*head)->prev->type = ARG;
@@ -138,7 +147,7 @@ bool	do_list_token(t_structok **head, char *command)
 			return (false);
 		}
 		else if (command[i] && !is_special(command) && !add_operator_token(head,
-				command))
+				&command))
 		{
 			if (*head)
 				free_tok(head);

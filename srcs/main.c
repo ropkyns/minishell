@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 16:02:12 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:44:49 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,19 @@ void	init_global(t_global *glob, int argc, char **argv)
 	glob->token_list = NULL;
 }
 
+void	print_token(t_structok *token)
+{
+	t_structok	*tmp;
+
+	tmp = token;
+	while (tmp->next != token)
+	{
+		printf("Type : %d, [%s]\n", tmp->type, tmp->value);
+		tmp = tmp->next;
+	}
+	printf("Type : %d, [%s]\n", tmp->type, tmp->value);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_global	*glob;
@@ -33,12 +46,11 @@ int	main(int argc, char **argv, char **env)
 	{
 		glob->line = readline("minishell > ");
 		if (!(glob->line))
-			return (1); //TODO cas d'erreur
+			return (1); // TODO cas d'erreur
 		add_history(glob->line);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
-		/* while (glob->token_list->next != NULL)
-			printf("%d : %s\n", glob->token_list->type, glob->token_list->value); */
+		print_token(glob->token_list);
 	}
 	return (1);
 }
