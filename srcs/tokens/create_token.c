@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/19 12:03:25 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:24:32 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,12 @@ bool	add_operator_token(t_structok **head, char *command)
 	checker = is_special(command);
 	if (!checker)
 		return (false);
-	if ((checker == INPUT && !add_token(head, ft_strdup("<"), INPUT))
-		|| checker == OUTPUT && !add_token(head, ft_strdup(">"), OUTPUT)
-		|| checker == PIPE && !add_token(head, ft_strdup("|"), PIPE)
-		|| checker == APPEND && !add_token(head, ft_strdup(">>"), APPEND)
-		|| checker == HEREDOC && !add_token(head, ft_strdup("<<"), HEREDOC))
+	if (((checker == INPUT && (!add_token(head, ft_strdup("<"), INPUT)))
+			|| checker == OUTPUT) && (!add_token(head, ft_strdup(">"), OUTPUT)
+			|| checker == PIPE) && (!add_token(head, ft_strdup("|"), PIPE)
+			|| checker == APPEND) && (!add_token(head, ft_strdup(">>"), APPEND)
+			|| checker == HEREDOC) && (!add_token(head, ft_strdup("<<"),
+				HEREDOC)))
 		return (false);
 	if (checker == INPUT || checker == OUTPUT || checker == PIPE)
 		command++;
@@ -79,33 +80,70 @@ bool	add_operator_token(t_structok **head, char *command)
 }
 
 /*
- * TODOoooooOOoo et pas tout doux mdr
+ * Fonction pour ajouter les tokens CMD et ARG, on calcule la len
+ de la ligne de commande avec len_cmd, on malloc une nouvelle chaine
+ sur qui on va copier les tokens, on va ensuite ajouter ces nouveaux tokens
+ dans notre liste chainee et definir leurs type CMD et ARG.
+ bravo le vo
+ */
+bool	add_cmd_arg(t_structok **head, char **command)
+{
+	int		i;
+	int		quote;
+	char	*str;
+	int		len;
+
+	quote = 0;
+	len = len_cmd(*command, &quote);
+	if ((len) - (2 * quote) < 0)
+		return (true);
+	str = malloc(sizeof(char *) * (len + 1) - (quote * 2));
+	if (!str)
+		return ((false));
+	i = 0;
+	while (is_space(*command[i]))
+		i++;
+	get_words_to_token(*command, len - (2 * quote), str, i);
+	if (!add_token(head, str, 0))
+		return (false);
+	if ((*head)->prev == *head || (*head)->prev->prev->type == PIPE)
+		(*head)->prev->type = CMD;
+	else
+		(*head)->prev->type = ARG;
+	*command += len;
+	return (true);
+}
+
+/*
+ * Ici c'est un peu la fonction qui fait tout,
+ on appelle toute les fonctions dans les conditions et
+ si l'une d'elle rate on free!
+ 1->on fait les tokens CMD ARG
+ 2->on fait les tokens << < >> > |
  */
 bool	do_list_token(t_structok **head, char *command)
 {
-	int i;
-	i = 0;
+	int	i;
 
-	*head == NULL;
+	i = 0;
+	*head = NULL;
 	while (command[i])
 	{
 		while (is_space(command[i]))
 			i++;
-		if (command[i] && !is_special(command[i]) &&
-			//faire fonction pour la commande mskine)
+		if (command[i] && !is_special(command) && !add_cmd_arg(head, &command))
 		{
 			if (*head)
 				free_tok(head);
 			return (false);
 		}
-		else if (command[i] && !is_special(command[i])
-			&& !add_operator_token(head, &command))
+		else if (command[i] && !is_special(command) && !add_operator_token(head,
+				command))
 		{
 			if (*head)
 				free_tok(head);
 			return (false);
 		}
-		i++;
 	}
 	return (true);
 }

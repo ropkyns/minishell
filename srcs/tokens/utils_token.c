@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:23:36 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/19 09:25:14 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:24:35 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,67 @@ void	free_tok(t_structok **token_list)
 	free(curr->value);
 	free(curr);
 	*token_list = NULL;
+}
+
+/*
+* Ici on calcule la taille de la ligne de commande et le le nombre de quote
+(on compte que la 1ere quote car on fait *2 dans la fonction add_cmd_arg)
+*/
+int	len_cmd(char *command, int *quote)
+{
+	int	i;
+
+	i = 0;
+	while (command[i] && !is_space(command[i] && !is_special(command)))
+	{
+		if (command[i] == '"' || command[i] == '"')
+		{
+			quote++;
+			if (command[i++] == '"')
+				while (command[i] && command[i] != '"')
+					i++;
+			else
+				while (command[i] && command[i] != '\'')
+					++i;
+			if (command[i])
+				i++;
+		}
+		if (command[i] && command[i] != '"' && command[i] != '\''
+			&& !is_space(command[i]) && !is_special(command))
+			i++;
+	}
+	return (i);
+}
+
+/*
+* Cette fonction sert a prendre la ligne de commande et de recuperer
+ce qu'il y a entre les quotes dans str avec un decalage de -1 pour ne pas
+copier les quotes (' et "),sinon sans decalage
+*/
+void	get_words_to_token(char *command, int len, char *str, int i)
+{
+	int	j;
+
+	j = 0;
+	while (command[i + j] && i < len)
+	{
+		if (command[i + j] == '\'' && ++j)
+		{
+			while (command[i + j] != '\'' && ++i)
+				str[i - 1] = command[i - 1 + j];
+			j++;
+		}
+		if (command[i + j] == '"' && ++j)
+		{
+			while (command[i + j] != '"' && ++i)
+				str[i - 1] = command[i - 1 + j];
+			j++;
+		}
+		else
+		{
+			str[i] = command[i + j];
+			i++;
+		}
+	}
+	str[i] = '\0';
 }

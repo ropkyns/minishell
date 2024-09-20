@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/19 12:10:17 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:25:06 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,21 @@ int						ft_cd(t_global *test, char *args);
 
 // UTILS
 bool					is_space(char c);
-int						is_special(char *token);
 bool					syntax_is_correct(char *lexer_tokens[]);
 
 // TOKENS
 int						new_token(t_structok **new, char *s, t_token type);
 int						add_token(t_structok **token_list, char *s, int type);
-bool					add_operator_token(t_structok **head, char **command);
+bool					add_operator_token(t_structok **head, char *command);
 void					free_tok(t_structok **token_list);
+bool					do_list_token(t_structok **head, char *command);
+bool					add_cmd_arg(t_structok **head, char **command);
+
+// UTILS TOKEN
+int						len_cmd(char *command, int *quote);
+int						is_special(char *token);
+void					get_words_to_token(char *command, int len, char *str,
+							int i);
 
 // ENV
 t_env					*init_env(char **env);
