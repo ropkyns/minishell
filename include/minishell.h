@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 15:25:06 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:50:32 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_global
 {
 	char				*line;
 	t_env				*env;
+	t_structok			*token_list;
 }						t_global;
 
 // COMMANDS

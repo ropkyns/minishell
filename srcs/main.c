@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/19 16:30:58 by palu             ###   ########.fr       */
+/*   Updated: 2024/09/20 16:02:12 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_global(t_global *glob, int argc, char **argv)
 	(void)argv;
 	glob->env = NULL;
 	glob->line = NULL;
+	glob->token_list = NULL;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -34,6 +35,10 @@ int	main(int argc, char **argv, char **env)
 		if (!(glob->line))
 			return (1); //TODO cas d'erreur
 		add_history(glob->line);
+		if (!do_list_token(&glob->token_list, glob->line))
+			return (1);
+		/* while (glob->token_list->next != NULL)
+			printf("%d : %s\n", glob->token_list->type, glob->token_list->value); */
 	}
 	return (1);
 }

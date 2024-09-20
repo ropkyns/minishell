@@ -3,14 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: palu <palu@student.42.fr>                  +#+  +:+       +#+         #
+#    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/19 16:22:22 by palu             ###   ########.fr        #
+#    Updated: 2024/09/20 15:53:12 by paulmart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	main.c cd.c pwd.c env.c error.c 
+SRC		=	main.c cd.c pwd.c env.c error.c tokens/create_token.c \
+			tokens/utils_token.c 
 
 NAME	=	minishell
 

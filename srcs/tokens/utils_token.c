@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:23:36 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 15:24:35 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:54:00 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  */
 bool	is_space(char c)
 {
-	if (c && (c >= 9 && c <= 13) || (c == ' '))
+	if ((c && (c >= 9 && c <= 13)) || (c == ' '))
 		return (true);
 	return (false);
 }
