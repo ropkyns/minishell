@@ -73,6 +73,7 @@ typedef struct s_global
 	char				*line;
 	t_env				*env;
 	t_structok			*token_list;
+	int					exit_value;
 	t_cmd				*cmd;
 }						t_global;
 
@@ -88,6 +89,9 @@ int						ft_cd(t_global *test, char *args);
 // UTILS
 bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
+
+// PARSING
+int handle_quotes(t_global *data, char *command) ;
 
 // TOKENS
 // int						new_token(t_structok **new, char *s, t_token type);
