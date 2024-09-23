@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 18:29:21 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/23 15:56:55 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,28 @@ typedef struct s_env
 	struct s_env		*prev;
 }						t_env;
 
+typedef struct s_cmd
+{
+	char				*cmd;
+	int					infile;			//fd
+	int					outfile;		//fd
+	struct s_cmd		*next;
+	struct s_cmd		*prev;
+}						t_cmd;
+
+
 typedef struct s_global
 {
 	char				*line;
 	t_env				*env;
 	t_structok			*token_list;
+	t_cmd				*cmd;
 }						t_global;
+
+//ERROR
+void					free_env(t_env *env);
+void					error_exit(char *str);
+void					free_cmd(t_cmd *cmd);
 
 // COMMANDS
 int						ft_pwd(void);
@@ -91,5 +107,8 @@ void					add_first_token(t_structok **token_list,
 
 // ENV
 t_env					*init_env(char **env);
+void					print_env(t_env *env);
 
+//CMD
+t_cmd					*init_cmd(t_global *glob);
 #endif

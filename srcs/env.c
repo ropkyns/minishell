@@ -6,11 +6,20 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/20 15:37:03 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:55:40 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	print_env(t_env *env)
+{
+	while (env->next)
+	{
+		printf("%s\n", env->str);
+		env = env->next;
+	}
+}
 
 t_env	*init_env(char **env)
 {
