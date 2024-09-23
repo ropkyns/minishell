@@ -84,9 +84,9 @@ int	len_cmd(char *command, int *quote)
 
 	i = 0;
 	*quote = 0;
-	while (command[i] && !is_space(command[i] && !is_special(command + i)))
+	while (command[i] && !is_space(command[i]) && !is_special(command + i))
 	{
-		if (command[i] == '"' || command[i] == '"')
+		if (command[i] == '"' || command[i] == '\'')
 		{
 			(*quote)++;
 			if (command[i++] == '"')
@@ -101,7 +101,7 @@ int	len_cmd(char *command, int *quote)
 		if (command[i] && command[i] != '"' && command[i] != '\''
 			&& !is_space(command[i]) && !is_special(command + i))
 			++i;
-		i++;
+		// i++;
 	}
 	return (i);
 }

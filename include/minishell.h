@@ -74,7 +74,7 @@ bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 
 // TOKENS
-int						new_token(t_structok **new, char *s, t_token type);
+// int						new_token(t_structok **new, char *s, t_token type);
 int						add_token(t_structok **token_list, char *s, int type);
 bool					add_operator_token(t_structok **head, char **command);
 void					free_tok(t_structok **token_list);
