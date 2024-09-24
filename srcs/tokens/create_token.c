@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/20 18:47:47 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/24 11:54:01 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,14 @@ int	add_token(t_structok **token_list, char *s, int type)
 	if (!new_token(&new, s, type))
 		return (0);
 	if (!(*token_list))
-	{
 		add_first_token(token_list, new);
-		    fprintf(stderr, "Premier token ajouté : %s\n", new->value);
-    fflush(stderr);
-	}
 	else
 	{
-		fprintf(stderr, "NA\n");
-		fflush(stderr);
 		new->prev = (*token_list)->prev;
 		new->next = (*token_list);
 		(*token_list)->prev->next = new;
 		(*token_list)->prev = new;
 	}
-	fprintf(stderr, "DA\n");
-	fflush(stderr);
 	return (1);
 }
 

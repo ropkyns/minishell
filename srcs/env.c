@@ -6,11 +6,29 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/23 15:55:40 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:45:19 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/* PENSER A INIT t_env *list AVANT D'APPELER INIT ENV !!!!!!!!!! */
+
+void	free_env(t_env *a)
+{
+	t_env		*tmp;
+	t_env		*current;
+
+	if (a == NULL)
+		return ;
+	current = a;
+	while (current)
+	{
+		tmp = current->next;
+		free(current);
+		current = tmp;
+	}
+}
 
 void	print_env(t_env *env)
 {
@@ -21,31 +39,59 @@ void	print_env(t_env *env)
 	}
 }
 
-t_env	*init_env(char **env)
+t_env	*find_last_node_env(t_env *env)
 {
-	t_env	*current;
-	t_env	*tmp;
+	if (!env)
+		return (NULL);
+	while (env->next)
+		env = env->next;
+	return (env);
+}
+
+void	add_node_env(t_env **env, char *value)
+{
+	t_env		*node;
+	t_env		*last_node;
+
+	if (env == NULL)
+		return ;
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return ;
+	node->next = NULL;
+	node->str = value;
+	if (*env == NULL)
+	{
+		node->prev = NULL;
+		*env = node;
+	}
+	else
+	{
+		last_node = find_last_node(*env);
+		node->prev = last_node;
+		last_node->next = node;
+	}
+}
+
+void	init_env(t_env	**current, char **env)
+{
 	int		i;
 
-	i = -1;
-	current = malloc(sizeof(t_env));
-	*current = (t_env){0};
-	tmp = NULL;
-	while (env[++i])
+	i = 0;
+	while (env[i])
 	{
-		tmp = malloc(sizeof(t_env));
-		current->str = ft_strdup(env[i]);
-		tmp = current;
-		current->next = malloc(sizeof(t_env));
-		current = current->next;
-		current->prev = tmp;
-		free(tmp->str);
-		free(tmp);
+		add_node_env(current, env[i]);
+		i++;
 	}
-	current->next = NULL;
-	while (current->prev)
-	{
-		current = current->prev;
-	}
-	return (current);
 }
+
+/* int	main(int ac, char **av, char **env)
+{
+	t_env	*list;
+
+	list = NULL;
+	init_env(&list, env);
+	print_env(list);
+	free_env(list);
+	return (0);
+} */

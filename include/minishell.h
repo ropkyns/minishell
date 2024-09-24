@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/23 15:56:55 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:39:43 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <term.h>
 # include <termios.h>
+#include <fcntl.h>
 
 # define FAIL 1
 # define SUCCESS 0
@@ -71,6 +72,7 @@ typedef struct s_cmd
 typedef struct s_global
 {
 	char				*line;
+	char				**path;
 	t_env				*env;
 	t_structok			*token_list;
 	int					exit_value;
@@ -91,10 +93,10 @@ bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 
 // PARSING
-int handle_quotes(t_global *data, char *command) ;
+int						handle_quotes(t_global *data, char *command) ;
 
 // TOKENS
-// int						new_token(t_structok **new, char *s, t_token type);
+// int					new_token(t_structok **new, char *s, t_token type);
 int						add_token(t_structok **token_list, char *s, int type);
 bool					add_operator_token(t_structok **head, char **command);
 void					free_tok(t_structok **token_list);
@@ -110,7 +112,7 @@ void					add_first_token(t_structok **token_list,
 							t_structok *new);
 
 // ENV
-t_env					*init_env(char **env);
+void					init_env(t_env **list, char **env);
 void					print_env(t_env *env);
 
 //CMD
