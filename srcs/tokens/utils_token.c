@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:23:36 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/23 16:14:55 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:53:21 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	len_cmd(char *command, int *quote)
 		if (command[i] && command[i] != '"' && command[i] != '\''
 			&& !is_space(command[i]) && !is_special(command + i))
 			++i;
-		// i++;
 	}
 	return (i);
 }

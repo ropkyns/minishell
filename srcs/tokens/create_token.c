@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 11:54:01 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:54:13 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ bool	do_list_token(t_structok **head, char *command)
 				free_tok(head);
 			return (false);
 		}
-		else if (*command && is_special(command) && \
-					!add_operator_token(head, &command))
+		else if (*command && is_special(command) && !add_operator_token(head,
+				&command))
 		{
 			if (*head)
 				free_tok(head);
@@ -149,5 +149,3 @@ bool	do_list_token(t_structok **head, char *command)
 	}
 	return (true);
 }
-
-

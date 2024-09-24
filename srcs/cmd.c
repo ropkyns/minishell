@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/24 17:47:00 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:57:42 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/* AAAAAAAAAAAAAAAAAAh on verra plus tard
+/* PENSER A INITIALISER DANS LA FONCTION INIT GLOBAL
  */
 
 t_cmd	*find_last_node_cmd(t_cmd *cmd)
@@ -26,8 +26,8 @@ t_cmd	*find_last_node_cmd(t_cmd *cmd)
 
 void	add_node_cmd(t_cmd **cmd, char *value)
 {
-	t_cmd		*node;
-	t_cmd		*last_node;
+	t_cmd	*node;
+	t_cmd	*last_node;
 
 	if (cmd == NULL)
 		return ;

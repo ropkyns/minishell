@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 16:33:08 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:56:41 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,16 @@ int	main(int argc, char **argv, char **env)
 	isatty(1);
 	while (1)
 	{
+		handle_signal();
 		glob->line = readline("minishell > ");
 		if (!(glob->line))
-			return (1); // TODO cas d'erreur
+			return (printf("exit"));
 		add_history(glob->line);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
+		if (glob->token_list->value == ft_strstr(glob->token_list->value,
+				"exit"))
+			error_exit("exit");
 		print_token(glob->token_list);
 	}
 	return (1);
