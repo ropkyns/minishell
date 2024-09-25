@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/25 16:09:04 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:09:17 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_global
 
 //ERROR
 void					free_env(t_env *env);
-void					error_exit(char *str);
+void					error_exit(char *str, t_global *glob);
 void					free_cmd(t_cmd *cmd);
 
 // COMMANDS

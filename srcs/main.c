@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/25 12:17:05 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:09:23 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **env)
 		init_cmd(&glob->cmd, &glob->token_list);
 		if (glob->token_list->value == ft_strstr(glob->token_list->value,
 				"exit"))
-			error_exit("exit");
+			error_exit("exit", glob);
 		print_token(glob->token_list);
 	}
 	return (1);

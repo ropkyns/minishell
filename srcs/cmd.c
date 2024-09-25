@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/25 12:24:05 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:35:26 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	init_cmd(t_cmd **cmd, t_structok **tok_list)
 		if (tmp->type == CMD)
 			last->cmd = tmp->value;
 		else if (tmp->type == INPUT)
-			last->infile = open(tmp->next->value, O_CREAT);
+			last->infile = open(tmp->next->value, O_CREAT, S_IRWXU);
 		else if (tmp->type == OUTPUT)
-			last->outfile = open(tmp->next->value, O_CREAT);
+			last->outfile = open(tmp->next->value, O_CREAT, S_IRWXU);
 		else if (tmp->type == PIPE)
 			add_node_cmd(cmd, NULL);
 		tmp = tmp->next;
