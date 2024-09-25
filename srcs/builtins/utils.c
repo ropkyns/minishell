@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 13:06:59 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/24 14:42:53 by paulmart         ###   ########.fr       */
+/*   Created: 2024/09/25 15:44:03 by paulmart          #+#    #+#             */
+/*   Updated: 2024/09/25 15:44:39 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
-#include "../lib/libft.h"
+#include "../../include/minishell.h"
 
-char	**init_path(char **env)
+void	print_env(t_env *env)
 {
-	char	**path;
-	int		i;
-
-	i = 0;
-	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
-		i++;
-	printf("%s\n", env[i]);
-	path = ft_split(env[i] + 5, ':');
-	if (!path)
-		return (NULL);
-	return (path);
+	while (env->next)
+	{
+		printf("%s=%s\n", env->name, env->value);
+		env = env->next;
+	}
 }

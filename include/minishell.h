@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 17:39:43 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:09:04 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_structok
 typedef struct s_env
 {
 	char				*str;
+	char				*name;
+	char				*value;
 	struct s_env		*next;
 	struct s_env		*prev;
 }						t_env;
@@ -93,7 +95,7 @@ bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 
 // PARSING
-int						handle_quotes(t_global *data, char *command) ;
+int						handle_quotes(t_global *data, char *command);
 
 // TOKENS
 // int					new_token(t_structok **new, char *s, t_token type);
@@ -113,8 +115,18 @@ void					add_first_token(t_structok **token_list,
 
 // ENV
 void					init_env(t_env **list, char **env);
+void					add_node_env(t_env **env, char *value);
 void					print_env(t_env *env);
+void					free_env(t_env *a);
 
 //CMD
-t_cmd					*init_cmd(t_global *glob);
+void					init_cmd(t_cmd **cmd, t_structok **tok_list);
+
+//PATH
+char					**init_path(char **env);
+
+//SIGNAL
+void					handle_signal(void);
+void					handle_c(int sig);
+
 #endif

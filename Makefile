@@ -6,12 +6,12 @@
 #    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/23 15:53:12 by paulmart         ###   ########.fr        #
+#    Updated: 2024/09/25 12:25:33 by paulmart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	main.c cd.c pwd.c env.c error.c tokens/create_token.c \
-			tokens/utils_token.c cmd.c
+SRC		=	main.c builtins/cd.c builtins/pwd.c env.c error.c tokens/create_token.c \
+			tokens/utils_token.c cmd.c path.c signal/handle_signal.c
 
 NAME	=	minishell
 

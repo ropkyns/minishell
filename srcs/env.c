@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/24 16:45:19 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:08:44 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,45 @@
 
 /* PENSER A INIT t_env *list AVANT D'APPELER INIT ENV !!!!!!!!!! */
 
-void	free_env(t_env *a)
+char	*ft_strcpychr(char *dest, char *src, char c)
 {
-	t_env		*tmp;
-	t_env		*current;
+	int	i;
 
-	if (a == NULL)
+	i = 0;
+	while (src[i] && src[i] != c)
+		i++;
+	dest = malloc(sizeof(char *) * (i + 1));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (src[i] && src[i] != c)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+static void	set_env(t_env *env)
+{
+	int		i;
+	char	*equal_sign;
+
+	i = 0;
+	env->name = NULL;
+	env->value = NULL;
+	env->name = ft_strcpychr(env->name, env->str, '=');
+	if (env->name == NULL)
+	{
 		return ;
-	current = a;
-	while (current)
-	{
-		tmp = current->next;
-		free(current);
-		current = tmp;
 	}
+	equal_sign = ft_strchr(env->str, '=');
+	if (equal_sign)
+		env->value = ft_strdup(equal_sign + 1);
 }
 
-void	print_env(t_env *env)
-{
-	while (env->next)
-	{
-		printf("%s\n", env->str);
-		env = env->next;
-	}
-}
-
-t_env	*find_last_node_env(t_env *env)
+static t_env	*find_last_node_env(t_env *env)
 {
 	if (!env)
 		return (NULL);
@@ -47,7 +60,6 @@ t_env	*find_last_node_env(t_env *env)
 		env = env->next;
 	return (env);
 }
-
 void	add_node_env(t_env **env, char *value)
 {
 	t_env		*node;
@@ -59,7 +71,11 @@ void	add_node_env(t_env **env, char *value)
 	if (!node)
 		return ;
 	node->next = NULL;
+	node->str = malloc(sizeof(char *));
+	if (!node->str)
+		return ;
 	node->str = value;
+	set_env(node);
 	if (*env == NULL)
 	{
 		node->prev = NULL;
@@ -67,7 +83,7 @@ void	add_node_env(t_env **env, char *value)
 	}
 	else
 	{
-		last_node = find_last_node(*env);
+		last_node = find_last_node_env(*env);
 		node->prev = last_node;
 		last_node->next = node;
 	}

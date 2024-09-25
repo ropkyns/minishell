@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/25 15:22:21 by paulmart         ###   ########.fr       */
+/*   Created: 2024/09/24 13:06:59 by paulmart          #+#    #+#             */
+/*   Updated: 2024/09/25 12:26:23 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../lib/libft.h"
 
-void	error_exit(char *str)
+char	**init_path(char **env)
 {
-	printf("%s", str);
-	exit(1);
-}
+	char	**path;
+	int		i;
 
-void	free_env(t_env *a)
-{
-	t_env		*tmp;
-	t_env		*current;
-
-	if (a == NULL)
-		return ;
-	current = a;
-	while (current)
-	{
-		tmp = current->next;
-		free(current);
-		current = tmp;
-	}
+	i = 0;
+	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
+		i++;
+	path = ft_split(env[i] + 5, ':');
+	if (!path)
+		return (NULL);
+	return (path);
 }

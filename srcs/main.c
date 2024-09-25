@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 17:56:41 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:17:05 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	init_global(t_global *glob, int argc, char **argv)
+void	init_global(t_global *glob, int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
 	glob->env = NULL;
 	glob->line = NULL;
 	glob->token_list = NULL;
+	glob->cmd = NULL;
+	glob->path = init_path(env);
 }
 
 void	print_token(t_structok *token)
@@ -39,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 	t_global	*glob;
 
 	glob = malloc(sizeof(t_global));
-	init_global(glob, argc, argv);
+	init_global(glob, argc, argv, env);
 	init_env(&glob->env, env);
 	isatty(1);
 	while (1)
@@ -51,6 +53,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(glob->line);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
+		init_cmd(&glob->cmd, &glob->token_list);
 		if (glob->token_list->value == ft_strstr(glob->token_list->value,
 				"exit"))
 			error_exit("exit");
