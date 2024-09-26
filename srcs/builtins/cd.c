@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/25 12:21:19 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/26 10:38:20 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-
-/* static void	update_old_pwd(t_global *test)
+static void	update_old_pwd(t_global *test)
 {
 	t_list	*temp;
 	char	*check;
 	int		len;
 
-	*temp = test->envi;
+	*temp = test->env;
 	check = NULL;
 	len = ft_lstsize(temp);
 	while (len--)
@@ -29,13 +28,13 @@
 		temp = temp->next;
 	}
 	if (!check)
-		export("OLDPWD", &test->envi);
+		export("OLDPWD", &test->env);
 	if (check)
 	{
 		check = ft_strjoin("OLD", check);
 		if (!check)
-			return (ERR_MALLOC);
-		export(check, test->envi);
+			return (printf("malloc error\n"));
+		export(check, test->env);
 	}
 	free(test);
 }
@@ -53,18 +52,18 @@ static void	update_pwd(t_global *test, char *args)
 	}
 	pwd = ft_strjoin("PWD=", cwd);
 	if (!pwd)
-		return (ERR_MALLOC);
-	export(pwd, test->envi);
+		return (printf("malloc error\n"));
+	export(pwd, test->env);
 	free(pwd);
 }
 int	ft_cd(t_global *test, char *args)
 {
 	int	ret;
 
-		ret = chdir(args[1]);
-		if (ret == 0)
-			update_pwd(test, args[1]);
-		if (ret < 0)
-			perror(args[1]);
-		return (ret);
-} */
+	ret = chdir(args[1]);
+	if (ret == 0)
+		update_pwd(test, args[1]);
+	if (ret < 0)
+		perror(args[1]);
+	return (ret);
+}

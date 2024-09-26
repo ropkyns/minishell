@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/25 16:08:44 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/26 10:43:07 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	set_env(t_env *env)
 	i = 0;
 	env->name = NULL;
 	env->value = NULL;
+	env->next = NULL;
 	env->name = ft_strcpychr(env->name, env->str, '=');
 	if (env->name == NULL)
 	{
@@ -60,17 +61,17 @@ static t_env	*find_last_node_env(t_env *env)
 		env = env->next;
 	return (env);
 }
-void	add_node_env(t_env **env, char *value)
+
+bool	add_node_env(t_env **env, char *value)
 {
-	t_env		*node;
-	t_env		*last_node;
+	t_env	*node;
+	t_env	*last_node;
 
 	if (env == NULL)
-		return ;
+		return (false);
 	node = malloc(sizeof(t_env));
 	if (!node)
-		return ;
-	node->next = NULL;
+		return (false);
 	node->str = malloc(sizeof(char *));
 	if (!node->str)
 		return ;
@@ -87,11 +88,12 @@ void	add_node_env(t_env **env, char *value)
 		node->prev = last_node;
 		last_node->next = node;
 	}
+	return (true);
 }
 
-void	init_env(t_env	**current, char **env)
+void	init_env(t_env **current, char **env)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (env[i])
