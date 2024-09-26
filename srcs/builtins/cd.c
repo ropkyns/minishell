@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/26 10:38:20 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/26 11:01:04 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static void	update_old_pwd(t_global *test)
 {
-	t_list	*temp;
+	t_env	*temp;
 	char	*check;
 	int		len;
 
-	*temp = test->env;
+	temp = test->env;
 	check = NULL;
 	len = ft_lstsize(temp);
 	while (len--)
@@ -28,7 +28,7 @@ static void	update_old_pwd(t_global *test)
 		temp = temp->next;
 	}
 	if (!check)
-		export("OLDPWD", &test->env);
+		ft_export("OLDPWD", &test->env);
 	if (check)
 	{
 		check = ft_strjoin("OLD", check);

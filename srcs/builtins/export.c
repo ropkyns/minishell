@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/26 10:22:01 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/26 13:29:09 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ alors on affiche tout env avec declare -x devant,
 */
 static bool	no_args(t_env *env)
 {
-	while (env->next != NULL)
+	while (env != NULL)
 	{
-		printf("declare -x ");
-		printf("%s\n", env->str);
+		printf("declare -x %s\n", env->str);
 		env = env->next;
 	}
 	return (true);
@@ -45,10 +44,11 @@ static int	name_already_exist(char *str, t_env *env)
 		i++;
 	if (!temp)
 		return (-1);
-	pos = 1;
+	pos = 0;
 	while (temp != NULL)
 	{
-		if (!ft_strncmp(temp->name, str, i) && (ft_strlen(temp->name) == i))
+		if (!ft_strncmp(temp->name, str, i)
+			&& ((int)ft_strlen(temp->name) == i))
 			return (pos);
 		temp = temp->next;
 		pos++;
@@ -66,7 +66,7 @@ static bool	export_is_valid(char *str)
 	int	i;
 
 	i = 0;
-	if (!str[0] || (str[0] != '_' && ft_isalpha(str[0])))
+	if (!str[0] || (str[0] != '_' && !ft_isalpha(str[0])))
 		return (false);
 	while (str[i] && str[i] != '=')
 	{
@@ -91,24 +91,26 @@ bool	export_value(t_env **env, char *str)
 	int		i;
 	int		pos;
 	char	*equal_sign;
+	t_env	*curr;
+	t_env	*temp;
 
-	pos = name_already_exist(str, (*env));
+	curr = *env;
+	pos = name_already_exist(str, curr);
 	equal_sign = ft_strchr(str, '=');
 	if (pos >= 0)
 	{
 		i = 0;
-		while (i++ < pos)
-			(*env) = (*env)->next;
+		temp = curr;
+		while (i++ < pos && temp != NULL)
+			temp = temp->next;
 		if (equal_sign)
 		{
-			free((*env)->value);
-			(*env)->value = ft_strdup(equal_sign + 1);
+			if (temp->value)
+				free(temp->value);
+			temp->value = ft_strdup(equal_sign + 1);
 		}
 	}
 	else if (pos == -1)
-		// demander a Palu si on peut changer sa fonction pour la mettre en bool ou int
-		// comme ca on peut check si la fonction a marche ou pas
-		//(gagner une ligne en mettant son node->next = NULL dans set_env)
 		if (!add_node_env(env, str))
 			return (false);
 	return (true);
@@ -128,10 +130,12 @@ ou alors pour creer une nouvelle variable avec sa value.
 */
 int	ft_export(t_env **env, char **str)
 {
-	int i;
-	int return_val;
+	int	i;
+	int	return_val;
+
 	i = 1;
-	if (!str || str[i])
+	return_val = 0;
+	if (!str || !str[i])
 	{
 		if (*env && !no_args((*env)))
 			return (printf("malloc error\n"));
