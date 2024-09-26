@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/26 15:41:02 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:30:12 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,50 @@ void	free_path(char **path)
 	free(path);
 }
 
+// void	free_env(t_env *a)
+// {
+// 	t_env	*tmp;
+// 	t_env	*current;
+
+// 	if (a == NULL)
+// 		return ;
+// 	current = a;
+// 	while (current)
+// 	{
+// 		tmp = current->next;
+// 		free(current->name);
+// 		free(current->value);
+// 		if (current->str != NULL)
+// 			free(current->str);
+// 		free(current);
+// 		current = tmp;
+// 	}
+// }
+
 void	free_env(t_env *a)
 {
-	t_env		*tmp;
-	t_env		*current;
+	t_env	*tmp;
 
 	if (a == NULL)
 		return ;
-	current = a;
-	while (current)
+	while (a)
 	{
-		tmp = current->next;
-		free(current->name);
-		free(current->value);
-		if (current->str != NULL)
-			free(current->str);
-		free(current);
-		current = tmp;
+		tmp = a->next;
+		if (a->name)
+			free(a->name);
+		if (a->value)
+			free(a->value);
+		if (a->str)
+			free(a->str);
+		free(a);
+		a = tmp;
 	}
 }
 
 void	free_cmd(t_cmd *a)
 {
-	t_cmd		*tmp;
-	t_cmd		*current;
+	t_cmd	*tmp;
+	t_cmd	*current;
 
 	if (a == NULL)
 		return ;

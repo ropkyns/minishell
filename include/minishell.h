@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/25 17:09:17 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:01:51 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <curses.h>
 # include <dirent.h>
 # include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <linux/limits.h>
 # include <readline/history.h>
@@ -28,7 +29,6 @@
 # include <sys/types.h>
 # include <term.h>
 # include <termios.h>
-#include <fcntl.h>
 
 # define FAIL 1
 # define SUCCESS 0
@@ -64,12 +64,11 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char				*cmd;
-	int					infile;			//fd
-	int					outfile;		//fd
+	int infile;  // fd
+	int outfile; // fd
 	struct s_cmd		*next;
 	struct s_cmd		*prev;
 }						t_cmd;
-
 
 typedef struct s_global
 {
@@ -81,14 +80,17 @@ typedef struct s_global
 	t_cmd				*cmd;
 }						t_global;
 
-//ERROR
+// ERROR
 void					free_env(t_env *env);
 void					error_exit(char *str, t_global *glob);
 void					free_cmd(t_cmd *cmd);
+void					free_path(char **path);
 
 // COMMANDS
 int						ft_pwd(void);
 int						ft_cd(t_global *test, char *args);
+int						ft_export(t_env **env, char **str);
+bool					export_value(t_env **env, char *str);
 
 // UTILS
 bool					is_space(char c);
@@ -115,17 +117,17 @@ void					add_first_token(t_structok **token_list,
 
 // ENV
 void					init_env(t_env **list, char **env);
-void					add_node_env(t_env **env, char *value);
+bool					add_node_env(t_env **env, char *value);
 void					print_env(t_env *env);
 void					free_env(t_env *a);
 
-//CMD
+// CMD
 void					init_cmd(t_cmd **cmd, t_structok **tok_list);
 
-//PATH
+// PATH
 char					**init_path(char **env);
 
-//SIGNAL
+// SIGNAL
 void					handle_signal(void);
 void					handle_c(int sig);
 

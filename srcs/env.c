@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/26 11:56:06 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/26 16:06:05 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ bool	add_node_env(t_env **env, char *value)
 	node = malloc(sizeof(t_env));
 	if (!node)
 		return (false);
-	node->str = malloc(sizeof(char *));
+	node->str = ft_strdup(value);
 	if (!node->str)
 		return (false);
-	node->str = value;
+	// node->str = value;
 	set_env(node);
 	if (*env == NULL)
 	{
