@@ -6,26 +6,32 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/27 10:10:38 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:09:26 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-bool	is_first_pipe(t_structok **tok_list)
+bool	is_first_pipe(t_structok **tok_list, t_global *glob)
 {
 	if ((*tok_list) == PIPE)
+	{
+		glob->exit_value = 2;
 		return (true);
+	}
 	else
 		return (false);
 }
 
-bool	is_last_pipe(t_structok **tok_list)
+bool	is_last_pipe(t_structok **tok_list, t_global *glob)
 {
 	while ((*tok_list)->next)
 		(*tok_list) = (*tok_list)->next;
 	if ((*tok_list) == PIPE)
+	{
+		glob->exit_value = 2;
 		return (true);
+	}
 	else
 		return (false);
 }
@@ -53,10 +59,19 @@ bool	handle_quotes(t_global *data, char *command)
 		check_quotes(&double_quote, &single_quote, &pos, command[pos]);
 	if (double_quote || single_quote)
 	{
-		printf("Quotes are not closed\n");
 		data->exit_value = 2;
 		return (true);
 	}
 	data->exit_value = 0;
 	return (false);
+}
+
+void	check_syntax(t_global *glob, t_structok **token_list)
+{
+	if (handle_quotes == true)
+		error_exit("Quotes are not closed\n", glob);
+	if (is_first_pipe == true)
+		error_exit("bash: syntax error near unexpected token `|'", glob);
+	if (is_last_pipe == true)
+		error_exit("bash: syntax error near unexpected token `|'", glob);
 }
