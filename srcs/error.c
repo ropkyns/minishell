@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/26 16:30:12 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/27 10:45:02 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	error_exit(char *str, t_global *glob)
 {
-	free_env(glob->env);
-	free_path(glob->path);
+	if (glob->env)
+		free_env(glob->env);
+	if (glob->path)
+		free_path(glob->path);
 	if (glob->cmd)
 		free_cmd(glob->cmd);
 	if (glob->token_list)
@@ -24,7 +26,7 @@ void	error_exit(char *str, t_global *glob)
 		free(glob->line);
 	rl_clear_history();
 	printf("%s", str);
-	exit(1);
+	exit(glob->exit_value);
 }
 
 void	free_path(char **path)

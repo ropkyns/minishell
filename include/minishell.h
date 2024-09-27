@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/27 10:19:04 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/27 10:38:20 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 
 // PARSING
-int						handle_quotes(t_global *data, char *command);
+bool						handle_quotes(t_global *data, char *command);
+bool					is_last_pipe(t_structok **tok_list);
+bool					is_first_pipe(t_structok **tok_list);
 
 // TOKENS
 // int					new_token(t_structok **new, char *s, t_token type);

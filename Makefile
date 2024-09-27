@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
+#    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/27 10:19:59 by mjameau          ###   ########.fr        #
+#    Updated: 2024/09/27 10:37:49 by paulmart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c env.c error.c tokens/create_token.c \
-			tokens/utils_token.c cmd.c path.c signal/handle_signal.c
+SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c \
+			env.c error.c tokens/create_token.c tokens/utils_token.c cmd.c path.c \
+			signal/handle_signal.c parsing/syntax.c\
 
 NAME	=	minishell
 
