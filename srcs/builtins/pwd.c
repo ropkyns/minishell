@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:33 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 17:50:59 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/27 10:22:02 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Le contenu de la chaine cwd est indefinie en cas d'erreur, donc on peut changer
 */
 int	ft_pwd(void)
 {
-	char cwd[PATH_MAX];
+	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX))
 	{

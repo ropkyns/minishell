@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/26 16:06:05 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/09/27 09:54:37 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ char	*ft_strcpychr(char *dest, char *src, char c)
 
 static void	set_env(t_env *env)
 {
-	int		i;
 	char	*equal_sign;
 
-	i = 0;
+	// int		i;
+	// i = 0;
 	env->name = NULL;
 	env->value = NULL;
 	env->next = NULL;
