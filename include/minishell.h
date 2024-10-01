@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/27 10:38:20 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:22:31 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void					free_env(t_env *env);
 void					error_exit(char *str, t_global *glob);
 void					free_cmd(t_cmd *cmd);
 void					free_path(char **path);
+void					print_error_syntaxe(char *value);
 
 // COMMANDS
 int						ft_pwd(void);
@@ -97,9 +98,9 @@ bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 
 // PARSING
-bool						handle_quotes(t_global *data, char *command);
-bool					is_last_pipe(t_structok **tok_list);
-bool					is_first_pipe(t_structok **tok_list);
+bool					handle_quotes(t_global *data, char *command);
+bool					is_last_pipe(t_structok **tok_list, t_global *glob);
+bool					is_first_pipe(t_structok **tok_list, t_global *glob);
 
 // TOKENS
 // int					new_token(t_structok **new, char *s, t_token type);

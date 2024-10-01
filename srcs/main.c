@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/26 16:02:48 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/01 15:13:36 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_global(t_global *glob, int argc, char **argv, char **env)
 	glob->token_list = NULL;
 	glob->cmd = NULL;
 	glob->path = init_path(env);
+	glob->exit_value = 0;
 }
 
 void	print_token(t_structok *token)
@@ -56,7 +57,7 @@ int	main(int argc, char **argv, char **env)
 		init_cmd(&glob->cmd, &glob->token_list);
 		if (glob->token_list->value == ft_strstr(glob->token_list->value,
 				"exit"))
-			error_exit("exit", glob);
+			error_exit("exit\n", glob);
 		print_token(glob->token_list);
 	}
 	return (1);
