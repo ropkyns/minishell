@@ -6,13 +6,13 @@
 #    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/09/30 15:06:35 by paulmart         ###   ########.fr        #
+#    Updated: 2024/10/02 15:21:38 by paulmart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c \
 			env.c error/free_exit.c tokens/create_token.c tokens/utils_token.c cmd.c path.c \
-			signal/handle_signal.c parsing/syntax.c error/print_error.c\
+			signal/handle_signal.c parsing/syntax.c parsing/more_syntax.c\
 
 NAME	=	minishell
 

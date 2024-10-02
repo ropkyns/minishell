@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/01 15:12:19 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:22:05 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,14 @@ void	check_syntax(t_global *glob, t_structok **token_list)
 {
 	if (handle_quotes(glob, glob->line) == true)
 		error_exit("bash: syntax error quotes aren't closed", glob);
-	if (is_first_pipe(token_list, glob) == true)
-	{
-		print_error_syntaxe((*token_list)->value);
+	else if (is_first_pipe(token_list, glob) == true)
+		error_exit("bash: syntax error near unexpected token `|'", glob);
+	else if (is_op_before_pipe(token_list, glob))
+		error_exit("bash: syntax error near unexpected token `|'", glob);
+	else if (is_last_pipe(token_list, glob))
+		error_exit("bash: syntax error near unexpected token `|'", glob);
+	else if (is_op_after_op(token_list, glob))
 		error_exit("", glob);
-	}
-	if (is_last_pipe(token_list, glob) == true)
-	{
-		while ((*token_list)->next)
-			(*token_list) = (*token_list)->next;
-		print_error_syntaxe((*token_list)->value);
-		error_exit("", glob);
-	}
+	else if (is_last_op(token_list, glob))
+		error_exit("syntax error near unexpected token `newline'", glob);
 }
