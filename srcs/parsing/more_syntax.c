@@ -6,11 +6,18 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/02 16:13:52 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:19:33 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	print_error_syntax(char *value)
+{
+	write(2, "bash: syntax error near unexpected token `", 42);
+	write(2, value, strlen(value));
+	write(2, "'\n", 2);
+}
 
 bool	is_last_op(t_structok **tok_list, t_global *glob)
 {
@@ -46,7 +53,7 @@ bool	is_op_before_pipe(t_structok **tok_list, t_global *glob)
 	return (false);
 }
 
-char	*is_op_after_op(t_structok **tok_list, t_global *glob)
+bool	is_op_after_op(t_structok **tok_list, t_global *glob)
 {
 	while ((*tok_list)->next)
 	{
@@ -58,17 +65,10 @@ char	*is_op_after_op(t_structok **tok_list, t_global *glob)
 			|| (*tok_list)->next->type == APPEND)
 		{
 			glob->exit_value = 2;
-			print_error_syntaxe((*tok_list)->next->value);
+			print_error_syntax((*tok_list)->next->value);
 			return (true);
 		}
 		(*tok_list) = (*tok_list)->next;
 	}
 	return (false);
-}
-
-void	print_error_syntax(char *value)
-{
-	write(2, "bash: syntax error near unexpected token `", 42);
-	write(2, value, strlen(value));
-	write(2, "'\n", 2);
 }

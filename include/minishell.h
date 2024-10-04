@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/02 16:14:04 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:17:25 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,13 @@ void				error_exit(char *str, t_global *glob);
 void				free_cmd(t_cmd *cmd);
 void				free_path(char **path);
 
-// COMMANDS
+// BUILTIN
 int					ft_pwd(void);
 int					ft_cd(t_global *test, char *args);
 int					ft_export(t_env **env, char **str);
 bool				export_value(t_env **env, char *str);
+int					ft_unset(t_env **env, char **args);
+void				ft_exit(char **args, t_global *glob);
 
 // UTILS
 bool				is_space(char c);
@@ -103,7 +105,8 @@ bool				is_first_pipe(t_structok **tok_list, t_global *glob);
 bool				is_last_op(t_structok **tok_list, t_global *glob);
 bool				is_op_before_pipe(t_structok **tok_list, t_global *glob);
 void				print_error_syntax(char *value);
-char				*is_op_after_op(t_structok **tok_list, t_global *glob);
+bool				is_op_after_op(t_structok **tok_list, t_global *glob);
+void				print_error_syntax(char *value);
 
 // TOKENS
 int					add_token(t_structok **token_list, char *s, int type);

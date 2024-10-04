@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/30 15:05:47 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:14:04 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	error_exit(char *str, t_global *glob)
 	if (glob->line)
 		free(glob->line);
 	rl_clear_history();
-	printf("%s", str);
+	if (str)
+		ft_putstr_fd(str, 2);
 	exit(glob->exit_value);
 }
 

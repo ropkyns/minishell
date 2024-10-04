@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/09/25 16:35:26 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:58:43 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,17 @@ void	init_cmd(t_cmd **cmd, t_structok **tok_list)
 	t_structok	*tmp;
 	t_cmd		*last;
 
+
+	printf("test1");
+	fflush(stdout);
 	tmp = *(tok_list);
 	while (tmp->next != (*tok_list))
 	{
+		printf("test2");
+		fflush(stdout);
 		add_node_cmd(cmd, NULL);
+		printf("test3");
+		fflush(stdout);
 		last = find_last_node_cmd(*cmd);
 		if (tmp->type == CMD)
 			last->cmd = tmp->value;

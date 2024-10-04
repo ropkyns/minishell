@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/01 15:13:36 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:57:20 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ void	print_token(t_structok *token)
 	while (tmp->next != token)
 	{
 		printf("Type : %d, [%s]\n", tmp->type, tmp->value);
+		fflush(stdout);
 		tmp = tmp->next;
 	}
 	printf("Type : %d, [%s]\n", tmp->type, tmp->value);
+	fflush(stdout);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -54,6 +56,8 @@ int	main(int argc, char **argv, char **env)
 		add_history(glob->line);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
+		printf("test");
+		fflush(stdout);
 		init_cmd(&glob->cmd, &glob->token_list);
 		if (glob->token_list->value == ft_strstr(glob->token_list->value,
 				"exit"))
