@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/27 10:29:44 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/02 12:45:50 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,10 @@ ou alors pour creer une nouvelle variable avec sa value.
 int	ft_export(t_env **env, char **str)
 {
 	int	i;
-	int	return_val;
+	int	exit_val;
 
 	i = 1;
-	return_val = 0;
+	exit_val = 0;
 	if (!str || !str[i])
 	{
 		if (*env && !no_args((*env)))
@@ -145,11 +145,11 @@ int	ft_export(t_env **env, char **str)
 		if (!export_is_valid(str[i]))
 		{
 			printf("export : invalid identifier\n");
-			return_val = 1;
+			exit_val = 1;
 		}
 		else if (!export_value(env, str[i]))
 			return (printf("malloc error\n"));
 		i++;
 	}
-	return (return_val);
+	return (exit_val);
 }
