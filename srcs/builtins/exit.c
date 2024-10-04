@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:28:26 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/04 15:03:57 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 17:39:57 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ static int	atoi_exit(char *str, int *err)
 		ret = ret * 10 + (str[i++] - 48);
 	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
 		i++;
-	if (str[i] || i - j > 20 || ((is_neg == -1 && (ret - 1) > LONG_MAX) || \
-		(is_neg == 1 && (ret > LONG_MAX))))
+	if (str[i] || i - j > 20 || ((is_neg == -1 && (ret - 1) > LONG_MAX)
+			|| (is_neg == 1 && (ret > LONG_MAX))))
 		*err = 1;
 	return ((int)((ret * is_neg) % 256));
 }
 
 void	ft_exit(char **args, t_global *glob)
 {
-	int		ret;
-	int		error;
+	int	ret;
+	int	error;
 
 	ret = 0;
 	error = 0;
@@ -50,15 +50,15 @@ void	ft_exit(char **args, t_global *glob)
 		ret = atoi_exit(args[1], &error);
 		if (error)
 		{
-			ft_putchar_fd("exit: ", 2);
-			ft_putchar_fd(args[1], 2);
-			ft_putchar_fd(": numeric argument required\n", 2);
+			ft_putstr_fd("exit: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			error_exit("", glob);
 		}
 	}
 	if (args[1] && args[2])
 	{
-		ft_putchar_fd("exit: too many arguments\n", 2);
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		glob->exit_value = 1;
 		return ;
 	}

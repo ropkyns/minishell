@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/27 10:21:44 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/04 17:38:56 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,22 @@ static void	update_pwd(t_global *test, char *args)
 	free(pwd);
 }
 
-int	ft_cd(t_global *test, char *args)
+int	ft_cd(t_global *test, char **args)
 {
 	int	ret;
+	int	count;
 
-	ret = chdir(args);
-	if (ret == 0)
-		update_pwd(test, args);
-	if (ret < 0)
-		perror(&args[1]);
-	return (ret);
+	count = 0;
+	while (args[count])
+		count++;
+	if (count == 2)
+	{
+		ret = chdir(args[1]);
+		if (ret == 0)
+			update_pwd(test, args[1]);
+		if (ret < 0)
+			perror(args[1]);
+		return (ret);
+	}
+	return (1);
 }

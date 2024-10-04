@@ -3,14 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
+#    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/10/02 15:21:38 by paulmart         ###   ########.fr        #
+#    Updated: 2024/10/04 18:03:23 by mjameau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c \
+SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c builtins/exit.c \
+			builtins/unset.c exec/exec_utils.c exec/exec.c exec/more_exec.c builtins/ft_env.c \
 			env.c error/free_exit.c tokens/create_token.c tokens/utils_token.c cmd.c path.c \
 			signal/handle_signal.c parsing/syntax.c parsing/more_syntax.c\
 

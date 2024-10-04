@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/04 15:57:20 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:38:14 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	print_token(t_structok *token)
 	fflush(stdout);
 }
 
+// BON, pour que get_cmd et tout l'exec marche il faut que dans la liste des cmd
+// on prenne en compte **cmd_args (ajoute dans la structure)
 int	main(int argc, char **argv, char **env)
 {
 	t_global	*glob;
@@ -56,13 +58,9 @@ int	main(int argc, char **argv, char **env)
 		add_history(glob->line);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
-		printf("test");
-		fflush(stdout);
 		init_cmd(&glob->cmd, &glob->token_list);
-		if (glob->token_list->value == ft_strstr(glob->token_list->value,
-				"exit"))
-			error_exit("exit\n", glob);
 		print_token(glob->token_list);
+		get_cmd(argv, &glob, &glob->env);
 	}
 	return (1);
 }
