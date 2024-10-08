@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/07 14:36:07 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/08 09:48:46 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 
 typedef enum e_token
 {
-	CMD,
 	PIPE,
-	ARG,
 	INPUT,
 	OUTPUT,
 	HEREDOC,
 	APPEND,
+	CMD,
+	ARG,
 }						t_token;
 
 typedef struct s_structok
@@ -65,8 +65,8 @@ typedef struct s_cmd
 {
 	char				*cmd;
 	char				**cmd_args;
-	int					infile;			// fd
-	int					outfile;		// fd
+	int infile;  // fd
+	int outfile; // fd
 	struct s_cmd		*next;
 	struct s_cmd		*prev;
 }						t_cmd;
@@ -134,7 +134,8 @@ bool					add_node_env(t_env **env, char *value);
 void					free_env(t_env *a);
 
 // CMD
-void					init_cmd(t_cmd **cmd, t_structok **tok_list/* , t_global *glob */);
+void	init_cmd(t_cmd **cmd, t_structok **tok_list
+				/*t_global *glob*/);
 
 // PATH
 char					**init_path(char **env);

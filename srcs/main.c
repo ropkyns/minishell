@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/04 18:38:14 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/08 09:51:38 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	print_token(t_structok *token)
 int	main(int argc, char **argv, char **env)
 {
 	t_global	*glob;
+	char		**args;
 
 	glob = malloc(sizeof(t_global));
 	init_global(glob, argc, argv, env);
@@ -60,7 +61,9 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		init_cmd(&glob->cmd, &glob->token_list);
 		print_token(glob->token_list);
-		get_cmd(argv, &glob, &glob->env);
+		args = ft_split(glob->line, ' ');
+		get_cmd(args, &glob, &glob->env);
+		free(args);
 	}
 	return (1);
 }
