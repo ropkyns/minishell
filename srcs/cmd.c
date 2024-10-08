@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/08 09:28:47 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/08 15:42:03 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,32 @@
 
 /* PENSER A INITIALISER DANS LA FONCTION INIT GLOBAL
  */
+
+static char	**args_tab(t_structok *toklist, t_global *glob)
+{
+	int			i;
+	char		**ret;
+	t_structok	*tmp;
+
+	i = 0;
+	tmp = toklist;
+	while (tmp->next->type == ARG || tmp->next->type == CMD)
+	{
+			i++;
+			tmp = tmp->next;
+	}
+	ret = malloc(sizeof(char **) * i);
+	i = 0;
+	while (toklist->next->type == ARG || toklist->next->type == CMD)
+	{
+		ret[i] = strdup(toklist->value);
+		if (!ret[i])
+			error_exit("Allocation failed", glob);
+		i++;
+		toklist = toklist->next;
+	}
+	return (ret);
+}
 
 static t_cmd	*find_last_node_cmd(t_cmd *cmd)
 {
@@ -48,27 +74,41 @@ static void	add_node_cmd(t_cmd **cmd, char *value)
 		last_node->next = node;
 	}
 }
-/* CHANGER LA MANIERE DE CREER LES MAILLONS (LE FAIRE QUAND Y A UN PIPE) */
 
-void	init_cmd(t_cmd **cmd, t_structok **tok_list)
+static void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
+{
+	if (toklist->type == INPUT)
+		{
+			last->infile = open(toklist->next->value, 0);
+			if (last->infile == -1)
+				error_exit("No such file or directory", glob); //FAIRE UN BON PRINT : "BASH:[NOM DU FICHIER]:NO SUCH FILE OR DIRECTORY"
+		}
+	else if (toklist->type == OUTPUT)
+			last->outfile = open(toklist->next->value, O_CREAT, S_IRWXU);
+}
+
+/* CHANGER LA MANIERE DE CREER LES MAILLONS (LE FAIRE QUAND Y A UN PIPE) */
+void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
 	t_cmd		*last;
 
-	fflush(stdout);
 	tmp = *(tok_list);
 	while (tmp->next != (*tok_list))
 	{
-		fflush(stdout);
 		add_node_cmd(cmd, NULL);
-		fflush(stdout);
 		last = find_last_node_cmd(*cmd);
+		printf("TEST111\n");
+		fflush(stdout);
 		if (tmp->type == CMD)
+		{
 			last->cmd = tmp->value;
-		else if (tmp->type == INPUT)
-			last->infile = open(tmp->next->value, O_CREAT, S_IRWXU);
-		else if (tmp->type == OUTPUT)
-			last->outfile = open(tmp->next->value, O_CREAT, S_IRWXU);
+			last->cmd_args = args_tab(tmp, glob);
+			while (tmp->type == ARG)
+				tmp = tmp->next;
+		}
+		else if (tmp->type == INPUT || tmp->type == OUTPUT)
+			handle_input_output(last, tmp, glob);
 		else if (tmp->type == PIPE)
 			add_node_cmd(cmd, NULL);
 		tmp = tmp->next;
