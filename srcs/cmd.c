@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/10 11:54:03 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:39:22 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,12 @@ static void	handle_input_output(t_cmd *last, t_structok *toklist,
 	{
 		last->infile = open(toklist->next->value, 0);
 		if (last->infile == -1)
-			error_exit("No such file or directory", glob);
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(toklist->next->value, 2);
+			ft_putstr_fd(": No such file or directory", 2);
+			error_exit(NULL, glob);
+		}
 	}
 	else if (toklist->type == OUTPUT)
 			last->outfile = open(toklist->next->value, O_CREAT, S_IRWXU);
