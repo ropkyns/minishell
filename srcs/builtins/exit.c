@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:28:26 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/08 15:34:14 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:58:24 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_exit(char **args, t_global *glob)
 	ret = 0;
 	error = 0;
 	if (args[1])
-	{	
+	{
 		ret = atoi_exit(args[1], &error);
 		if (error)
 		{

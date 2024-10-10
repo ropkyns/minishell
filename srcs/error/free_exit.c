@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/04 15:14:04 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:44:31 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,33 @@ void	free_env(t_env *a)
 	}
 }
 
-void	free_cmd(t_cmd *a)
+static void	free_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	if (!args)
+		return ;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
+void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
-	t_cmd	*current;
 
-	if (a == NULL)
-		return ;
-	current = a;
-	while (current)
+	while (cmd)
 	{
-		tmp = current->next;
-		free(current->cmd);
-		if (current->infile)
-			close(current->infile);
-		if (current->outfile)
-			close(current->outfile);
-		free(current);
-		current = tmp;
+		tmp = cmd;
+		cmd = cmd->next;
+		if (tmp->cmd_args)
+			free_args(tmp->cmd_args);
+		if (tmp->cmd)
+			free(tmp->cmd);
+		free(tmp);
 	}
 }

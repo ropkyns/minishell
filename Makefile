@@ -6,7 +6,7 @@
 #    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/10/04 18:03:23 by mjameau          ###   ########.fr        #
+#    Updated: 2024/10/10 13:57:55 by mjameau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ HEADER	=	minishell.h
 all: $(LIB_DIR) $(LIBFT) $(NAME)
 
 .c.o :
-	@cc -Wall -Wextra -Werror -c $< -o ${<:.c=.o}
+	@cc -g -Wall -Wextra -Werror -c $< -o ${<:.c=.o}
 
 $(NAME): $(OBJS)
 	@echo "Compiling minishell..."
