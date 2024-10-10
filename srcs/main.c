@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/08 15:06:05 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:56:58 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,7 @@ int	main(int argc, char **argv, char **env)
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
 		init_cmd(&glob->cmd, &glob->token_list, glob);
-		print_token(glob->token_list);
-		/* int i = 0;
-		while (glob->cmd->cmd_args[i])
-		{
-			printf("%s\n", glob->cmd->cmd_args[i]);
-			fflush(stdout);
-		} */
-		printf("TEST");
-		fflush(stdout);
+		// print_token(glob->token_list);
 		get_cmd(glob->cmd->cmd_args, &glob, &glob->env);
 	}
 	return (1);
