@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/04 14:53:56 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:55:27 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ bool	is_first_pipe(t_structok **tok_list, t_global *glob)
 
 bool	is_last_pipe(t_structok **tok_list, t_global *glob)
 {
-	while ((*tok_list)->next)
-		(*tok_list) = (*tok_list)->next;
-	if ((*tok_list)->type == PIPE)
+	t_structok	*tmp;
+
+	tmp = (*tok_list);
+	while (tmp->next != (*tok_list))
+		tmp = tmp->next;
+	if (tmp->type == PIPE)
 	{
 		glob->exit_value = 2;
 		return (true);

@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/04 15:19:33 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:56:14 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ void	print_error_syntax(char *value)
 
 bool	is_last_op(t_structok **tok_list, t_global *glob)
 {
-	while ((*tok_list)->next)
-		(*tok_list) = (*tok_list)->next;
-	if ((*tok_list)->type == INPUT || (*tok_list)->type == OUTPUT
-		|| (*tok_list)->type == HEREDOC || (*tok_list)->type == APPEND)
+	t_structok	*tmp;
+
+	tmp = (*tok_list);
+	while (tmp->next != (*tok_list))
+		tmp = tmp->next;
+	if (tmp->type == INPUT || tmp->type == OUTPUT
+		|| tmp->type == HEREDOC || tmp->type == APPEND)
 	{
 		glob->exit_value = 2;
 		return (true);
@@ -35,40 +38,46 @@ bool	is_last_op(t_structok **tok_list, t_global *glob)
 
 bool	is_op_before_pipe(t_structok **tok_list, t_global *glob)
 {
-	while ((*tok_list)->next)
+	t_structok	*tmp;
+
+	tmp = (*tok_list);
+	while (tmp->next != (*tok_list))
 	{
-		while ((*tok_list)->type != PIPE)
-			(*tok_list) = (*tok_list)->next;
-		if ((*tok_list)->prev->type == INPUT
-			|| (*tok_list)->prev->type == OUTPUT
-			|| (*tok_list)->prev->type == HEREDOC
-			|| (*tok_list)->prev->type == APPEND
-			|| (*tok_list)->next->type == PIPE)
+		while (tmp->type != PIPE)
+			tmp = tmp->next;
+		if (tmp->prev->type == INPUT
+			|| tmp->prev->type == OUTPUT
+			|| tmp->prev->type == HEREDOC
+			|| tmp->prev->type == APPEND
+			|| tmp->next->type == PIPE)
 		{
 			glob->exit_value = 2;
 			return (true);
 		}
-		(*tok_list) = (*tok_list)->next;
+		tmp = tmp->next;
 	}
 	return (false);
 }
 
 bool	is_op_after_op(t_structok **tok_list, t_global *glob)
 {
-	while ((*tok_list)->next)
+	t_structok	*tmp;
+
+	tmp = (*tok_list);
+	while (tmp->next != (*tok_list))
 	{
-		while ((*tok_list)->type != PIPE)
-			(*tok_list) = (*tok_list)->next;
-		if ((*tok_list)->next->type == INPUT
-			|| (*tok_list)->next->type == OUTPUT
-			|| (*tok_list)->next->type == HEREDOC
-			|| (*tok_list)->next->type == APPEND)
+		while (tmp->type != PIPE)
+			tmp = tmp->next;
+		if (tmp->next->type == INPUT
+			|| tmp->next->type == OUTPUT
+			|| tmp->next->type == HEREDOC
+			|| tmp->next->type == APPEND)
 		{
 			glob->exit_value = 2;
 			print_error_syntax((*tok_list)->next->value);
 			return (true);
 		}
-		(*tok_list) = (*tok_list)->next;
+		tmp = tmp->next;
 	}
 	return (false);
 }
