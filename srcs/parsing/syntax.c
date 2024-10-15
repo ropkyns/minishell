@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/14 14:55:27 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:27:00 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ bool	handle_quotes(t_global *data, char *command)
 
 void	check_syntax(t_global *glob, t_structok **token_list)
 {
+	printf("test0\n");
+	fflush(stdout);
+	check_dollard_sign(token_list, glob->env);
+	printf("test1\n");
+	fflush(stdout);
 	if (handle_quotes(glob, glob->line) == true)
 		error_exit("bash: syntax error quotes aren't closed", glob);
 	else if (is_first_pipe(token_list, glob) == true)

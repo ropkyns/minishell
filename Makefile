@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
+#    By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/10/10 13:57:55 by mjameau          ###   ########.fr        #
+#    Updated: 2024/10/15 15:21:43 by paulmart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c builtins/exit.c \
 			builtins/unset.c exec/exec_utils.c exec/exec.c exec/more_exec.c builtins/ft_env.c \
 			env.c error/free_exit.c tokens/create_token.c tokens/utils_token.c cmd.c path.c \
-			signal/handle_signal.c parsing/syntax.c parsing/more_syntax.c\
+			signal/handle_signal.c parsing/syntax.c parsing/more_syntax.c parsing/even_more_syntax.c\
 
 NAME	=	minishell
 

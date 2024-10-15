@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/11 11:11:37 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:20:13 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(int argc, char **argv, char **env)
 		if (!(glob->line))
 			error_exit("exit", glob);
 		add_history(glob->line);
+		check_syntax(glob, &glob->token_list);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
 		print_token(glob->token_list);
