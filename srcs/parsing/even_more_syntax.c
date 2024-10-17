@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/15 15:32:51 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:27:31 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	check_dollard_sign(t_structok **toklist, t_env *env)
 {
 	t_structok	*tmp;
 
+	if (!(*toklist))
+		return ;
 	tmp = (*toklist);
 	printf("test0.5\n");
 	fflush(stdout);

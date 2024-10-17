@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_syntax.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/14 14:56:14 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:27:32 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	is_last_op(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
 
+	if (!(*tok_list))
+		return (false);
 	tmp = (*tok_list);
 	while (tmp->next != (*tok_list))
 		tmp = tmp->next;
@@ -40,6 +42,8 @@ bool	is_op_before_pipe(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
 
+	if (!(*tok_list))
+		return (false);
 	tmp = (*tok_list);
 	while (tmp->next != (*tok_list))
 	{
@@ -63,6 +67,8 @@ bool	is_op_after_op(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
 
+	if (!(*tok_list))
+		return (false);
 	tmp = (*tok_list);
 	while (tmp->next != (*tok_list))
 	{

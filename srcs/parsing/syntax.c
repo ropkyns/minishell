@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/15 15:27:00 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:27:29 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ bool	is_last_pipe(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
 
+	if (!(*tok_list))
+		return (false);
 	tmp = (*tok_list);
 	while (tmp->next != (*tok_list))
 		tmp = tmp->next;

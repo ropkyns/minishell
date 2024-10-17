@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:28:26 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/10 12:58:24 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/17 17:14:51 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,15 @@ static int	atoi_exit(char *str, int *err)
 
 void	ft_exit(char **args, t_global *glob)
 {
-	int	ret;
 	int	error;
 
-	ret = 0;
 	error = 0;
 	if (args[1])
 	{
-		ret = atoi_exit(args[1], &error);
+		glob->exit_value = atoi_exit(args[1], &error);
 		if (error)
 		{
+			glob->exit_value = 2;
 			ft_putstr_fd("exit: ", 2);
 			ft_putstr_fd(args[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
