@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/17 16:27:29 by palu             ###   ########.fr       */
+/*   Updated: 2024/10/19 11:45:02 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool	is_first_pipe(t_structok **tok_list, t_global *glob)
 {
+	if (!*tok_list)
+		return (false);
 	if ((*tok_list)->type == PIPE)
 	{
 		glob->exit_value = 2;
@@ -73,11 +75,7 @@ bool	handle_quotes(t_global *data, char *command)
 
 void	check_syntax(t_global *glob, t_structok **token_list)
 {
-	printf("test0\n");
-	fflush(stdout);
 	check_dollard_sign(token_list, glob->env);
-	printf("test1\n");
-	fflush(stdout);
 	if (handle_quotes(glob, glob->line) == true)
 		error_exit("bash: syntax error quotes aren't closed", glob);
 	else if (is_first_pipe(token_list, glob) == true)

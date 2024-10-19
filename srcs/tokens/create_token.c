@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 17:54:13 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/19 11:23:11 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,15 @@ bool	add_operator_token(t_structok **head, char **command)
 	checker = is_special(*command);
 	if (!checker)
 		return (false);
-	if (checker == INPUT && !add_token(head, ft_strdup("<"), INPUT))
+	if (checker == PIPE && !add_token(head, ft_strdup("|"), PIPE))
+		return (false);
+	else if (checker == INPUT && !add_token(head, ft_strdup("<"), INPUT))
 		return (false);
 	else if (checker == HEREDOC && !add_token(head, ft_strdup("<<"), HEREDOC))
 		return (false);
 	else if (checker == OUTPUT && !add_token(head, ft_strdup(">"), OUTPUT))
 		return (false);
 	else if (checker == APPEND && !add_token(head, ft_strdup(">>"), APPEND))
-		return (false);
-	else if (checker == PIPE && !add_token(head, ft_strdup("|"), PIPE))
 		return (false);
 	if (checker == INPUT || checker == OUTPUT || checker == PIPE)
 		(*command)++;
@@ -101,13 +101,13 @@ bool	add_cmd_arg(t_structok **head, char **command)
 	char	*str;
 	int		len;
 
+	i = 0;
 	len = len_cmd(*command, &quote);
 	if (((len) - (2 * quote)) < 0)
 		return (true);
-	str = malloc(sizeof(char *) * ((len + 1) - (quote * 2)));
+	str = malloc(sizeof(char) * ((len + 1) - (quote * 2)));
 	if (!str)
 		return ((false));
-	i = 0;
 	get_words_to_token(*command, len - (2 * quote), str, i);
 	if (!add_token(head, str, 0))
 		return (false);

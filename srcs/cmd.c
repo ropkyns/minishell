@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/10 15:15:47 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/18 11:35:07 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static void	add_node_cmd(t_cmd **cmd, char *value)
 	node->next = NULL;
 	node->cmd = value;
 	node->cmd_args = NULL;
+	node->infile = -1;
+	node->outfile = -1;
 	if (*cmd == NULL)
 	{
 		node->prev = NULL;
@@ -119,6 +121,8 @@ void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 	t_cmd *last;
 
 	tmp = *tok_list;
+	if (!tmp)
+		return ;
 	add_node_cmd(cmd, NULL);
 	last = find_last_node_cmd(*cmd);
 	if (tmp->type == CMD)

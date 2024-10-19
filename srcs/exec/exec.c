@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/04 19:04:36 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/18 11:27:22 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*build_path(char *dir, char *cmd)
 	return (path_name);
 }
 
-static char	**make_env_tab(t_env **env)
+char	**make_env_tab(t_env **env)
 {
 	t_env	*current_env;
 	int		count;
@@ -57,63 +57,66 @@ static char	**make_env_tab(t_env **env)
 	return (env_array);
 }
 
-static bool	execute_command(char **argv, char *path_name, char **env_array)
-{
-	if (execve(path_name, argv, env_array) == -1)
-	{
-		printf("error in execve");
-		return (false);
-	}
-	return (true);
-}
+// static bool	execute_command(t_cmd *cmd, char *path_name, char **env_array)
+// {
+// 	if (execve(path_name, cmd->cmd_args, env_array) == -1)
+// 	{
+// 		printf("error in execve");
+// 		return (false);
+// 	}
+// 	return (true);
+// }
 
-static bool	try_execute(char **argv, char *path_name, t_env **env)
-{
-	char	**env_array;
+// static bool	try_execute(t_cmd *cmd, char *path_name, t_env **env)
+// {
+// 	char	**env_array;
 
-	env_array = make_env_tab(env);
-	if (!env_array)
-		return (false);
-	if (execute_command(argv, path_name, env_array))
-	{
-		free(env_array);
-		return (true);
-	}
-	free(env_array);
-	return (false);
-}
+// 	env_array = make_env_tab(env);
+// 	if (!env_array)
+// 		return (false);
+// 	if (execute_command(cmd, path_name, env_array))
+// 	{
+// 		free(env_array);
+// 		return (true);
+// 	}
+// 	free(env_array);
+// 	return (false);
+// }
 
-void	get_cmd(char **argv, t_global **glob, t_env **env)
+void	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 {
 	int			i;
 	t_global	*temp;
 	char		*path_name;
 
 	i = 0;
+	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
+		return ;
 	temp = *glob;
-	if (argv[0])
+	if (!temp->path)
+		return ;
+	while (temp->path[i])
 	{
-		while (temp->path[i])
+		if (is_simple_command(cmd->cmd_args) && is_builtins(cmd->cmd_args[0]))
+			return (get_builtins(cmd, env, glob));
+		path_name = build_path(temp->path[i], cmd->cmd_args[0]);
+		if (!path_name)
+			return ;
+		if (access(path_name, F_OK) == 0)
 		{
-			if (is_builtins(argv[0]))
-			{
-				get_builtins(argv, env, glob);
-				return ;
-			}
-			path_name = build_path(temp->path[i], argv[0]);
-			if (!path_name)
-				return ;
-			if (access(path_name, F_OK) == 0)
-				if (try_execute(argv, path_name, env))
-					return (free(path_name));
-			free(path_name);
-			i++;
+			if (is_simple_command(cmd->cmd_args))
+				execute_simple(cmd, path_name, env);
+			else
+				execute_piped(cmd, env, *glob);
+			return (free(path_name));
 		}
-		printf("bash: command not found: %s\n", argv[0]);
+		free(path_name);
+		i++;
 	}
+	printf("bash: command not found: %s\n", cmd->cmd_args[0]);
 }
 
-// int	main(int argc, char **argv, char **envp)
+// int	main(int argc, t_cmd *cmd, char **envp)
 // {
 // 	t_global *glob = malloc(sizeof(t_global));
 // 	if (!glob)

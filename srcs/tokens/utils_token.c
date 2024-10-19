@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:23:36 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/24 17:53:21 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/19 11:25:09 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ bool	is_space(char c)
 /*
  * Check si caractere special (operateur), on return le enum
  */
+#include <stdio.h> // Assurez-vous d'inclure ce header pour printf
+
 int	is_special(char *token)
 {
 	if (token && *token && ft_strlen(token) >= 2)

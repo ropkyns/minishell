@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/17 17:22:15 by palu             ###   ########.fr       */
+/*   Updated: 2024/10/19 12:03:46 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	main(int argc, char **argv, char **env)
 	isatty(1);
 	while (1)
 	{
+		handle_signal();
 		glob->cmd = NULL;
-		fflush(stdout);
 		glob->line = readline("minishell > ");
 		if (!(glob->line))
 			error_exit("exit", glob);
@@ -62,8 +62,11 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		print_token(glob->token_list);
 		init_cmd(&glob->cmd, &glob->token_list, glob);
-		get_cmd(glob->cmd->cmd_args, &glob, &glob->env);
+		if (glob && glob->cmd && glob->cmd->cmd_args)
+			get_cmd(glob->cmd, &glob, &glob->env);
 		free_cmd(glob->cmd);
+		free(glob->line);
+		free_tok(&glob->token_list);
 	}
 	return (1);
 }

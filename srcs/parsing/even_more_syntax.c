@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/17 16:27:31 by palu             ###   ########.fr       */
+/*   Updated: 2024/10/19 11:58:07 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,29 @@ void	check_dollard_sign(t_structok **toklist, t_env *env)
 {
 	t_structok	*tmp;
 
-	if (!(*toklist))
+	if (!toklist || !(*toklist)) // Check if the list is NULL
 		return ;
 	tmp = (*toklist);
-	printf("test0.5\n");
-	fflush(stdout);
-	while (tmp->next != (*toklist))
+	while (1) // Infinite loop that we manually break from
 	{
+		// Debugging: Check if tmp and tmp->value are valid
+		if (!tmp)
+		{
+			printf("Error: tmp is NULL\n");
+			return ;
+		}
+		if (!tmp->value)
+		{
+			printf("Error: tmp->value is NULL\n");
+			return ;
+		}
+		// Check if the value starts with a '$'
 		if (tmp->value[0] == '$')
+			// tmp->value should be checked to be non-NULL before
 			tmp->value = search_env(tmp->value, env);
+		// Break if we complete the circular traversal
+		if (tmp->next == (*toklist))
+			break ;
 		tmp = tmp->next;
-		printf("test\n");
-		fflush(stdout);
 	}
-	printf("testfin\n");
-	fflush(stdout);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/15 15:11:56 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/19 11:45:31 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <sys/ioctl.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <term.h>
 # include <termios.h>
 
@@ -35,13 +36,13 @@
 
 typedef enum e_token
 {
-	PIPE,
-	INPUT,
-	OUTPUT,
-	HEREDOC,
-	APPEND,
-	CMD,
-	ARG,
+	INPUT = 1,
+	OUTPUT = 2,
+	HEREDOC = 3,
+	APPEND = 4,
+	CMD = 5,
+	ARG = 6,
+	PIPE = 7,
 }						t_token;
 
 typedef struct s_structok
@@ -101,6 +102,7 @@ void					ft_env(t_env *env);
 bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 bool					check_allocation(void *ptr);
+bool					is_simple_command(char **argv);
 
 // SYNTAX
 bool					handle_quotes(t_global *data, char *command);
@@ -113,7 +115,7 @@ void					print_error_syntax(char *value);
 bool					is_op_after_op(t_structok **tok_list, t_global *glob);
 void					print_error_syntax(char *value);
 void					check_dollard_sign(t_structok **toklist, t_env *env);
-void	check_syntax(t_global *glob, t_structok **token_list);
+void					check_syntax(t_global *glob, t_structok **token_list);
 
 // TOKENS
 int						add_token(t_structok **token_list, char *s, int type);
@@ -121,6 +123,7 @@ bool					add_operator_token(t_structok **head, char **command);
 void					free_tok(t_structok **token_list);
 bool					do_list_token(t_structok **head, char *command);
 bool					add_cmd_arg(t_structok **head, char **command);
+void					print_token(t_structok *token_list);
 
 // UTILS TOKEN
 int						len_cmd(char *command, int *quote);
@@ -147,8 +150,15 @@ void					handle_signal(void);
 void					handle_c(int sig);
 
 // EXEC
-void					get_builtins(char **argv, t_env **env, t_global **glob);
+void					get_builtins(t_cmd *cmd, t_env **env, t_global **glob);
 bool					is_builtins(char *cmd);
-void					get_cmd(char **argv, t_global **glob, t_env **env);
+void					get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
+void					execute_simple(t_cmd *cmd, char *path_name,
+							t_env **env);
+void					child_process(t_cmd *cmd, pid_t pid, t_global *glob,
+							t_env **env, int **pipes);
+void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
+void					handle_redir(t_cmd *cmd);
+char					**make_env_tab(t_env **env);
 
 #endif
