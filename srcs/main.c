@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/19 12:03:46 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/19 16:37:39 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,15 @@ int	main(int argc, char **argv, char **env)
 		if (!(glob->line))
 			error_exit("exit", glob);
 		add_history(glob->line);
-		check_syntax(glob, &glob->token_list);
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
-		print_token(glob->token_list);
-		init_cmd(&glob->cmd, &glob->token_list, glob);
-		if (glob && glob->cmd && glob->cmd->cmd_args)
-			get_cmd(glob->cmd, &glob, &glob->env);
+		if (check_syntax(glob, &glob->token_list) == true)
+		{
+			print_token(glob->token_list);
+			init_cmd(&glob->cmd, &glob->token_list, glob);
+			if (glob && glob->cmd && glob->cmd->cmd_args)
+				get_cmd(glob->cmd, &glob, &glob->env);
+		}	
 		free_cmd(glob->cmd);
 		free(glob->line);
 		free_tok(&glob->token_list);
