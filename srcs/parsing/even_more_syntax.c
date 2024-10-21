@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/21 15:30:51 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:32:17 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*search_env(char *value, t_env *env)
 	return (ret);
 }
 
-static bool	check_is_dollard(char *value)
+static bool	check_is_dollar(char *value)
 {
 	if (value[0] == '$')
 		return (true);
@@ -37,7 +37,7 @@ static bool	check_is_dollard(char *value)
 		return (false);
 }
 
-void	check_dollard_sign(t_structok **toklist, t_env *env)
+void	check_dollar_sign(t_structok **toklist, t_env *env)
 {
 	t_structok	*tmp;
 
@@ -48,7 +48,7 @@ void	check_dollard_sign(t_structok **toklist, t_env *env)
 	{
 		printf("%s\n", tmp->value);
 		fflush(stdout);
-		if (check_is_dollard(tmp->value))
+		if (check_is_dollar(tmp->value))
 		{
 			printf("test\n");
 			fflush(stdout);

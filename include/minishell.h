@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/19 13:09:48 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:32:26 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ bool					is_op_before_pipe(t_structok **tok_list,
 void					print_error_syntax(char *value);
 bool					is_op_after_op(t_structok **tok_list, t_global *glob);
 void					print_error_syntax(char *value);
-void					check_dollard_sign(t_structok **toklist, t_env *env);
+void					check_dollar_sign(t_structok **toklist, t_env *env);
 bool					check_syntax(t_global *glob, t_structok **token_list);
 
 // TOKENS
