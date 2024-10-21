@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/19 17:03:39 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:05:57 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	check_dollard_sign(t_structok **toklist, t_env *env)
 	while (tmp->next != (*toklist))
 	{
 		if (tmp->value[0] == '$')
-			tmp->value = search_env(tmp->value, env);
+			tmp->value = search_env(tmp->value + 1, env);
 		tmp = tmp->next;
 	}
 }

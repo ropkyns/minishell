@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_syntax.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/17 16:27:32 by palu             ###   ########.fr       */
+/*   Updated: 2024/10/21 14:35:58 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ bool	is_op_before_pipe(t_structok **tok_list, t_global *glob)
 	tmp = (*tok_list);
 	while (tmp->next != (*tok_list))
 	{
-		while (tmp->type != PIPE)
+		while (tmp->type != PIPE && tmp->next->next != (*tok_list))
 			tmp = tmp->next;
-		if (tmp->prev->type == INPUT
-			|| tmp->prev->type == OUTPUT
-			|| tmp->prev->type == HEREDOC
-			|| tmp->prev->type == APPEND
-			|| tmp->next->type == PIPE)
+		if (tmp->type == PIPE && (tmp->prev->type == INPUT
+				|| tmp->prev->type == OUTPUT
+				|| tmp->prev->type == HEREDOC
+				|| tmp->prev->type == APPEND
+				|| tmp->next->type == PIPE))
 		{
 			glob->exit_value = 2;
 			return (true);
@@ -72,7 +72,7 @@ bool	is_op_after_op(t_structok **tok_list, t_global *glob)
 	tmp = (*tok_list);
 	while (tmp->next != (*tok_list))
 	{
-		while (tmp->type != PIPE)
+		while ((tmp->type == ARG || tmp->type == CMD) && tmp->next->next != (*tok_list))
 			tmp = tmp->next;
 		if (tmp->next->type == INPUT
 			|| tmp->next->type == OUTPUT

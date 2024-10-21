@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/19 16:32:04 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:37:15 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ bool	check_syntax(t_global *glob, t_structok **token_list)
 		return (printf("bash: syntax error quotes aren't closed\n"), false);
 	else if (is_first_pipe(token_list, glob))
 		return (printf("bash: syntax error near unexpected token `|'\n"), false);
-	else if (is_op_before_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"), false);
 	else if (is_last_pipe(token_list, glob))
+		return (printf("bash: syntax error near unexpected token `|'\n"), false);
+	else if (is_op_before_pipe(token_list, glob))
 		return (printf("bash: syntax error near unexpected token `|'\n"), false);
 	else if (is_op_after_op(token_list, glob))
 		return (false);
