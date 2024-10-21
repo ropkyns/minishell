@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/21 11:05:57 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:30:51 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ char	*search_env(char *value, t_env *env)
 	return (ret);
 }
 
+static bool	check_is_dollard(char *value)
+{
+	if (value[0] == '$')
+		return (true);
+	else
+		return (false);
+}
+
 void	check_dollard_sign(t_structok **toklist, t_env *env)
 {
 	t_structok	*tmp;
@@ -36,25 +44,19 @@ void	check_dollard_sign(t_structok **toklist, t_env *env)
 	if (!toklist || !(*toklist))
 		return ;
 	tmp = (*toklist);
-	while (tmp->next != (*toklist))
+	while (tmp->next)
 	{
-		if (tmp->value[0] == '$')
-			tmp->value = search_env(tmp->value + 1, env);
+		printf("%s\n", tmp->value);
+		fflush(stdout);
+		if (check_is_dollard(tmp->value))
+		{
+			printf("test\n");
+			fflush(stdout);
+			tmp->value = ft_strdup(search_env(tmp->value + 1, env));
+		}
 		tmp = tmp->next;
+		if (tmp == (*toklist))
+			break;
 	}
 }
-	// t_structok	*tmp;
 
-	// if (!toklist || !(*toklist))
-	// 	return ;
-	// tmp = (*toklist);
-	// while (1) // Infinite loop that we manually break from
-	// {
-	// 	if (tmp->value[0] == '$')
-	// 		// tmp->value should be checked to be non-NULL before
-	// 		tmp->value = search_env(tmp->value, env);
-	// 	// Break if we complete the circular traversal
-	// 	if (tmp->next == (*toklist))
-	// 		break ;
-	// 	tmp = tmp->next;
-	// }
