@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/18 11:44:56 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/21 15:46:00 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ tant qu'il y a une autre commande il y aura un autre pipe (-1)
 // 	}
 // }
 
-void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
+void	execute_piped(t_cmd *cmd, t_env **env, char *path_name, t_global *glob)
 {
 	int		pipes[2];
 	pid_t	pid;
@@ -137,79 +137,58 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 	input_fd = STDIN_FILENO;
 	while (cmd)
 	{
-		// Crée un pipe si la commande suivante existe
-		if (cmd->next)
+		if (pipe(pipes) == -1)
 		{
-			if (pipe(pipes) == -1)
-			{
-				perror("pipe error");
-				exit(1);
-			}
-			printf("Created pipe: read end = %d, write end = %d\n", pipes[0],
-				pipes[1]);
-		}
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("fork error");
+			perror("pipe error");
 			exit(1);
 		}
-		if (pid == 0) // Processus enfant
+		printf("Created pipe: read end = %d, write end = %d\n", pipes[0],
+			pipes[1]);
+		pid = fork();
+		if (pid < 0)
+			exit(1);
+		if (pid == 0)
 		{
 			printf("In child process: %s\n", cmd->cmd_args[0]);
-			// Redirection de l'entrée
 			if (input_fd != STDIN_FILENO)
 			{
+				printf("NUK");
 				if (dup2(input_fd, STDIN_FILENO) == -1)
-				{
-					perror("dup2 input_fd error");
 					exit(1);
-				}
 				close(input_fd);
 			}
-			// Redirection de la sortie
 			if (cmd->next)
 			{
+				printf("NUK2");
 				if (dup2(pipes[1], STDOUT_FILENO) == -1)
-				{
-					perror("dup2 pipes[1] error");
 					exit(1);
-				}
 				close(pipes[1]);
 			}
-			close(pipes[0]); // Ferme la lecture dans le pipe
-			// Gestion des redirections de fichiers
+			close(pipes[0]);
 			handle_redir(cmd);
-			printf("About to execute: %s\n", cmd->cmd_args[0]); // Debug print
+			printf("About to execute: %s\n", cmd->cmd_args[0]);
 			env_array = make_env_tab(env);
 			if (!env_array)
 			{
 				perror("env_array allocation error");
 				exit(1);
 			}
-			// Exécution de la commande
 			if (is_builtins(cmd->cmd_args[0]))
-			{
 				get_builtins(cmd, env, &glob);
-			}
 			else
-			{
-				execve(cmd->cmd, cmd->cmd_args, env_array);
-				perror("execve error"); // Message d'erreur si execve échoue
-			}
+				execve(path_name, cmd->cmd_args, env_array);
+			printf("sauahisa");
 			free(env_array);
-			exit(1); // Sortir avec une erreur si execve échoue
+			exit(1);
 		}
 		else // Processus parent
 		{
-			close(pipes[1]);       // Fermer le descripteur d'écriture
-			input_fd = pipes[0];  
-				// Préparer l'entrée pour la prochaine commande
-			waitpid(pid, NULL, 0); // Attendre la fin du processus enfant
-			// Fermer cmd->infile s'il n'est pas STDIN_FILENO
+			close(pipes[1]);
+			input_fd = pipes[0];
+			waitpid(pid, NULL, 0);
 			if (cmd->infile != STDIN_FILENO)
 				close(cmd->infile);
-			cmd = cmd->next; // Passer à la commande suivante
+			cmd = cmd->next;
 		}
 	}
 }

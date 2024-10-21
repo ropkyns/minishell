@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/21 15:05:32 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:51:18 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,23 @@ bool	handle_quotes(t_global *data, char *command)
 
 bool	check_syntax(t_global *glob, t_structok **token_list)
 {
-	check_dollard_sign(token_list, glob->env);
+	check_dollar_sign(token_list, glob->env);
 	if (handle_quotes(glob, glob->line))
 		return (printf("bash: syntax error quotes aren't closed\n"), false);
 	else if (is_first_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"), false);
+		return (printf("bash: syntax error near unexpected token `|'\n"),
+			false);
 	else if (is_last_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"), false);
+		return (printf("bash: syntax error near unexpected token `|'\n"),
+			false);
 	else if (is_op_before_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"), false);
+		return (printf("bash: syntax error near unexpected token `|'\n"),
+			false);
 	else if (is_op_after_op(token_list, glob))
 		return (false);
 	else if (is_last_op(token_list, glob))
-		return (printf("syntax error near unexpected token `newline'\n"), false);
+		return (printf("syntax error near unexpected token `newline'\n"),
+			false);
 	else
 		return (true);
 }

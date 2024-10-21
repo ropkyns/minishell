@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/18 11:27:22 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/21 15:40:28 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,17 +97,15 @@ void	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 		return ;
 	while (temp->path[i])
 	{
-		if (is_simple_command(cmd->cmd_args) && is_builtins(cmd->cmd_args[0]))
-			return (get_builtins(cmd, env, glob));
 		path_name = build_path(temp->path[i], cmd->cmd_args[0]);
 		if (!path_name)
 			return ;
-		if (access(path_name, F_OK) == 0)
+		if (access(path_name, X_OK) == 0)
 		{
-			if (is_simple_command(cmd->cmd_args))
+			if (is_simple_command((*glob)->token_list))
 				execute_simple(cmd, path_name, env);
-			else
-				execute_piped(cmd, env, *glob);
+			else if (!is_simple_command((*glob)->token_list))
+				execute_piped(cmd, env, path_name, *glob);
 			return (free(path_name));
 		}
 		free(path_name);

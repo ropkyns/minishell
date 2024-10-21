@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:36:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/15 15:13:26 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/21 15:18:42 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,18 @@ bool	check_allocation(void *ptr)
 	return (true);
 }
 
-bool	is_simple_command(char **argv)
+bool	is_simple_command(t_structok *token_list)
 {
-	int i;
+	t_structok *temp;
 
-	i = 0;
-	while (argv[i])
+	if (!token_list)
+		return (true);
+	temp = token_list;
+	while (temp->next != token_list && token_list->next)
 	{
-		if (ft_strcmp(argv[i], "|") == 0)
+		if (temp->type == PIPE)
 			return (false);
-		i++;
+		temp = temp->next;
 	}
 	return (true);
 }

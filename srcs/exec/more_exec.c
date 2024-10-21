@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 16:56:02 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/15 14:54:28 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/21 14:45:13 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ bool	is_builtins(char *cmd)
 void	get_builtins(t_cmd *cmd, t_env **env, t_global **glob)
 {
 	if (ft_strcmp(cmd->cmd_args[0], "echo") == 0)
-		ft_echo(cmd->cmd_args);
+		(*glob)->exit_value = ft_echo(cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "cd") == 0)
-		ft_cd(*glob, cmd->cmd_args);
+		(*glob)->exit_value = ft_cd(*glob, cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "exit") == 0)
 		ft_exit(cmd->cmd_args, *glob);
 	else if (ft_strcmp(cmd->cmd_args[0], "export") == 0)
-		ft_export(env, cmd->cmd_args);
+		(*glob)->exit_value = ft_export(env, cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "unset") == 0)
-		ft_unset(env, cmd->cmd_args);
+		(*glob)->exit_value = ft_unset(env, cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "pwd") == 0)
-		ft_pwd();
+		(*glob)->exit_value = ft_pwd();
 	else if (ft_strcmp(cmd->cmd_args[0], "env") == 0)
 		ft_env(*env);
 }
