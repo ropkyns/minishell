@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/22 14:13:14 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:38:23 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ typedef struct s_cmd
 {
 	char				*cmd;
 	char				**cmd_args;
-	int					infile; // fd
-	int					outfile; // fd
+	int infile;  // fd
+	int outfile; // fd
 	struct s_cmd		*next;
 	struct s_cmd		*prev;
 }						t_cmd;
@@ -157,9 +157,10 @@ void					execute_simple(t_cmd *cmd, char *path_name,
 							t_env **env);
 void					child_process(t_cmd *cmd, pid_t pid, t_global *glob,
 							t_env **env, int **pipes);
-void					execute_piped(t_cmd *cmd, t_env **env, char *path_name,
-							t_global *glob);
+void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
+
 void					handle_redir(t_cmd *cmd);
 char					**make_env_tab(t_env **env);
+char					*get_command_path(char *cmd, t_env *env_list);
 
 #endif

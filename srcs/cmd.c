@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/22 16:23:36 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:40:49 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,31 +113,94 @@ static void	add_node_cmd(t_cmd **cmd, char *value)
 	}
 }
 
+// void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
+// {
+// 	t_structok	*tmp;
+// 	t_cmd	*last;
+
+// 	tmp = *tok_list;
+// 	if (!tmp)
+// 		return ;
+// 	add_node_cmd(cmd, NULL);
+// 	while (tmp->next != (*tok_list))
+// 	{
+// 		last = find_last_node_cmd(*cmd);
+// 		if (tmp->type == CMD)
+// 		{
+// 			last->cmd = ft_strdup(tmp->value);
+// 			last->cmd_args = args_tab(tmp, glob, *tok_list);
+// 		}
+// 		else if (tmp->type == INPUT || tmp->type == OUTPUT)
+// 		{
+// 			handle_input_output(last, tmp, glob);
+// 		}
+// 		else if (tmp->type == PIPE)
+// 		{
+// 			add_node_cmd(cmd, NULL);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// }
+
 void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 {
-	t_structok	*tmp;
-	t_cmd	*last;
+	t_structok *tmp;
+	t_cmd *last;
+	t_structok *start;
 
 	tmp = *tok_list;
 	if (!tmp)
 		return ;
+	start = tmp; // Garder une référence au début de la liste
+	// Initialiser le premier noeud de commande
 	add_node_cmd(cmd, NULL);
-	while (tmp->next != (*tok_list))
+	last = find_last_node_cmd(*cmd);
+	while (1) // Boucle infinie
 	{
-		last = find_last_node_cmd(*cmd);
+		// Si le token est une commande
 		if (tmp->type == CMD)
 		{
-			last->cmd = ft_strdup(tmp->value);
-			last->cmd_args = args_tab(tmp, glob, *tok_list);
+			if (last->cmd == NULL) // Si le dernier n'a pas encore de commande
+			{
+				last->cmd = ft_strdup(tmp->value);
+				last->cmd_args = args_tab(tmp, glob, *tok_list);
+			}
+			else
+			{
+				// Ajouter un nouveau noeud pour la commande suivante (après un pipe)
+				add_node_cmd(cmd, NULL);
+				last = find_last_node_cmd(*cmd);
+				last->cmd = ft_strdup(tmp->value);
+				last->cmd_args = args_tab(tmp, glob, *tok_list);
+			}
+			// Debug output
+			printf("Command: %s\n", last->cmd);
+			if (last->cmd_args)
+			{
+				printf("Command args: ");
+				for (int i = 0; last->cmd_args[i] != NULL; i++)
+				{
+					printf("%s ", last->cmd_args[i]);
+				}
+				printf("\n");
+			}
 		}
 		else if (tmp->type == INPUT || tmp->type == OUTPUT)
 		{
+			// Gérer les redirections si besoin
 			handle_input_output(last, tmp, glob);
 		}
 		else if (tmp->type == PIPE)
 		{
+			// Ajouter un nouveau noeud de commande pour chaque pipe
 			add_node_cmd(cmd, NULL);
+			last = find_last_node_cmd(*cmd);
+			// Réinitialiser last au nouveau noeud
 		}
+		// Passer au token suivant
 		tmp = tmp->next;
+		// Vérifier si nous avons fait un tour complet de la liste
+		if (tmp == start)
+			break ; // Sortir de la boucle si on revient au début
 	}
 }
