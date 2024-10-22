@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/10 15:34:23 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:54:58 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static void	set_env(t_env *env)
 {
 	char	*equal_sign;
 
-	// int		i;
-	// i = 0;
 	env->name = NULL;
 	env->value = NULL;
 	env->next = NULL;

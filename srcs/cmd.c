@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/18 11:35:07 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/22 16:23:36 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,11 @@ static char	**args_tab(t_structok *toklist, t_global *glob, t_structok *head)
 static t_cmd	*find_last_node_cmd(t_cmd *cmd)
 {
 	if (!cmd)
-	{
-		printf("test");
-		fflush(stdout);
 		return (NULL);
-	}
 	while (cmd->next)
+	{
 		cmd = cmd->next;
+	}
 	return (cmd);
 }
 
@@ -117,24 +115,29 @@ static void	add_node_cmd(t_cmd **cmd, char *value)
 
 void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 {
-	t_structok *tmp;
-	t_cmd *last;
+	t_structok	*tmp;
+	t_cmd	*last;
 
 	tmp = *tok_list;
 	if (!tmp)
 		return ;
 	add_node_cmd(cmd, NULL);
-	last = find_last_node_cmd(*cmd);
-	if (tmp->type == CMD)
+	while (tmp->next != (*tok_list))
 	{
-		last->cmd = ft_strdup(tmp->value);
-		last->cmd_args = args_tab(tmp, glob, *tok_list);
+		last = find_last_node_cmd(*cmd);
+		if (tmp->type == CMD)
+		{
+			last->cmd = ft_strdup(tmp->value);
+			last->cmd_args = args_tab(tmp, glob, *tok_list);
+		}
+		else if (tmp->type == INPUT || tmp->type == OUTPUT)
+		{
+			handle_input_output(last, tmp, glob);
+		}
+		else if (tmp->type == PIPE)
+		{
+			add_node_cmd(cmd, NULL);
+		}
+		tmp = tmp->next;
 	}
-	else if (tmp->type == INPUT || tmp->type == OUTPUT)
-	{
-		handle_input_output(last, tmp, glob);
-	}
-	else if (tmp->type == PIPE)
-		add_node_cmd(cmd, NULL);
-	tmp = tmp->next;
 }

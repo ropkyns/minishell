@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/21 15:50:53 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/22 14:13:14 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ typedef struct s_cmd
 {
 	char				*cmd;
 	char				**cmd_args;
-	int infile;  // fd
-	int outfile; // fd
+	int					infile; // fd
+	int					outfile; // fd
 	struct s_cmd		*next;
 	struct s_cmd		*prev;
 }						t_cmd;

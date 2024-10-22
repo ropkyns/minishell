@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/21 15:32:17 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/22 14:26:15 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,8 @@ void	check_dollar_sign(t_structok **toklist, t_env *env)
 	tmp = (*toklist);
 	while (tmp->next)
 	{
-		printf("%s\n", tmp->value);
-		fflush(stdout);
 		if (check_is_dollar(tmp->value))
 		{
-			printf("test\n");
-			fflush(stdout);
 			tmp->value = ft_strdup(search_env(tmp->value + 1, env));
 		}
 		tmp = tmp->next;
