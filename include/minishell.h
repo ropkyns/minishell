@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 16:03:28 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 17:51:18 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ bool					is_op_before_pipe(t_structok **tok_list,
 void					print_error_syntax(char *value);
 bool					is_op_after_op(t_structok **tok_list, t_global *glob);
 void					print_error_syntax(char *value);
-void					check_dollar_sign(t_structok **toklist, t_env *env);
+void					check_dollar_sign(t_structok **toklist, t_env *env, t_global *glob);
 bool					check_syntax(t_global *glob, t_structok **token_list);
 
 // TOKENS
