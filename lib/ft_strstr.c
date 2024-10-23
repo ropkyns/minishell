@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:43:50 by mjameau           #+#    #+#             */
-/*   Updated: 2024/09/17 14:45:11 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 16:01:19 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strstr(const char *s, const char *to_find)
 {
-	size_t i;
+	size_t	i;
 
 	if (ft_strlen(to_find) == 0)
 		return ((char *)s);

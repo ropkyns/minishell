@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 17:42:00 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/04 17:42:30 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 16:01:39 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strcat(char *dest, char *src)
 {
-	int i;
-	int dest_len;
+	int	i;
+	int	dest_len;
 
 	i = 0;
 	dest_len = ft_strlen(dest);

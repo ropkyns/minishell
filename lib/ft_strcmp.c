@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 17:55:26 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/04 17:55:36 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 16:01:34 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((s1[i] == s2[i]) && (s2[i] != '\0'))

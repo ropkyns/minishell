@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/19 11:23:11 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 15:57:54 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	new_token(t_structok **new, char *s, t_token type)
 * On ajoute le nouveau token en appelant la fonction new_token
 on refait aussi les liens de la nouvelle node (on l'ajoute a l'indice
 precedant l'indice pointe par *token_list) ainsi que les liens de token_list
-vu qu'on la decale.TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo
+vu qu'on la decale.TODOOOOOOOOOOOOO
 */
 int	add_token(t_structok **token_list, char *s, int type)
 {
