@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/22 19:38:23 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 15:23:22 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,11 @@ void					free_env(t_env *a);
 // CMD
 void					init_cmd(t_cmd **cmd, t_structok **tok_list,
 							t_global *glob);
+t_cmd					*find_last_node_cmd(t_cmd *cmd);
+void					handle_input_output(t_cmd *last, t_structok *toklist,
+							t_global *glob);
+char					**args_tab(t_structok *toklist, t_global *glob,
+							t_structok *head);
 
 // PATH
 char					**init_path(char **env);

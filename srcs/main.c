@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/22 19:39:51 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/23 15:24:08 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	main(int argc, char **argv, char **env)
 		{
 			print_token(glob->token_list);
 			init_cmd(&glob->cmd, &glob->token_list, glob);
-			// print_cmd(glob->cmd);
 			if (glob && glob->cmd && glob->cmd->cmd_args)
 				get_cmd(glob->cmd, &glob, &glob->env);
 		}

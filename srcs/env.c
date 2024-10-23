@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/22 13:54:58 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:07:36 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ bool	add_node_env(t_env **env, char *value)
 	node->str = ft_strdup(value);
 	if (!node->str)
 		return (false);
-	// node->str = value;
 	set_env(node);
 	if (*env == NULL)
 	{
@@ -100,14 +99,3 @@ void	init_env(t_env **current, char **env)
 		i++;
 	}
 }
-
-/* int	main(int ac, char **av, char **env)
-{
-	t_env	*list;
-
-	list = NULL;
-	init_env(&list, env);
-	print_env(list);
-	free_env(list);
-	return (0);
-} */
