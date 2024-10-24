@@ -155,9 +155,9 @@ void					handle_signal(void);
 void					handle_c(int sig);
 
 // EXEC
-void					get_builtins(t_cmd *cmd, t_env **env, t_global **glob);
+void	get_builtins(int save_stdout, t_cmd *cmd, t_global *glob);
 bool					is_builtins(char *cmd);
-void					get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
+bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
 void					execute_simple(t_cmd *cmd, char *path_name,
 							t_env **env);
 void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
@@ -167,5 +167,6 @@ char					**make_env_tab(t_env **env);
 char					*get_command_path(char *cmd, t_env *env_list);
 char					*build_path(char *dir, char *cmd);
 char					*get_env_value(t_env *env_list, const char *name);
+bool	launch_builtin(t_global *glob, t_cmd *cmd);
 
 #endif

@@ -66,24 +66,54 @@ static void	execute_command(t_cmd *cmd, char *path_name, t_global *glob,
 		execute_piped(cmd, env, glob);
 }
 
-void	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
+// bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
+// {
+// 	t_global	*temp;
+// 	char		*path_name;
+
+// 	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
+// 		return (false);
+// 	temp = *glob;
+// 	if (is_simple_command(temp->token_list) && is_builtins(cmd->cmd_args[0]))
+// 		return (launch_builtin(*glob, cmd));
+// 	if (!temp->path)
+// 		return(false) ;
+// 	path_name = find_executable(temp->path, cmd->cmd_args[0]);
+// 	if (path_name)
+// 	{
+// 		execute_command(cmd, path_name, temp, env);
+// 		free(path_name);
+// 		return (false);
+// 	}
+// 	printf("bash: command not found: %s\n", cmd->cmd_args[0]);
+// 	return(false);
+// }
+
+bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 {
 	t_global	*temp;
 	char		*path_name;
 
 	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
-		return ;
+		return (false);
 	temp = *glob;
-	if (is_simple_command(temp->token_list) && is_builtins(cmd->cmd_args[0]))
-		return (get_builtins(cmd, env, glob));
-	if (!temp->path)
-		return ;
-	path_name = find_executable(temp->path, cmd->cmd_args[0]);
-	if (path_name)
+	if (is_simple_command(temp->token_list)) 
 	{
-		execute_command(cmd, path_name, temp, env);
-		free(path_name);
-		return ;
+		if (is_builtins(cmd->cmd_args[0]))
+			return (launch_builtin(*glob, cmd));
+		path_name = find_executable(temp->path, cmd->cmd_args[0]);
+		if (path_name)
+		{
+			execute_command(cmd, path_name, temp, env);
+			free(path_name);
+			return (true);
+		}
+		else
+			return (printf("bash: command not found: %s\n", cmd->cmd_args[0]), false);
 	}
-	printf("bash: command not found: %s\n", cmd->cmd_args[0]);
+	execute_piped(cmd, env, *glob);
+	return (true);
 }
+
+
+

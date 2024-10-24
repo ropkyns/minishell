@@ -10,18 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   more_exec.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/04 16:56:02 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/21 14:45:13 by mjameau          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
 bool	is_builtins(char *cmd)
@@ -35,20 +23,46 @@ bool	is_builtins(char *cmd)
 	return (false);
 }
 
-void	get_builtins(t_cmd *cmd, t_env **env, t_global **glob)
+void	get_builtins(int save_stdout, t_cmd *cmd, t_global *glob)
 {
 	if (ft_strcmp(cmd->cmd_args[0], "echo") == 0)
-		(*glob)->exit_value = ft_echo(cmd->cmd_args);
+		glob->exit_value = ft_echo(cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "cd") == 0)
-		(*glob)->exit_value = ft_cd(*glob, cmd->cmd_args);
-	else if (ft_strcmp(cmd->cmd_args[0], "exit") == 0)
-		ft_exit(cmd->cmd_args, *glob);
+		glob->exit_value = ft_cd(glob, cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "export") == 0)
-		(*glob)->exit_value = ft_export(env, cmd->cmd_args);
+		glob->exit_value = ft_export(&glob->env, cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "unset") == 0)
-		(*glob)->exit_value = ft_unset(env, cmd->cmd_args);
+		glob->exit_value = ft_unset(&glob->env, cmd->cmd_args);
 	else if (ft_strcmp(cmd->cmd_args[0], "pwd") == 0)
-		(*glob)->exit_value = ft_pwd();
+		glob->exit_value = ft_pwd();
 	else if (ft_strcmp(cmd->cmd_args[0], "env") == 0)
-		ft_env(*env);
+		ft_env(glob->env);
+	else if (ft_strcmp(cmd->cmd_args[0], "exit") == 0)
+	{
+		if(cmd->outfile >= 0)
+		{
+			dup2(save_stdout, 1);
+			close(save_stdout);
+		}
+		ft_exit(cmd->cmd_args, glob);
+	}
+}
+
+bool	launch_builtin(t_global *glob, t_cmd *cmd)
+{
+	int	save_stdout;
+
+	save_stdout = -1;
+	if (cmd->outfile >= 0)
+	{
+		save_stdout = dup(1);
+		dup2(cmd->outfile, 1);
+	}
+	get_builtins(save_stdout, cmd, glob);
+	if (cmd->outfile >= 0)
+	{
+		dup2(save_stdout, 1);
+		close (save_stdout);
+	}
+	return (true);
 }

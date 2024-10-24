@@ -92,17 +92,35 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 	int		input_fd;
 
 	input_fd = STDIN_FILENO;
-	(void)glob;
 	while (cmd)
 	{
 		if (cmd->next && pipe(pipes) == -1)
 			exit(1);
+		if (is_builtins(cmd->cmd_args[0]))
+		{
+			if (ft_strcmp(cmd->cmd_args[0], "cd") == 0 || ft_strcmp(cmd->cmd_args[0], "export") == 0 || ft_strcmp(cmd->cmd_args[0], "unset") == 0)
+			{
+				launch_builtin(glob, cmd);
+				if (cmd->next)
+				{
+					input_fd = pipes[0];
+					close(pipes[1]);
+				}
+				cmd = cmd->next;
+				continue;
+			}
+		}
 		pid = fork();
 		if (pid < 0)
 			exit(1);
 		if (pid == 0)
 		{
 			handle_redirections(cmd, input_fd, pipes);
+			if (is_builtins(cmd->cmd_args[0]))
+			{
+				launch_builtin(glob, cmd);
+				exit(0);
+			}
 			execute_command(cmd, env);
 		}
 		else
@@ -110,6 +128,7 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 		cmd = cmd->next;
 	}
 }
+
 
 /*
 * Execve dans un child process si il n'y a pas de pipe
