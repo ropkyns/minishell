@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 16:29:41 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:16:30 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	add_node_cmd(t_cmd **cmd, char *value)
 		last_node->next = node;
 	}
 }
+
 /*
 * Ici on va remplir cmd et cmd_args avec la valeur de notre token
 si c'est notre premier token on le fait direct, sinon on ajoute une node

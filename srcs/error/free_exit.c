@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 15:51:20 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:17:03 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static void	free_args(char **args)
 	}
 	free(args);
 }
+
 /*
  * Le nom de la fonction a tout dit
  */

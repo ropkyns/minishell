@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 16:56:02 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 18:11:30 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:24:15 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static char	*handle_absolute_relative_path(char *cmd)
 		return (ft_strdup(cmd));
 	return (NULL);
 }
+
 /*
 Extrait la prochaine sous-chaine de start jusqu'a end.
 Alloue de la memoire pour la sous-chaîne et met a jour start.
@@ -45,6 +46,7 @@ static char	*get_next_dir(char **start, char *end)
 	}
 	return (dir);
 }
+
 /*
 Recherche un fichier executable correspondant a cmd dans les repertoires
 specifies par path_var.
@@ -73,6 +75,7 @@ static char	*search_command_in_path(char *path_var, char *cmd)
 	}
 	return (NULL);
 }
+
 /*
 Obtient le chemin d'une commande cmd.
 Si la commande est vide, absolue ou relative traite en consequence.

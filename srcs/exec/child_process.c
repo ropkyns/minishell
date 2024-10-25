@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 18:04:03 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:23:43 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 	free(path_name);
 	exit(1);
 }
+
 /*
  * redirige l'entree standard STDIN a partir de input_fd,
 si ce n'est pas l'entree par défaut, si il y a une autre cmd
@@ -44,7 +45,7 @@ on redirige la sortie standard STDOUT dans le pipe.
 On gere aussi les fd ici (avec infile et oufile), meme principe.
 On les ferme bien a chaque fois
  */
-static void	handle_redirections(t_cmd *cmd, int input_fd, int *pipes)
+void	handle_redirections(t_cmd *cmd, int input_fd, int *pipes)
 {
 	if (input_fd != STDIN_FILENO)
 	{
@@ -71,6 +72,7 @@ static void	handle_redirections(t_cmd *cmd, int input_fd, int *pipes)
 		close(cmd->outfile);
 	}
 }
+
 /*
 * Le pere, il ferme le pipe d'ecriture, et si input_fd n'est pas l'entree
 standard STDIN on le ferme, ensuite on fait pointer input_fd vers le pipe
@@ -89,8 +91,8 @@ static void	handle_parent_process(int *input_fd, int *pipes, pid_t pid)
 * Ici c'est l'enfant, on le fait gerer les redirections, si c'est un builtin on
 lance le builtin d'abord ensuite on execve dans execute command
 */
-void	execute_child_process(t_cmd *cmd, t_env **env, t_global *glob,
-		int input_fd, int *pipes)
+void	execute_child_process(t_cmd *cmd, t_global *glob, int input_fd,
+		int *pipes)
 {
 	handle_redirections(cmd, input_fd, pipes);
 	if (is_builtins(cmd->cmd_args[0]))
@@ -98,12 +100,13 @@ void	execute_child_process(t_cmd *cmd, t_env **env, t_global *glob,
 		launch_builtin(glob, cmd);
 		exit(0);
 	}
-	execute_command(cmd, env);
+	execute_command(cmd, &glob->env);
 }
 
 /*
 * On regarde bien si il y a une commande apres, et du coup on cree un pipe.
-on regarde si il ya des builtin qui touche aux env et si c'est le cas on les appelle
+on regarde si il ya des builtin qui touche aux env et si
+c'est le cas on les appelle
 ensuite on fork, on appelle le child_process dans le pid 0,
 et le pere dans l'autre. on passe a la commande suivante et on recommence
 */
@@ -113,6 +116,7 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 	pid_t	pid;
 	int		input_fd;
 
+	(void)env;
 	input_fd = STDIN_FILENO;
 	while (cmd)
 	{
@@ -124,38 +128,9 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 		if (pid < 0)
 			exit(1);
 		if (pid == 0)
-			execute_child_process(cmd, env, glob, input_fd, pipes);
+			execute_child_process(cmd, glob, input_fd, pipes);
 		else
 			handle_parent_process(&input_fd, pipes, pid);
 		cmd = cmd->next;
 	}
-}
-
-/*
-* Execve dans un child process si il n'y a pas de pipe
-(une seule commande en gros)
-*/
-void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
-{
-	pid_t	pid;
-	char	**env_array;
-
-	pid = fork();
-	if (pid < 0)
-		exit(1);
-	if (pid == 0)
-	{
-		env_array = make_env_tab(*env);
-		if (!env_array)
-			exit(1);
-		if (execve(path_name, cmd->cmd_args, env_array) == -1)
-		{
-			free(env_array);
-			exit(1);
-		}
-		free(env_array);
-		exit(0);
-	}
-	else
-		waitpid(pid, NULL, 0);
 }

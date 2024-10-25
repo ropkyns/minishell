@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 17:42:56 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:16:03 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static bool	export_no_args(t_env *env)
 	free(arr);
 	return (true);
 }
+
 /*
 * On regarde si le nom de la variable commence bien par un alpha
 ou un _, ensuite on regarde si la valeur de la variable n'a bien que
@@ -96,6 +97,7 @@ static int	exist(char *str, t_env *env)
 	}
 	return (-1);
 }
+
 /*
 * Fonction pour export la value,
 	on verifie si la variable existe (et si oui a quel index)
@@ -128,6 +130,7 @@ bool	export_value(t_env **env, char *str)
 			return (false);
 	return (true);
 }
+
 /*
 * Si pas d'arguments on affiche toutes les variables d'env, sinon on check
 si la syntaxe est valide et ensuite on export!

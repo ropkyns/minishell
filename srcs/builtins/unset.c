@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:43 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 17:48:50 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:16:23 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static bool	syntax(char *str)
 	}
 	return (true);
 }
+
 /*
  * On verifie si la variable existe bien dans la liste chainee env
  si oui on retourne l'index ou elle se trouve
@@ -56,6 +57,7 @@ static int	exist(char *str, t_env *env)
 	}
 	return (-1);
 }
+
 /*
  * on check la syntaxe ensuite on va recuperer la pos de la variable
  on va se deplacer jusqu'a cette position avec le ++i<pos
@@ -89,6 +91,7 @@ static bool	unset(char *str, t_env **env)
 	tmp = NULL;
 	return (false);
 }
+
 /*
 * On appelle unset le nb de fois ou y'a des arguments en gros
 (la fonction au dessus)

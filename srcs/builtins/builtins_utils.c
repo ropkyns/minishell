@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:54:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 17:00:10 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:15:21 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ bool	launch_builtin(t_global *glob, t_cmd *cmd)
 {
 	int	save_stdout;
 
-	STDIN_FILENO;
 	save_stdout = -1;
 	if (cmd->outfile >= 0)
 	{
@@ -93,6 +92,7 @@ void	ft_swap_str_arr(int i, int j, char **arr)
 	arr[i] = arr[j];
 	arr[j] = temp;
 }
+
 /*
 * Cette fonction parcourt **arr et la trie.
 Elle compare chaque paire de

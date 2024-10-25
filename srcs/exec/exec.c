@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 16:41:19 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:23:48 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,4 +118,33 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 	}
 	execute_piped(cmd, env, *glob);
 	return (true);
+}
+
+/*
+* Execve dans un child process si il n'y a pas de pipe
+(une seule commande en gros)
+*/
+void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
+{
+	pid_t	pid;
+	char	**env_array;
+
+	pid = fork();
+	if (pid < 0)
+		exit(1);
+	if (pid == 0)
+	{
+		env_array = make_env_tab(*env);
+		if (!env_array)
+			exit(1);
+		if (execve(path_name, cmd->cmd_args, env_array) == -1)
+		{
+			free(env_array);
+			exit(1);
+		}
+		free(env_array);
+		exit(0);
+	}
+	else
+		waitpid(pid, NULL, 0);
 }

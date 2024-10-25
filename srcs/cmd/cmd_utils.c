@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:11:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 17:54:44 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:16:53 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ static void	fill_args_array(char **ret, t_structok *toklist, t_global *glob,
 	}
 	ret[i] = NULL;
 }
+
 /*
 * On compte le nb d'args pour pouvoir malloc notre tableau de
 char * + 2 parce que '\0' et la cmd

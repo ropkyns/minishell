@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 17:28:50 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:15:48 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ static int	envsize(t_env *env)
 	}
 	return (i);
 }
+
 /*
-*parcourt la liste des variables d'environnement pour trouver la valeur actuelle de PWD
+*parcourt la liste des variables d'environnement pour trouver la valeur
+actuelle de PWD
 Si PWD est trouve, sa valeur est prefix par "OLD" et donner a OLDPWD.
 Si PWD n'est pas trouve, OLDPWD est initialise avec une valeur par defaut.
 ENfin on free check.
@@ -59,6 +61,7 @@ static void	update_old_pwd(t_global *glob)
 	}
 	free(check);
 }
+
 /*
  *  On sauvegarde OLDPWD en appelant updatde-old
  ensuite on utilise getcwd pour recuperer notre pwd
@@ -86,6 +89,7 @@ static void	update_pwd(t_global *glob, char *args)
 	export_value(&glob->env, pwd);
 	free(pwd);
 }
+
 /*
 * On compte le nombre d'arguments (il en faut 2, la cmd et l'arg)
 on change de directory avec la fonction chdir, si ca a marche on update PWD
