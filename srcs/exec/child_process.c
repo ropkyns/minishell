@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:41:21 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 14:59:58 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ static void	handle_parent_process(int *input_fd, int *pipes, pid_t pid)
 	waitpid(pid, NULL, 0);
 }
 
+void	execute_child_process(t_cmd *cmd, t_env **env, t_global *glob,
+		int input_fd, int *pipes)
+{
+	handle_redirections(cmd, input_fd, pipes);
+	if (is_builtins(cmd->cmd_args[0]))
+	{
+		launch_builtin(glob, cmd);
+		exit(0);
+	}
+	execute_command(cmd, env);
+}
+
 /*
 * Execve mais avec des pipes, on redirige les stdin stdout avec dup2 et pipe
 tant qu'il y a une autre commande il y aura un autre pipe (-1)
@@ -96,39 +108,18 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 	{
 		if (cmd->next && pipe(pipes) == -1)
 			exit(1);
-		if (is_builtins(cmd->cmd_args[0]))
-		{
-			if (ft_strcmp(cmd->cmd_args[0], "cd") == 0 || ft_strcmp(cmd->cmd_args[0], "export") == 0 || ft_strcmp(cmd->cmd_args[0], "unset") == 0)
-			{
-				launch_builtin(glob, cmd);
-				if (cmd->next)
-				{
-					input_fd = pipes[0];
-					close(pipes[1]);
-				}
-				cmd = cmd->next;
-				continue;
-			}
-		}
+		if (handle_builtin_parent(&cmd, glob, &input_fd, pipes))
+			continue ;
 		pid = fork();
 		if (pid < 0)
 			exit(1);
 		if (pid == 0)
-		{
-			handle_redirections(cmd, input_fd, pipes);
-			if (is_builtins(cmd->cmd_args[0]))
-			{
-				launch_builtin(glob, cmd);
-				exit(0);
-			}
-			execute_command(cmd, env);
-		}
+			execute_child_process(cmd, env, glob, input_fd, pipes);
 		else
 			handle_parent_process(&input_fd, pipes, pid);
 		cmd = cmd->next;
 	}
 }
-
 
 /*
 * Execve dans un child process si il n'y a pas de pipe

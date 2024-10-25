@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/23 17:49:43 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/25 16:21:05 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * Fonction pour regarder si le premier token est un pipe.
+ */
 bool	is_first_pipe(t_structok **tok_list, t_global *glob)
 {
 	if (!*tok_list)
@@ -25,6 +28,9 @@ bool	is_first_pipe(t_structok **tok_list, t_global *glob)
 		return (false);
 }
 
+/*
+ * Fonction pour regarder si le dernier token est un pipe.
+ */
 bool	is_last_pipe(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
@@ -42,7 +48,10 @@ bool	is_last_pipe(t_structok **tok_list, t_global *glob)
 	else
 		return (false);
 }
-
+/*
+* Ici notre fonction qui va changer notre variable bool a chaque fois que le char
+est une quote.
+*/
 bool	check_quotes(bool *double_quote, bool *single_quote, int *pos, char c)
 {
 	if (c == '"' && !*single_quote)
@@ -53,6 +62,11 @@ bool	check_quotes(bool *double_quote, bool *single_quote, int *pos, char c)
 	return (false);
 }
 
+/*
+* Ici on va utiliser des booleans qu'on va passer a notre fonction
+check_quote pour verifier si nos quotes sont fermees ou non.
+on gere l'exit_value en fonction.
+*/
 bool	handle_quotes(t_global *data, char *command)
 {
 	bool	single_quote;
@@ -73,6 +87,11 @@ bool	handle_quotes(t_global *data, char *command)
 	return (false);
 }
 
+/*
+* Fonction qui va appeler toutes nos petites fonctions "specialises"
+pour les erreurs de syntaxe, en fonction de l'erreur on affiche le mssg
+approprie.
+*/
 bool	check_syntax(t_global *glob, t_structok **token_list)
 {
 	check_dollar_sign(token_list, glob->env, glob);

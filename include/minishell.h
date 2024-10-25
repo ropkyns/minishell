@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 17:51:18 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:59:34 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,20 +92,22 @@ void					free_path(char **path);
 int						ft_pwd(void);
 int						ft_cd(t_global *test, char **args);
 int						ft_export(t_env **env, char **str);
-bool	export_value(t_env **env, char *str);
+bool					export_value(t_env **env, char *str);
 int						ft_unset(t_env **env, char **args);
 void					ft_exit(char **args, t_global *glob);
 int						ft_echo(char **args);
-int	ft_env(t_env *env);
+int						ft_env(t_env *env);
 
 // UTILS
 bool					is_space(char c);
 bool					syntax_is_correct(char *lexer_tokens[]);
 bool					check_allocation(void *ptr);
 bool					is_simple_command(t_structok *token_list);
-void	sort_array(char **arr, int len);
-size_t	len_env(t_env *env);
-void ft_swap_str_tab(int i, int j, char **arr);
+void					sort_array(char **arr, int len);
+size_t					len_env(t_env *env);
+void					ft_swap_str_tab(int i, int j, char **arr);
+void					handle_critical_builtins(t_cmd *cmd, t_global *glob,
+							int *input_fd, int *pipes);
 
 // SYNTAX
 bool					handle_quotes(t_global *data, char *command);
@@ -117,7 +119,8 @@ bool					is_op_before_pipe(t_structok **tok_list,
 void					print_error_syntax(char *value);
 bool					is_op_after_op(t_structok **tok_list, t_global *glob);
 void					print_error_syntax(char *value);
-void					check_dollar_sign(t_structok **toklist, t_env *env, t_global *glob);
+void					check_dollar_sign(t_structok **toklist, t_env *env,
+							t_global *glob);
 bool					check_syntax(t_global *glob, t_structok **token_list);
 
 // TOKENS
@@ -158,18 +161,23 @@ void					handle_signal(void);
 void					handle_c(int sig);
 
 // EXEC
-void	get_builtins(int save_stdout, t_cmd *cmd, t_global *glob);
+void					get_builtins(int save_stdout, t_cmd *cmd,
+							t_global *glob);
 bool					is_builtins(char *cmd);
-bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
+bool					get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
 void					execute_simple(t_cmd *cmd, char *path_name,
 							t_env **env);
 void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
 
 void					handle_redir(t_cmd *cmd);
-char	**make_env_tab(t_env *env);
+char					**make_env_tab(t_env *env);
 char					*get_command_path(char *cmd, t_env *env_list);
 char					*build_path(char *dir, char *cmd);
 char					*get_env_value(t_env *env_list, const char *name);
-bool	launch_builtin(t_global *glob, t_cmd *cmd);
+bool					launch_builtin(t_global *glob, t_cmd *cmd);
+void					execute_command_process(t_cmd *cmd, t_env **env,
+							t_global *glob, int *input_fd, int *pipes);
+int						handle_builtin_parent(t_cmd **cmd, t_global *glob,
+							int *input_fd, int *pipes);
 
 #endif

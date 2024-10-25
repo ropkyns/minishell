@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:24:08 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:59:21 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/*
+ * Fonction pour initialiser notre struct global :)
+ */
 void	init_global(t_global *glob, int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -24,6 +27,9 @@ void	init_global(t_global *glob, int argc, char **argv, char **env)
 	glob->exit_value = 0;
 }
 
+/*
+ * Fonction de debuggage, on peut voir et afficher le type des tokens!
+ */
 void	print_token(t_structok *token)
 {
 	t_structok	*tmp;
@@ -41,6 +47,9 @@ void	print_token(t_structok *token)
 	fflush(stdout);
 }
 
+/*
+ * Fonction de debuggage, on print les cmd !
+ */
 // void	print_cmd(t_cmd *cmd)
 // {
 
@@ -59,8 +68,9 @@ void	print_token(t_structok *token)
 // 	fflush(stdout);
 // }
 
-// BON, pour que get_cmd et tout l'exec marche il faut que dans la liste des cmd
-// on prenne en compte **cmd_args (ajoute dans la structure)
+/*
+ * La maison mere un peu, genre mother💅
+ */
 int	main(int argc, char **argv, char **env)
 {
 	t_global	*glob;

@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:36:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:55:56 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:45:36 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * J'avais plus de place dans ma fonction j'ai du decouper ca ca fait pitie
+ */
 bool	check_allocation(void *ptr)
 {
 	if (!ptr)
@@ -22,6 +25,9 @@ bool	check_allocation(void *ptr)
 	return (true);
 }
 
+/*
+ * Regarde si il y a un pipe, si oui alors y a une autre commande
+ */
 bool	is_simple_command(t_structok *token_list)
 {
 	t_structok	*temp;
@@ -38,23 +44,41 @@ bool	is_simple_command(t_structok *token_list)
 	return (true);
 }
 
-char	*build_path(char *dir, char *cmd)
+/*
+* On prend la liste chainee des env et on va en faire un char **
+(en copie bien sur)
+*/
+char	**make_env_tab(t_env *env)
 {
-	int		len_path;
-	int		cmd_len;
-	char	*path_name;
+	t_env	*current_env;
+	int		count;
+	char	**env_array;
 
-	len_path = ft_strlen(dir);
-	cmd_len = ft_strlen(cmd);
-	path_name = malloc(sizeof(char) * (len_path + cmd_len + 2));
-	if (!check_allocation(path_name))
+	current_env = env;
+	count = 0;
+	while (current_env)
+	{
+		count++;
+		current_env = current_env->next;
+	}
+	env_array = malloc(sizeof(char *) * (count + 1));
+	if (!check_allocation(env_array))
 		return (NULL);
-	ft_strlcpy(path_name, dir, len_path + 1);
-	ft_strcat(path_name, "/");
-	ft_strcat(path_name, cmd);
-	return (path_name);
+	current_env = env;
+	count = 0;
+	while (current_env)
+	{
+		env_array[count] = current_env->str;
+		current_env = current_env->next;
+		count++;
+	}
+	env_array[count] = NULL;
+	return (env_array);
 }
 
+/*
+ * Return la value d'une variable env
+ */
 char	*get_env_value(t_env *env_list, const char *name)
 {
 	while (env_list)
@@ -64,4 +88,26 @@ char	*get_env_value(t_env *env_list, const char *name)
 		env_list = env_list->next;
 	}
 	return (NULL);
+}
+
+/*
+* Gere ces builtins dans le parent et pas dans un child process
+vu que ca touche aux env :-)
+*/
+int	handle_builtin_parent(t_cmd **cmd, t_global *glob, int *input_fd,
+		int *pipes)
+{
+	if (is_builtins((*cmd)->cmd_args[0]) && (!ft_strcmp((*cmd)->cmd_args[0],
+				"cd") || !ft_strcmp((*cmd)->cmd_args[0], "unset")))
+	{
+		launch_builtin(glob, *cmd);
+		if ((*cmd)->next)
+		{
+			*input_fd = pipes[0];
+			close(pipes[1]);
+		}
+		*cmd = (*cmd)->next;
+		return (1);
+	}
+	return (0);
 }

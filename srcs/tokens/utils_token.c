@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:23:36 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 16:00:08 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:00:06 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	len_cmd(char *command, int *quote)
 /*
 * Cette fonction sert a prendre la ligne de commande et de recuperer
 ce qu'il y a entre les quotes dans str avec un decalage de -1 pour ne pas
-copier les quotes (' et "),sinon sans decalage
+copier les quotes (' et "), sinon sans decalage
 */
 void	get_words_to_token(char *command, int len, char *str, int i)
 {
@@ -110,6 +110,10 @@ void	get_words_to_token(char *command, int len, char *str, int i)
 	str[i] = 0;
 }
 
+/*
+* On gere les liens de la toute premiere node de la list des tokens
+c'est une liste circulaire donc en gros elle va sur elle meme mdr
+*/
 void	add_first_token(t_structok **token_list, t_structok *new)
 {
 	(*token_list) = new;

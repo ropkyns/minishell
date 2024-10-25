@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/02 12:45:50 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 14:25:28 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ static int	exist(char *str, t_env *env)
 		i++;
 	j = 0;
 	tmp = env;
-	if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0' || \
-		tmp->str[i] == '='))
+	if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0'
+			|| tmp->str[i] == '='))
 		return (j);
 	tmp = tmp->next;
 	j++;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0' || \
-			tmp->str[i] == '='))
+		if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0'
+				|| tmp->str[i] == '='))
 			return (j);
 		tmp = tmp->next;
 		j++;

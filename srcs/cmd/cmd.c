@@ -6,12 +6,16 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/23 15:31:29 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:29:41 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+* Ajoute une node dans notre liste chainee, toujours en initialisant
+les variables tu coco on commence a avoir l'habitude
+*/
 static void	add_node_cmd(t_cmd **cmd, char *value)
 {
 	t_cmd	*node;
@@ -37,7 +41,10 @@ static void	add_node_cmd(t_cmd **cmd, char *value)
 		last_node->next = node;
 	}
 }
-
+/*
+* Ici on va remplir cmd et cmd_args avec la valeur de notre token
+si c'est notre premier token on le fait direct, sinon on ajoute une node
+*/
 void	process_cmd_token(t_cmd **cmd, t_structok *tmp, t_global *glob,
 		t_structok *tok_list)
 {
@@ -58,6 +65,11 @@ void	process_cmd_token(t_cmd **cmd, t_structok *tmp, t_global *glob,
 	}
 }
 
+/*
+* Fonction pour initialiser notre liste chainee de commandes
+on ajoute les node et on garde le head de notre liste de token dans start
+(parce que j'ai eu la bonne idee de faire une liste chainee circulaire de token)
+*/
 void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;

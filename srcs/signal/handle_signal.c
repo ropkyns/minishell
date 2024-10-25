@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:52:56 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:56:51 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:49:44 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * Gere le signal Ctrl-C pour afficher une newline (au lieu de quitter)
+ */
 void	handle_c(int sig)
 {
 	if (sig == SIGINT)
@@ -23,6 +26,10 @@ void	handle_c(int sig)
 	}
 }
 
+/*
+* Le handler, il va attrapper les signaux et decider de quoi faire
+en gros ignorer, ou appeler handle_c
+*/
 void	handle_signal(void)
 {
 	signal(SIGQUIT, SIG_IGN);

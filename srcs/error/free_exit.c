@@ -6,12 +6,16 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/10 12:44:31 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:51:20 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+* Notre fonction d'exit (car perror ca pue), ici on affiche une str
+de notre choix et on free tout
+*/
 void	error_exit(char *str, t_global *glob)
 {
 	if (glob->env)
@@ -30,6 +34,9 @@ void	error_exit(char *str, t_global *glob)
 	exit(glob->exit_value);
 }
 
+/*
+ * Le nom de la fonction a tout dit
+ */
 void	free_path(char **path)
 {
 	int	i;
@@ -40,26 +47,9 @@ void	free_path(char **path)
 	free(path);
 }
 
-// void	free_env(t_env *a)
-// {
-// 	t_env	*tmp;
-// 	t_env	*current;
-
-// 	if (a == NULL)
-// 		return ;
-// 	current = a;
-// 	while (current)
-// 	{
-// 		tmp = current->next;
-// 		free(current->name);
-// 		free(current->value);
-// 		if (current->str != NULL)
-// 			free(current->str);
-// 		free(current);
-// 		current = tmp;
-// 	}
-// }
-
+/*
+ * Le nom de la fonction a tout dit
+ */
 void	free_env(t_env *a)
 {
 	t_env	*tmp;
@@ -80,6 +70,9 @@ void	free_env(t_env *a)
 	}
 }
 
+/*
+ * Le nom de la fonction a tout dit
+ */
 static void	free_args(char **args)
 {
 	int	i;
@@ -94,7 +87,9 @@ static void	free_args(char **args)
 	}
 	free(args);
 }
-
+/*
+ * Le nom de la fonction a tout dit
+ */
 void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;

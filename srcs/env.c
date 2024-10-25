@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/23 15:07:36 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:48:22 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 /* PENSER A INIT t_env *list AVANT D'APPELER INIT ENV !!!!!!!!!! */
 
+/*
+ * Fonction du Q qui copy jusqu'a un delimiteur
+ */
 char	*ft_strcpychr(char *dest, char *src, char c)
 {
 	int	i;
@@ -34,6 +37,13 @@ char	*ft_strcpychr(char *dest, char *src, char c)
 	return (dest);
 }
 
+/*
+* Ici on initialise les variables de la liste a NULL,
+ensuite on va chercher le nom de la variable d'env
+grace a une fonction homemade strcpychr (en gros tu copies
+jusqu'a une occurence, ici "=")
+ensuite on strdup la valeur, qui se trouve apres equal_sign
+*/
 static void	set_env(t_env *env)
 {
 	char	*equal_sign;
@@ -51,6 +61,9 @@ static void	set_env(t_env *env)
 		env->value = ft_strdup(equal_sign + 1);
 }
 
+/*
+ * Ici on va parcourir la liste pour trouver et return la derniere node
+ */
 static t_env	*find_last_node_env(t_env *env)
 {
 	if (!env)
@@ -60,6 +73,12 @@ static t_env	*find_last_node_env(t_env *env)
 	return (env);
 }
 
+/*
+* Fonction pour ajouter nos nodes dans la liste chainee,
+on va recuperer la ligne du tab env et la stocker dans ->str
+ensuite on fait en sorte que la node soit bien chainee avec le
+bon prev/next (cas special si c'est la premiere node)
+*/
 bool	add_node_env(t_env **env, char *value)
 {
 	t_env	*node;
@@ -88,6 +107,9 @@ bool	add_node_env(t_env **env, char *value)
 	return (true);
 }
 
+/*
+ * Ici on initialise notre liste chainee des env (on ajoute les nodes)
+ */
 void	init_env(t_env **current, char **env)
 {
 	int	i;

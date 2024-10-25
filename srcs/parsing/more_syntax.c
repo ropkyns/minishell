@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/23 15:57:38 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:23:23 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * Affiche l'erreur de syntaxe
+ */
 void	print_error_syntax(char *value)
 {
 	write(2, "bash: syntax error near unexpected token `", 42);
@@ -19,6 +22,10 @@ void	print_error_syntax(char *value)
 	write(2, "'\n", 2);
 }
 
+/*
+* Fonction pour regarder si le dernier token est un operateur
+( < << >> >)
+*/
 bool	is_last_op(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
@@ -38,6 +45,10 @@ bool	is_last_op(t_structok **tok_list, t_global *glob)
 		return (false);
 }
 
+/*
+* Fonction pour regarder si le token avant le pipe est un operateur
+(ex ; echo hihi >> | cat -e)
+*/
 bool	is_op_before_pipe(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
@@ -61,6 +72,11 @@ bool	is_op_before_pipe(t_structok **tok_list, t_global *glob)
 	return (false);
 }
 
+/*
+* Fonction pour regarder si le token avant l'operateur est
+aussi un operateur
+(ex ; trucmuche >> >> trucmuche)
+*/
 bool	is_op_after_op(t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;

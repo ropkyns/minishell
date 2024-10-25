@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:57:54 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:59:08 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ static int	new_token(t_structok **new, char *s, t_token type)
 
 /*
 * On ajoute le nouveau token en appelant la fonction new_token
-on refait aussi les liens de la nouvelle node (on l'ajoute a l'indice
-precedant l'indice pointe par *token_list) ainsi que les liens de token_list
-vu qu'on la decale.TODOOOOOOOOOOOOO
+si c'est la premiere node alors on appelle add_first_token pour
+gerer ses liens prev et next correctement,
+sinon on gere les liens (c'est une liste circulaire (pour le plus
+grand bonheur de mon mate) c'est pour ca que la gestion des chaines
+est + chiante hihi)
 */
 int	add_token(t_structok **token_list, char *s, int type)
 {
@@ -58,7 +60,7 @@ int	add_token(t_structok **token_list, char *s, int type)
 
 /*
  * On ajoute un token operateur a la liste chainee avec add_token
- On check si la command a un operateur avec is_checkercial, si oui en fonction
+ On check si la command a un operateur avec is_special, si oui en fonction
  de ce que la fonction nous retourne on fait un strdup de ce token et on l'ajoute
  avec add_token.
  Ensuite on incremente de la longueur du token pour passer a la suite
@@ -123,8 +125,10 @@ bool	add_cmd_arg(t_structok **head, char **command)
  * Ici c'est un peu la fonction qui fait tout,
  on appelle toute les fonctions dans les conditions et
  si l'une d'elle rate on free!
- 1->on fait les tokens CMD ARG
- 2->on fait les tokens << < >> > |
+ 1->on ignore les whitsepace
+ 2->on fait les tokens CMD ARG
+ 3->on fait les tokens << < >> > |
+ et bravo
  */
 bool	do_list_token(t_structok **head, char *command)
 {

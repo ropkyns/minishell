@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:54:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:54:38 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 17:00:10 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * Fonction pour check si c'est un builtin ou po
+ */
 bool	is_builtins(char *cmd)
 {
 	if (!cmd)
@@ -23,6 +26,9 @@ bool	is_builtins(char *cmd)
 	return (false);
 }
 
+/*
+ * Ici on lance le builtin et on recupere l'exit value
+ */
 void	get_builtins(int save_stdout, t_cmd *cmd, t_global *glob)
 {
 	if (ft_strcmp(cmd->cmd_args[0], "echo") == 0)
@@ -36,10 +42,10 @@ void	get_builtins(int save_stdout, t_cmd *cmd, t_global *glob)
 	else if (ft_strcmp(cmd->cmd_args[0], "pwd") == 0)
 		glob->exit_value = ft_pwd();
 	else if (ft_strcmp(cmd->cmd_args[0], "env") == 0)
-		ft_env(glob->env);
+		glob->exit_value = ft_env(glob->env);
 	else if (ft_strcmp(cmd->cmd_args[0], "exit") == 0)
 	{
-		if(cmd->outfile >= 0)
+		if (cmd->outfile >= 0)
 		{
 			dup2(save_stdout, 1);
 			close(save_stdout);
@@ -48,10 +54,19 @@ void	get_builtins(int save_stdout, t_cmd *cmd, t_global *glob)
 	}
 }
 
+/*
+* fonction qui verifie si une redirection de stdout est necessaire
+via cmd->outfile
+Si c'est le cas -> duplique le descripteur de stdout pour le
+sauvegarder et redirige stdout vers cmd->outfile
+Apres l'execution de la commande get_builtins,
+la fonction restaure la sortie standard d'origine
+ */
 bool	launch_builtin(t_global *glob, t_cmd *cmd)
 {
 	int	save_stdout;
 
+	STDIN_FILENO;
 	save_stdout = -1;
 	if (cmd->outfile >= 0)
 	{
@@ -62,40 +77,49 @@ bool	launch_builtin(t_global *glob, t_cmd *cmd)
 	if (cmd->outfile >= 0)
 	{
 		dup2(save_stdout, 1);
-		close (save_stdout);
+		close(save_stdout);
 	}
 	return (true);
 }
 
-void ft_swap_str_arr(int i, int j, char **arr)
+/*
+ * Fonction pour swap les chaines de caracteres
+ */
+void	ft_swap_str_arr(int i, int j, char **arr)
 {
-    char *temp;
+	char	*temp;
 
-    temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
+	temp = arr[i];
+	arr[i] = arr[j];
+	arr[j] = temp;
 }
-
-void sort_array(char **arr, int len)
+/*
+* Cette fonction parcourt **arr et la trie.
+Elle compare chaque paire de
+chaines a l'aide de ft_strncmp et swap leur position dans le tableau si
+necessaire
+Le tri est directement fait sur le tab **arr original.
+*/
+void	sort_array(char **arr, int len)
 {
-    int i;
-    int j;
-    int diff;
+	int	i;
+	int	j;
+	int	diff;
 
-    i = 0;
-    while (i < len)
-    {
-        j = i + 1;
-        while (j < len)
-        {
-            diff = ft_strncmp(arr[i], arr[j], __INT_MAX__);
-            if (diff > 0)
-            {
-                ft_swap_str_arr(i, j, arr);
-                continue;
-            }
-            j++;
-        }
-        i++;
-    }
+	i = 0;
+	while (i < len)
+	{
+		j = i + 1;
+		while (j < len)
+		{
+			diff = ft_strncmp(arr[i], arr[j], __INT_MAX__);
+			if (diff > 0)
+			{
+				ft_swap_str_arr(i, j, arr);
+				continue ;
+			}
+			j++;
+		}
+		i++;
+	}
 }
