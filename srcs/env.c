@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 15:48:22 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 20:31:06 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void	init_env(t_env **current, char **env)
 	int	i;
 
 	i = 0;
+	if (!env || !*env)
+		return ;
 	while (env[i])
 	{
 		add_node_env(current, env[i]);

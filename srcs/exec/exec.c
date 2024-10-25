@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 18:23:48 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 20:42:06 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static char	*find_executable(char **path_list, char *cmd_name)
 	char	*path_name;
 
 	i = 0;
+	if (!path_list || !*path_list)
+		return (NULL);
 	while (path_list[i])
 	{
 		path_name = build_path(path_list[i], cmd_name);
