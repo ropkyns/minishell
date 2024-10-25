@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 19:33:07 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 19:37:21 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_cd(t_global *glob, char **args)
 	int	count;
 	int	exit_val;
 
-	exit_val = 0;
+	exit_val = 1;
 	count = 0;
 	while (args[count])
 		count++;
@@ -121,5 +121,6 @@ int	ft_cd(t_global *glob, char **args)
 		}
 		return (exit_val);
 	}
-	return (exit_val);
+	else
+		return (printf("bash: cd: too many arguments \n"), exit_val);
 }
