@@ -6,12 +6,17 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:44:03 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 14:25:12 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 17:45:17 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * Calcule la taille de la liste env
+ on commence i a 1 car on est pas bete et si on arrive ici
+ c'est que la liste est pas vide
+ */
 size_t	len_env(t_env *env)
 {
 	t_env	*tmp;
@@ -30,7 +35,9 @@ size_t	len_env(t_env *env)
 	}
 	return (0);
 }
-
+/*
+ * On print
+ */
 int	ft_env(t_env *env)
 {
 	t_env	*temp;

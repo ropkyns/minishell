@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:43 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 14:27:01 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 17:48:50 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * On verifie si le nom de la variable et sa valeur sont valides
+ */
 static bool	syntax(char *str)
 {
 	int	i;
@@ -27,7 +30,10 @@ static bool	syntax(char *str)
 	}
 	return (true);
 }
-
+/*
+ * On verifie si la variable existe bien dans la liste chainee env
+ si oui on retourne l'index ou elle se trouve
+ */
 static int	exist(char *str, t_env *env)
 {
 	int		i;
@@ -50,7 +56,11 @@ static int	exist(char *str, t_env *env)
 	}
 	return (-1);
 }
-
+/*
+ * on check la syntaxe ensuite on va recuperer la pos de la variable
+ on va se deplacer jusqu'a cette position avec le ++i<pos
+ et ensuite on free tout ce qui n'est pas deja NULL
+ */
 static bool	unset(char *str, t_env **env)
 {
 	int		pos;
@@ -79,7 +89,10 @@ static bool	unset(char *str, t_env **env)
 	tmp = NULL;
 	return (false);
 }
-
+/*
+* On appelle unset le nb de fois ou y'a des arguments en gros
+(la fonction au dessus)
+ */
 int	ft_unset(t_env **env, char **args)
 {
 	int	exit_code;

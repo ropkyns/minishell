@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 14:25:28 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 17:42:56 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 /*
 * Si la fonction export n'a pas d'arguments
-alors on affiche tout env avec declare -x devant,
-(donc on peut pas utiliser print_env :( )
+alors on affiche tout env avec declare -x devant
 */
 static bool	export_no_args(t_env *env)
 {
@@ -43,7 +42,11 @@ static bool	export_no_args(t_env *env)
 	free(arr);
 	return (true);
 }
-
+/*
+* On regarde si le nom de la variable commence bien par un alpha
+ou un _, ensuite on regarde si la valeur de la variable n'a bien que
+des alnum ou un _
+*/
 static bool	valid_identifier(char *str)
 {
 	int	i;
@@ -60,6 +63,11 @@ static bool	valid_identifier(char *str)
 	return (true);
 }
 
+/*
+ *  On verifie si str existe dans la liste chainee des env
+ on parcourt la liste et on retourne l'index de la variable (j)
+ si on la trouve
+ */
 static int	exist(char *str, t_env *env)
 {
 	int		i;
@@ -88,7 +96,12 @@ static int	exist(char *str, t_env *env)
 	}
 	return (-1);
 }
-
+/*
+* Fonction pour export la value,
+	on verifie si la variable existe (et si oui a quel index)
+et on va a cet index, on free sa value et on la met a jour.
+ Si elle existe pas on ajoute une nouvelle node
+*/
 bool	export_value(t_env **env, char *str)
 {
 	int		pos;
@@ -115,7 +128,10 @@ bool	export_value(t_env **env, char *str)
 			return (false);
 	return (true);
 }
-
+/*
+* Si pas d'arguments on affiche toutes les variables d'env, sinon on check
+si la syntaxe est valide et ensuite on export!
+*/
 int	ft_export(t_env **env, char **str)
 {
 	int	exit_code;

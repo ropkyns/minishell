@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:11:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:24:33 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 17:54:44 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * Trouve la derniere node dans la liste des cmd
+ */
 t_cmd	*find_last_node_cmd(t_cmd *cmd)
 {
 	if (!cmd)
@@ -23,6 +26,9 @@ t_cmd	*find_last_node_cmd(t_cmd *cmd)
 	return (cmd);
 }
 
+/*
+ * Gere les redirections > et <
+ */
 void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 {
 	if (toklist->type == INPUT)
@@ -40,6 +46,9 @@ void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 		last->outfile = open(toklist->next->value, O_CREAT, S_IRWXU);
 }
 
+/*
+ * Comptre le nombre d'arguments dans la list des tokens
+ */
 static int	count_args(t_structok *toklist, t_structok *head)
 {
 	int			count;
@@ -56,6 +65,11 @@ static int	count_args(t_structok *toklist, t_structok *head)
 	return (count);
 }
 
+/*
+* Rempli le tableau de char **ret avec les value des tokens.
+on copie cmd direct, ensuite on avance et on ajoute les ARG et CMD et on les
+ajoute au tableau (en gros on prend CMD et ARG et on les fout dans un tab)
+*/
 static void	fill_args_array(char **ret, t_structok *toklist, t_global *glob,
 		t_structok *head)
 {
@@ -85,7 +99,11 @@ static void	fill_args_array(char **ret, t_structok *toklist, t_global *glob,
 	}
 	ret[i] = NULL;
 }
-
+/*
+* On compte le nb d'args pour pouvoir malloc notre tableau de
+char * + 2 parce que '\0' et la cmd
+ensuite on appelle fill_args pour qu'il remplisse le tableau
+*/
 char	**args_tab(t_structok *toklist, t_global *glob, t_structok *head)
 {
 	int		arg_count;

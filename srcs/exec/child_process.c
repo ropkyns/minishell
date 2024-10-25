@@ -6,22 +6,16 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 14:59:58 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:04:03 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*
-* OK alors la l'exec fait que quand on appelle une fonction qui n'est
-pas un builtin ca exit notre programme...
-et ca on veut pas et je pense que c'est parce que execve ne revient pas
-quand il reussit et il exit,
-donc il faudrait execve dans un child process comme ca il ferme le child
-et pas notre programme.
-en plus de ca on peut gerer les pipe et tout ici
+* ici c'est pour execve les commandes de execute_piped
+on fait le path et on appelle execve
 */
-
 static void	execute_command(t_cmd *cmd, t_env **env)
 {
 	char	**env_array;
@@ -43,7 +37,13 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 	free(path_name);
 	exit(1);
 }
-
+/*
+ * redirige l'entree standard STDIN a partir de input_fd,
+si ce n'est pas l'entree par défaut, si il y a une autre cmd
+on redirige la sortie standard STDOUT dans le pipe.
+On gere aussi les fd ici (avec infile et oufile), meme principe.
+On les ferme bien a chaque fois
+ */
 static void	handle_redirections(t_cmd *cmd, int input_fd, int *pipes)
 {
 	if (input_fd != STDIN_FILENO)
@@ -71,7 +71,11 @@ static void	handle_redirections(t_cmd *cmd, int input_fd, int *pipes)
 		close(cmd->outfile);
 	}
 }
-
+/*
+* Le pere, il ferme le pipe d'ecriture, et si input_fd n'est pas l'entree
+standard STDIN on le ferme, ensuite on fait pointer input_fd vers le pipe
+de lecture comme ca le pere peut lire la sortie de commande de l'enfant
+*/
 static void	handle_parent_process(int *input_fd, int *pipes, pid_t pid)
 {
 	close(pipes[1]);
@@ -81,6 +85,10 @@ static void	handle_parent_process(int *input_fd, int *pipes, pid_t pid)
 	waitpid(pid, NULL, 0);
 }
 
+/*
+* Ici c'est l'enfant, on le fait gerer les redirections, si c'est un builtin on
+lance le builtin d'abord ensuite on execve dans execute command
+*/
 void	execute_child_process(t_cmd *cmd, t_env **env, t_global *glob,
 		int input_fd, int *pipes)
 {
@@ -94,8 +102,10 @@ void	execute_child_process(t_cmd *cmd, t_env **env, t_global *glob,
 }
 
 /*
-* Execve mais avec des pipes, on redirige les stdin stdout avec dup2 et pipe
-tant qu'il y a une autre commande il y aura un autre pipe (-1)
+* On regarde bien si il y a une commande apres, et du coup on cree un pipe.
+on regarde si il ya des builtin qui touche aux env et si c'est le cas on les appelle
+ensuite on fork, on appelle le child_process dans le pid 0,
+et le pere dans l'autre. on passe a la commande suivante et on recommence
 */
 void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 {

@@ -6,12 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:35 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 17:11:29 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 17:32:00 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+ * On regarde si il y a un signe - et si c'est bien un 'n' apres
+ */
 static int	check_flag_n(char *line)
 {
 	int	i;
@@ -28,6 +31,13 @@ static int	check_flag_n(char *line)
 	return (0);
 }
 
+/*
+* Ici on print les arguments passes a echo,
+	on verifie dabord si il y a un flag ou pas
+ensuite on ecrit et ajoute un espace entre les args,
+	si le check flag a trouve un -n ou +
+alors on fait une newline
+*/
 static void	print_echo(int count, int i, bool *n_flag, char **args)
 {
 	while (i < count && check_flag_n(args[i]))
@@ -46,6 +56,12 @@ static void	print_echo(int count, int i, bool *n_flag, char **args)
 		write(1, "\n", 1);
 }
 
+/*
+* On commence i a 1 car on ignore le 1er argument (le nom de la cmd)
+ensuite on met notre boolean a true, on compte le nombre d'arg et
+on appelle notre fonction
+de print
+*/
 int	ft_echo(char **args)
 {
 	int		count;

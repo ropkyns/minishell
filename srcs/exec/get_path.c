@@ -6,19 +6,26 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 16:56:02 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 15:51:52 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:11:30 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/*
+On regarde si la commande dans le path est accessible et executable
+ */
 static char	*handle_absolute_relative_path(char *cmd)
 {
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	return (NULL);
 }
-
+/*
+Extrait la prochaine sous-chaine de start jusqu'a end.
+Alloue de la memoire pour la sous-chaîne et met a jour start.
+Si end est NULL, duplique le reste de start et le met a NULL.
+ */
 static char	*get_next_dir(char **start, char *end)
 {
 	char	*dir;
@@ -38,7 +45,12 @@ static char	*get_next_dir(char **start, char *end)
 	}
 	return (dir);
 }
-
+/*
+Recherche un fichier executable correspondant a cmd dans les repertoires
+specifies par path_var.
+Extrait chaque repertoire separe par : et construit le chemin complet.
+Retourne le chemin si trouve, ou NULL en cas d'echec.
+ */
 static char	*search_command_in_path(char *path_var, char *cmd)
 {
 	char	*start;
@@ -61,7 +73,13 @@ static char	*search_command_in_path(char *path_var, char *cmd)
 	}
 	return (NULL);
 }
-
+/*
+Obtient le chemin d'une commande cmd.
+Si la commande est vide, absolue ou relative traite en consequence.
+Sinon, elle recupere la variable d'environnement "PATH" et recherche
+la commande dans les repertoires specifies.
+Retourne le chemin de la commande ou NULL si introuvable.
+ */
 char	*get_command_path(char *cmd, t_env *env_list)
 {
 	char	*path_var;

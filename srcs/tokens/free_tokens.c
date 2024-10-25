@@ -6,19 +6,15 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:00:16 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/23 16:01:08 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:12:25 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*
-* On free tout les tokens, on copie le 1er element de la liste dans curr
-ensuite on va parcourir tout les tokens dont le ->next ne pointe pas sur le
-premier element de la liste. (En gros tous sauf le dernier)
-On prend les element dans temp et on free (+ simple pour le premier)
-ensuite une fois la boucle finie on free le dernier element.
-On free la value (str) d'abord parce que on l'a mit avec strdup
+* On free tout les tokens, mais vu que c une liste circulaire
+bah c'est chiant (mais c'est aussi ma faute)
 */
 void	free_tok(t_structok **token_list)
 {
