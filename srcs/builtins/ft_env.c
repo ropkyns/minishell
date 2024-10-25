@@ -12,11 +12,40 @@
 
 #include "../../include/minishell.h"
 
-void	ft_env(t_env *env)
+size_t	len_env(t_env *env)
 {
-	while (env->next)
+	t_env *tmp;
+	size_t	i;
+
+	if ((env))
 	{
-		printf("%s=%s\n", env->name, env->value);
-		env = env->next;
+		tmp = env;
+		i = 1;
+		while (tmp->next != NULL)
+		{
+			++i;
+			tmp = tmp->next;
+		}
+		return (i);
 	}
+	return (0);
+}
+
+int	ft_env(t_env *env)
+{
+	t_env	*temp;
+
+	temp = env;
+	if (!temp)
+		return (0);
+	if (ft_strchr(temp->str, '='))
+		printf("%s\n", temp->str);
+	temp = temp->next;
+	while (temp != NULL)
+	{
+		if (ft_strchr(temp->str, '='))
+			printf("%s\n", temp->str);
+		temp = temp->next;
+	}
+	return (0);
 }

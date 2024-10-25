@@ -12,13 +12,13 @@
 
 #include "../../include/minishell.h"
 
-char	**make_env_tab(t_env **env)
+char	**make_env_tab(t_env *env)
 {
 	t_env	*current_env;
 	int		count;
 	char	**env_array;
 
-	current_env = *env;
+	current_env = env;
 	count = 0;
 	while (current_env)
 	{
@@ -28,7 +28,7 @@ char	**make_env_tab(t_env **env)
 	env_array = malloc(sizeof(char *) * (count + 1));
 	if (!check_allocation(env_array))
 		return (NULL);
-	current_env = *env;
+	current_env = env;
 	count = 0;
 	while (current_env)
 	{

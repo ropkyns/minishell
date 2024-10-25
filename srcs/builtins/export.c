@@ -17,51 +17,34 @@
 alors on affiche tout env avec declare -x devant,
 (donc on peut pas utiliser print_env :( )
 */
-static bool	no_args(t_env *env)
+static bool	export_no_args(t_env *env)
 {
-	while (env != NULL)
+	char	**arr;
+	int		i;
+	int		j;
+
+	arr = make_env_tab(env);
+	if (!arr)
+		return (false);
+	sort_array(arr, len_env(env));
+	i = 0;
+	while (arr[i])
 	{
-		printf("declare -x %s\n", env->str);
-		env = env->next;
+		printf("declare -x ");
+		j = 0;
+		while (arr[i][j] && arr[i][j] != '=')
+			printf("%c", arr[i][j++]);
+		if (arr[i][j] && arr[i][j] == '=')
+			printf("=\"%s\"\n", &arr[i][j + 1]);
+		else
+			printf("\n");
+		i++;
 	}
+	free(arr);
 	return (true);
 }
 
-/*
-* Ici on regarde si une variable du meme nom existe deja,
-on renvoie -1 si elle existe pas, sinon on renvoie sa pos dans la string
-ex : export pos1=blabla pos2=blabla
-*/
-static int	name_already_exist(char *str, t_env *env)
-{
-	int		i;
-	t_env	*temp;
-	int		pos;
-
-	temp = env;
-	i = 0;
-	while (str[i] && str[i] != '=')
-		i++;
-	if (!temp)
-		return (-1);
-	pos = 0;
-	while (temp != NULL)
-	{
-		if (!ft_strncmp(temp->name, str, i)
-			&& ((int)ft_strlen(temp->name) == i))
-			return (pos);
-		temp = temp->next;
-		pos++;
-	}
-	return (-1);
-}
-
-/*
-* On check la syntaxe, si ca commence par un caractere alpha ou un _
-ensuite on regarde si il n'y a bien que des caraceteres alpha ou num
-ou un _ dans le nom de la variable (avant le =)
-*/
-static bool	export_is_valid(char *str)
+static bool	valid_identifier(char *str)
 {
 	int	i;
 
@@ -70,86 +53,92 @@ static bool	export_is_valid(char *str)
 		return (false);
 	while (str[i] && str[i] != '=')
 	{
-		if (!isalnum(str[i]) && str[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (false);
-		++i;
+		i++;
 	}
 	return (true);
 }
 
-/*
-*
-On check si il y a deja une ou des variables du meme nom, si oui
-je me deplace de i positions jusqua etre sur le bon env.
-Ensuite je free sa value et je la remplace avec ce qu'il y a
-apres le signe '=' dans str.
-Si pos est egal a -1 alors c'est que aucune variable de ce nom existe,
-donc on l'ajoute.
-*/
-bool	export_value(t_env **env, char *str)
+static int	exist(char *str, t_env *env)
 {
 	int		i;
-	int		pos;
-	char	*equal_sign;
-	t_env	*curr;
-	t_env	*temp;
+	int		j;
+	t_env	*tmp;
 
-	curr = *env;
-	pos = name_already_exist(str, curr);
-	equal_sign = ft_strchr(str, '=');
+	if (!env)
+		return (-1);
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	j = 0;
+	tmp = env;
+	if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0' || \
+		tmp->str[i] == '='))
+		return (j);
+	tmp = tmp->next;
+	j++;
+	while (tmp != NULL)
+	{
+		if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0' || \
+			tmp->str[i] == '='))
+			return (j);
+		tmp = tmp->next;
+		j++;
+	}
+	return (-1);
+}
+
+bool	export_value(t_env **env, char *str)
+{
+	int		pos;
+	int		i;
+	char	*value;
+
+	pos = exist(str, (*env));
+	value = ft_strdup(str);
+	if (!value)
+		return (false);
 	if (pos >= 0)
 	{
 		i = 0;
-		temp = curr;
-		while (i++ < pos && temp != NULL)
-			temp = temp->next;
-		if (equal_sign)
+		while (i < pos)
 		{
-			if (temp->value)
-				free(temp->value);
-			temp->value = ft_strdup(equal_sign + 1);
+			(*env) = (*env)->next;
+			i++;
 		}
+		free((*env)->str);
+		(*env)->str = value;
 	}
-	else if (pos == -1 && !add_node_env(env, str))
-		return (false);
+	else if (pos == -1)
+		if (!add_node_env(env, value))
+			return (false);
 	return (true);
 }
 
-/*
-* Ici on check si args, si il n'y a rien apres "export" (str[0])
-alors on appelle la fonction no_args qui va print notre env.
-Si il y a des args, on va appeler notre fonction de check pour voir
-si la syntaxe est bonne, et ensuite on va appeler notre fonction
-export_value pour voir changer la value si le meme name existe deja
-ou alors pour creer une nouvelle variable avec sa value.
-
-(on fait un char **str car plus simple, si la ligne de commande est
- "export test1=blabla test2=blabla test3=blabla",
- on se deplace de maillon en maillon)
-*/
 int	ft_export(t_env **env, char **str)
 {
+	int	exit_code;
 	int	i;
-	int	exit_val;
 
+	exit_code = 0;
 	i = 1;
-	exit_val = 0;
 	if (!str || !str[i])
 	{
-		if (*env && !no_args((*env)))
-			return (printf("malloc error\n"));
+		if (*env && !export_no_args((*env)))
+			return (1);
 		return (0);
 	}
 	while (str[i])
 	{
-		if (!export_is_valid(str[i]))
+		if (!valid_identifier(str[i]))
 		{
-			printf("export : invalid identifier\n");
-			exit_val = 1;
+			printf("export: invalid identifier\n");
+			exit_code = 1;
 		}
 		else if (!export_value(env, str[i]))
-			return (printf("malloc error\n"));
+			return (1);
 		i++;
 	}
-	return (exit_val);
+	return (exit_code);
 }

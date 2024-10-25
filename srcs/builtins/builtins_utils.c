@@ -66,3 +66,36 @@ bool	launch_builtin(t_global *glob, t_cmd *cmd)
 	}
 	return (true);
 }
+
+void ft_swap_str_arr(int i, int j, char **arr)
+{
+    char *temp;
+
+    temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+void sort_array(char **arr, int len)
+{
+    int i;
+    int j;
+    int diff;
+
+    i = 0;
+    while (i < len)
+    {
+        j = i + 1;
+        while (j < len)
+        {
+            diff = ft_strncmp(arr[i], arr[j], __INT_MAX__);
+            if (diff > 0)
+            {
+                ft_swap_str_arr(i, j, arr);
+                continue;
+            }
+            j++;
+        }
+        i++;
+    }
+}

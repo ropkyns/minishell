@@ -27,7 +27,7 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 	char	**env_array;
 	char	*path_name;
 
-	env_array = make_env_tab(env);
+	env_array = make_env_tab(*env);
 	if (!env_array)
 		exit(1);
 	path_name = get_command_path(cmd->cmd_args[0], *env);
@@ -144,7 +144,7 @@ void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
 		exit(1);
 	if (pid == 0)
 	{
-		env_array = make_env_tab(env);
+		env_array = make_env_tab(*env);
 		if (!env_array)
 			exit(1);
 		if (execve(path_name, cmd->cmd_args, env_array) == -1)

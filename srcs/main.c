@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **env)
 	isatty(1);
 	while (1)
 	{
-		// handle_signal();
+		handle_signal();
 		glob->cmd = NULL;
 		glob->line = readline("minishell > ");
 		if (!(glob->line))

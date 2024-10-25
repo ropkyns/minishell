@@ -12,76 +12,84 @@
 
 #include "../../include/minishell.h"
 
-/*
-* En gros c'est une fonction qui efface une variable dans l'env
-(si j'ai bien compris), donc le plan c'est :
+static bool syntax(char *str) {
+    int i;
 
-prendre la struct env, parcourir la liste des env en regardant leurs name
-si le name est identique a celui passe en argument a la fonction unset
-alors on free sa value et son name
-si ce n'est pas un caractere alphabetique ou un '_' alors afficher erreur
-"bash: unset: 'TES*T': not a valid identifier"
-
-Si la variable passe en arg n'existe pas alors ne rien afficher
-et exit value a 0.
-Si tout se passe bien alors ne rien afficher, et exit value a 0.
-*/
-
-static bool	syntax_unset(char *arg)
-{
-	int	i;
-
-	i = 0;
-	if (arg[0] != '_' || !ft_isalpha(arg[0]))
-		return (false);
-	while (arg[i])
-	{
-		if (arg[i] != '_' && !ft_isalnum(arg[i]))
-			return (false);
-		i++;
-	}
-	return (true);
+    if (str[0] != '_' && !ft_isalpha(str[0]))
+        return false;
+    
+    i = 0;
+    while (str[i]) {
+        if (!ft_isalnum(str[i]) && str[i] != '_')
+            return false;
+        i++;
+    }
+    return true;
 }
 
-static bool	unset(t_env **env, char *args)
+static int exist(char *str, t_env *env) 
 {
-	t_env	*curr;
-	t_env	*prev;
+    int i = 0;
+    t_env *tmp = env;
 
-	curr = *env;
-	prev = NULL;
-	if (!args || !syntax_unset(args))
-		return (false);
-	while (curr != NULL)
-	{
-		if (ft_strncmp(curr->name, args, ft_strlen(args) + 1) == 0)
-		{
-			if (prev == NULL)
-				*env = curr->next;
-			else
-				prev->next = curr->next;
-			free(curr->value);
-			free(curr->name);
-			free(curr);
-			return (true);
-		}
-		prev = curr;
-		curr = curr->next;
-	}
-	return (false);
+    if (!env)
+        return -1;
+    while (str[i])
+        i++;
+    int j = 0;
+    while (tmp != NULL) {
+        if (!ft_strncmp(tmp->str, str, i))
+            return j;
+        tmp = tmp->next;
+        j++;
+    }
+    return (-1);
 }
 
-int	ft_unset(t_env **env, char **args)
-{
-	int	exit_val;
-	int	i;
+static bool unset(char *str, t_env **env) {
+    int pos;
+    t_env *tmp;
 
-	exit_val = 0;
-	i = 0;
-	while (args[i])
+    if (!str || !(*str))
+        return false;
+
+    if (!syntax(str)) 
 	{
-		if (unset(env, args[i]))
-			exit_val = 1;
-	}
-	return (exit_val);
+        printf("unset: invalid identifier\n");
+        return (true);
+    }
+
+    pos = exist(str, *env);
+    if (pos == -1)
+        return false;
+    tmp = *env;
+    int i = 0;
+    while (i < pos) {
+        tmp = tmp->next;
+        i++;
+    }
+
+    if (tmp->prev != NULL) 
+        tmp->prev->next = tmp->next;
+    if (tmp->next != NULL) 
+        tmp->next->prev = tmp->prev;
+    if (tmp == *env)
+        *env = tmp->next;
+    free(tmp->str);
+    free(tmp);
+    tmp = NULL;
+
+    return (false);
+}
+
+int ft_unset(t_env **env, char **args) {
+    int exit_code = 0;
+    int i = 0;
+
+    while (args[i]) {
+        if (unset(args[i], env))
+            exit_code = 1;
+        i++;
+    }
+    return (exit_code);
 }
