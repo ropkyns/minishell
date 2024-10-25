@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 18:15:48 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/25 19:33:07 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ int	ft_cd(t_global *glob, char **args)
 {
 	int	ret;
 	int	count;
+	int	exit_val;
 
+	exit_val = 0;
 	count = 0;
 	while (args[count])
 		count++;
@@ -108,10 +110,16 @@ int	ft_cd(t_global *glob, char **args)
 	{
 		ret = chdir(args[1]);
 		if (ret == 0)
+		{
 			update_pwd(glob, args[1]);
+			exit_val = 0;
+		}
 		if (ret < 0)
+		{
+			exit_val = 1;
 			perror(args[1]);
-		return (ret);
+		}
+		return (exit_val);
 	}
-	return (1);
+	return (exit_val);
 }
