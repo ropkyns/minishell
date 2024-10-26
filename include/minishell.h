@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 14:39:24 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 15:30:36 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,8 @@ void					execute_simple(t_cmd *cmd, char *path_name,
 							t_env **env);
 void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
 
-void					handle_redir(t_cmd *cmd);
+void					handle_redirections(t_cmd *cmd, int input_fd,
+							int *pipes);
 char					**make_env_tab(t_env *env);
 char					*get_command_path(char *cmd, t_env *env_list);
 char					*build_path(char *dir, char *cmd);

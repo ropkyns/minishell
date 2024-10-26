@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:28:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 19:37:21 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 15:57:37 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,31 @@ static void	update_pwd(t_global *glob, char *args)
 	free(pwd);
 }
 
+// Va au répertoire HOME si défini, sinon affiche une erreur
+static int	go_to_home(t_global *glob)
+{
+	char	*home;
+	int		ret;
+
+	home = get_env_value(glob->env, "HOME");
+	if (home)
+	{
+		ret = chdir(home);
+		if (ret == 0)
+		{
+			update_pwd(glob, home);
+			return (0);
+		}
+		perror(home);
+		return (1);
+	}
+	else
+	{
+		printf("bash: cd: HOME not set\n");
+		return (1);
+	}
+}
+
 /*
 * On compte le nombre d'arguments (il en faut 2, la cmd et l'arg)
 on change de directory avec la fonction chdir, si ca a marche on update PWD
@@ -98,11 +123,9 @@ sinon perror (genre si le directory existe po)
 */
 int	ft_cd(t_global *glob, char **args)
 {
-	int	ret;
 	int	count;
-	int	exit_val;
+	int	ret;
 
-	exit_val = 1;
 	count = 0;
 	while (args[count])
 		count++;
@@ -112,15 +135,16 @@ int	ft_cd(t_global *glob, char **args)
 		if (ret == 0)
 		{
 			update_pwd(glob, args[1]);
-			exit_val = 0;
+			return (0);
 		}
-		if (ret < 0)
+		else
 		{
-			exit_val = 1;
 			perror(args[1]);
+			return (1);
 		}
-		return (exit_val);
 	}
+	else if (count == 1)
+		return (go_to_home(glob));
 	else
-		return (printf("bash: cd: too many arguments \n"), exit_val);
+		return (printf("bash: cd: too many arguments\n"), 1);
 }

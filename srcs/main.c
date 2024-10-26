@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 11:01:52 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 15:45:00 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,13 @@ int	main(int argc, char **argv, char **env)
 		glob->cmd = NULL;
 		glob->line = readline("minishell > ");
 		if (!(glob->line))
-			error_exit("exit", glob);
+			error_exit("exit\n", glob);
 		add_history(glob->line);
+		if (handle_quotes(glob, glob->line))
+		{
+			free(glob->line);
+			continue ;
+		}
 		if (!do_list_token(&glob->token_list, glob->line))
 			return (1);
 		if (check_syntax(glob, &glob->token_list) == true)
