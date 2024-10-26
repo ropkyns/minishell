@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 14:59:34 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 14:39:24 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,6 @@ char					*get_command_path(char *cmd, t_env *env_list);
 char					*build_path(char *dir, char *cmd);
 char					*get_env_value(t_env *env_list, const char *name);
 bool					launch_builtin(t_global *glob, t_cmd *cmd);
-void					execute_command_process(t_cmd *cmd, t_env **env,
-							t_global *glob, int *input_fd, int *pipes);
 int						handle_builtin_parent(t_cmd **cmd, t_global *glob,
 							int *input_fd, int *pipes);
 
