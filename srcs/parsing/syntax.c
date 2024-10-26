@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 18:24:22 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 12:00:13 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,37 @@ bool	handle_quotes(t_global *data, char *command)
 }
 
 /*
+ * gere le cas d'erreur pour les caracteres du CUL
+ */
+static bool	is_invalid(t_structok **tok_list, t_global *glob)
+{
+	if (!*tok_list)
+		return (false);
+	if ((*tok_list)->value[0] == '/')
+	{
+		glob->exit_value = 2;
+		return (printf("bash: %s: Is a directory\n", (*tok_list)->value), true);
+	}
+	if ((*tok_list)->value[0] == '&')
+	{
+		glob->exit_value = 2;
+		return (printf("bash: syntax error near unexpected token '%s'\n",
+				(*tok_list)->value), true);
+	}
+	if ((*tok_list)->value[0] == ':')
+	{
+		glob->exit_value = 0;
+		return (true);
+	}
+	if ((*tok_list)->value[0] == '!')
+	{
+		glob->exit_value = 1;
+		return (true);
+	}
+	return (false);
+}
+
+/*
 * Fonction qui va appeler toutes nos petites fonctions "specialises"
 pour les erreurs de syntaxe, en fonction de l'erreur on affiche le mssg
 approprie.
@@ -112,6 +143,8 @@ bool	check_syntax(t_global *glob, t_structok **token_list)
 	else if (is_last_op(token_list, glob))
 		return (printf("syntax error near unexpected token `newline'\n"),
 			false);
+	else if (is_invalid(token_list, glob))
+		return (false);
 	else
 		return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 19:02:03 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 11:38:48 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ bool	export_value(t_env **env, char *str)
 	int		pos;
 	int		i;
 	char	*value;
+	t_env	*tmp;
 
 	pos = exist(str, (*env));
 	value = ft_strdup(str);
@@ -116,18 +117,18 @@ bool	export_value(t_env **env, char *str)
 		return (false);
 	if (pos >= 0)
 	{
+		tmp = *env;
 		i = 0;
-		while (i < pos)
-		{
-			(*env) = (*env)->next;
-			i++;
-		}
-		free((*env)->str);
-		(*env)->str = value;
+		while (i++ < pos)
+			tmp = tmp->next;
+		free(tmp->str);
+		tmp->str = value;
 	}
 	else if (pos == -1)
+	{
 		if (!add_node_env(env, value))
 			return (false);
+	}
 	return (true);
 }
 
@@ -152,7 +153,7 @@ int	ft_export(t_env **env, char **str)
 	{
 		if (!valid_identifier(str[i]))
 		{
-			printf("export: invalid identifier\n");
+			printf("bash: export: '%s': invalid identifier\n", str[i]);
 			exit_code = 1;
 		}
 		else if (!export_value(env, str[i]))

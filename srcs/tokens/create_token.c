@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 15:29:07 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 15:59:08 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 12:02:48 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	new_token(t_structok **new, char *s, t_token type)
 {
 	if (!s)
 		return (0);
-	*new = malloc(sizeof(t_structok));
+	(*new) = malloc(sizeof(t_structok));
 	if (*new == NULL)
 	{
 		free(s);
