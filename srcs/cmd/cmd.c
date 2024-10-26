@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/26 15:28:17 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 16:19:31 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 	{
 		if (tmp->type == CMD)
 			process_cmd_token(cmd, tmp, glob, *tok_list);
-		else if (tmp->type == INPUT || tmp->type == OUTPUT)
+		else if (tmp->type == INPUT || tmp->type == OUTPUT
+			|| tmp->type == HEREDOC || tmp->type == APPEND)
 			handle_input_output(last, tmp, glob);
 		else if (tmp->type == PIPE)
 			add_node_cmd(cmd, NULL);

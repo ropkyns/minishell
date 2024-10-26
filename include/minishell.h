@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 15:30:36 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/26 19:07:59 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void					handle_input_output(t_cmd *last, t_structok *toklist,
 							t_global *glob);
 char					**args_tab(t_structok *toklist, t_global *glob,
 							t_structok *head);
+int						fd_heredoc(char *filename);
 
 // PATH
 char					**init_path(char **env);
