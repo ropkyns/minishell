@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 19:07:59 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:23:32 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_global
 	t_structok			*token_list;
 	int					exit_value;
 	t_cmd				*cmd;
+	bool				single_quote;
 }						t_global;
 
 // ERROR
@@ -111,6 +112,8 @@ void					handle_critical_builtins(t_cmd *cmd, t_global *glob,
 
 // SYNTAX
 bool					handle_quotes(t_global *data, char *command);
+void					check_quotes(bool *double_quote, bool *single_quote,
+							int *pos, char c);
 bool					is_last_pipe(t_structok **tok_list, t_global *glob);
 bool					is_first_pipe(t_structok **tok_list, t_global *glob);
 bool					is_last_op(t_structok **tok_list, t_global *glob);

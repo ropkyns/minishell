@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/26 19:17:22 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:20:52 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ char	*search_env(char *value, t_env *env, t_global *glob)
 
 void	replace_dollar(char *line, t_env *env, t_global *glob)
 {
-	int		i;
-	char	variable;
+	int	i;
 
+	// char	variable;
 	i = -1;
 	while (line[++i])
 	{

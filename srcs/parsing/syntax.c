@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/26 15:45:46 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/28 15:27:03 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,26 @@ bool	is_last_pipe(t_structok **tok_list, t_global *glob)
 * Ici notre fonction qui va changer notre variable bool a chaque fois que le char
 est une quote.
 */
-bool	check_quotes(bool *double_quote, bool *single_quote, int *pos, char c)
+void	check_quotes(bool *double_quote, bool *single_quote, int *pos, char c)
 {
-	if (c == '"' && !*single_quote)
-		*double_quote = !*double_quote;
-	else if (c == '\'' && !*double_quote)
-		*single_quote = !*single_quote;
-	(*pos)++;
-	return (false);
+	if ((c == '\'' || c == '"') && !*single_quote && !*double_quote)
+	{
+		if (c == '\'' && !*double_quote)
+			*single_quote = true;
+		else if (c == '"' && !*single_quote)
+			*double_quote = true;
+		if (pos)
+			++(*pos);
+	}
+	else if ((c == '\'' || c == '"'))
+	{
+		if (c == '\'' && !*double_quote && *single_quote)
+			*single_quote = false;
+		else if (c == '"' && !*single_quote && *double_quote)
+			*double_quote = false;
+		if (pos)
+			++(*pos);
+	}
 }
 
 /*
@@ -78,7 +90,11 @@ bool	handle_quotes(t_global *data, char *command)
 	double_quote = false;
 	single_quote = false;
 	while (command && command[pos])
+	{
 		check_quotes(&double_quote, &single_quote, &pos, command[pos]);
+		if (command[pos] && command[pos] != '\'' && command[pos] != '"')
+			++pos;
+	}
 	if (double_quote || single_quote)
 	{
 		printf("bash: syntax error quotes aren't closed\n");
