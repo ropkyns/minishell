@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 18:17:03 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/29 17:05:39 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ de notre choix et on free tout
 */
 void	error_exit(char *str, t_global *glob)
 {
+	int	exit_val;
+
+	exit_val = glob->exit_value;
 	if (glob->env)
 		free_env(glob->env);
 	if (glob->path)
@@ -28,10 +31,11 @@ void	error_exit(char *str, t_global *glob)
 		free_tok(&glob->token_list);
 	if (glob->line)
 		free(glob->line);
+	free(glob);
 	rl_clear_history();
 	if (str)
 		ft_putstr_fd(str, 2);
-	exit(glob->exit_value);
+	exit(exit_val);
 }
 
 /*

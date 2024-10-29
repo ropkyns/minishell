@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/28 15:27:03 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/29 15:27:39 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,7 @@ approprie.
 */
 bool	check_syntax(t_global *glob, t_structok **token_list)
 {
-	check_dollar_sign(token_list, glob->env, glob);
-	if (handle_quotes(glob, glob->line))
-		return (false);
-	else if (is_first_pipe(token_list, glob))
+	if (is_first_pipe(token_list, glob))
 		return (printf("bash: syntax error near unexpected token `|'\n"),
 			false);
 	else if (is_last_pipe(token_list, glob))

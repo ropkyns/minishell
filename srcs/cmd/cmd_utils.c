@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:11:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 18:16:53 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/29 12:11:01 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,7 @@ t_cmd	*find_last_node_cmd(t_cmd *cmd)
 	return (cmd);
 }
 
-/*
- * Gere les redirections > et <
- */
-void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
-{
-	if (toklist->type == INPUT)
-	{
-		last->infile = open(toklist->next->value, 0);
-		if (last->infile == -1)
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(toklist->next->value, 2);
-			ft_putstr_fd(": No such file or directory", 2);
-			error_exit(NULL, glob);
-		}
-	}
-	else if (toklist->type == OUTPUT)
-		last->outfile = open(toklist->next->value, O_CREAT, S_IRWXU);
-}
+
 
 /*
  * Comptre le nombre d'arguments dans la list des tokens

@@ -3,17 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
+#    By: palu <palu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/10/23 16:00:53 by mjameau          ###   ########.fr        #
+#    Updated: 2024/10/29 16:41:40 by palu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c builtins/exit.c \
 			builtins/unset.c exec/exec_utils.c exec/exec.c exec/get_path.c exec/child_process.c builtins/ft_env.c \
-			cmd/cmd_utils.c env.c error/free_exit.c tokens/free_tokens.c tokens/create_token.c tokens/utils_token.c cmd/cmd.c path.c \
-			builtins/builtins_utils.c signal/handle_signal.c parsing/syntax.c parsing/more_syntax.c parsing/even_more_syntax.c\
+			cmd/cmd_utils.c env.c error/free_exit.c tokens/free_tokens.c tokens/create_token.c \
+			tokens/utils_token.c cmd/cmd.c path.c builtins/builtins_utils.c signal/handle_signal.c \
+			parsing/syntax.c parsing/more_syntax.c parsing/even_more_syntax.c cmd/cmd_fd.c\
 
 NAME	=	minishell
 

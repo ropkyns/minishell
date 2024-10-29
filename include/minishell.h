@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/28 15:23:32 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/29 17:41:08 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct s_global
 	t_structok			*token_list;
 	int					exit_value;
 	t_cmd				*cmd;
-	bool				single_quote;
 }						t_global;
 
 // ERROR
@@ -122,9 +121,11 @@ bool					is_op_before_pipe(t_structok **tok_list,
 void					print_error_syntax(char *value);
 bool					is_op_after_op(t_structok **tok_list, t_global *glob);
 void					print_error_syntax(char *value);
-void					check_dollar_sign(t_structok **toklist, t_env *env,
-							t_global *glob);
 bool					check_syntax(t_global *glob, t_structok **token_list);
+bool					replace_dollar(char *line, t_env *env, t_global *glob);
+char 					*after_dollar(char *line, size_t *i, t_env *env, t_global *glob);
+char					*search_env(char *value, t_env *env);
+
 
 // TOKENS
 int						add_token(t_structok **token_list, char *s, int type);

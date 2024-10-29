@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/26 18:14:59 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:11:25 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /* PETIT PB HEREDOC AVEC ERREUR DE EOF NE DISPLAY PAS LE PROMPT MINISHELL ENSUITE */
+
+/*
+ * Gere les redirections > et < et << et >>
+ */
 
 void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 {

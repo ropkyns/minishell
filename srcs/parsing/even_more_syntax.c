@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/28 15:20:52 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/10/29 19:40:16 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,57 +16,83 @@
 * Pour le $, si $? alors on va chercher l'exit value
 sinon on va chercher la value (ex echo $PWD - > truc/truc/minishell)
 */
-char	*search_env(char *value, t_env *env, t_global *glob)
+char	*search_env(char *value, t_env *env)
 {
-	char	*ret;
-
-	ret = "\0";
-	if (ft_strcmp(value, "?") == 0)
-		return (ft_itoa(glob->exit_value));
 	while (env->next)
 	{
 		if (ft_strcmp(value, env->name) == 0)
-		{
-			ret = env->value;
-			return (ret);
-		}
+			return (env->value);
 		env = env->next;
 	}
-	return (ret);
+	return ("\0");
 }
 
-void	replace_dollar(char *line, t_env *env, t_global *glob)
+char 	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 {
-	int	i;
+	char	*new_line;
+	char	*dollar;
+	size_t	j;
 
-	// char	variable;
+	new_line = NULL;
+	if (line[(*i)] == '?')
+	{
+		new_line = ft_strncpy(new_line, line, (*i));
+		new_line = ft_strjoin(new_line, ft_itoa(glob->exit_value));
+		new_line = ft_strjoin(new_line, line + (*i) + 1);
+		free(line);
+		line = ft_strdup(new_line);
+		free(new_line);
+	}
+	else
+	{
+		j = (*i);
+		if (ft_isdigit(line[j]))
+			while (ft_isdigit(line[j]))
+				j++;
+		else if (ft_isalpha(line[j]))
+			while (ft_isalnum(line[j]) && line[j])
+				j++;
+		else
+			return (line);
+		dollar = ft_calloc(j - (*i) + 1, sizeof(char));
+		if (!dollar)
+			return (NULL);
+		dollar = ft_strncpy(dollar, line + (*i), j - (*i));
+		new_line = ft_calloc((*i), sizeof(char));
+		new_line = ft_strncpy(new_line, line, (*i) - 1);
+		// printf("%s|\n", line);
+		// printf("%c\n", line[(*i)]);
+		// printf("%s|\n", new_line);
+		new_line = ft_strjoin(new_line, search_env(dollar, env));
+		(*i) = j;
+		new_line = ft_strjoin(new_line, line + (*i));
+		free(line);
+		line = ft_strdup(new_line);
+		free(new_line);
+		free(dollar);
+	}
+	return (line);
+}
+
+bool	replace_dollar(char *line, t_env *env, t_global *glob)
+{
+	size_t	i;
+	bool	single_quote;
+	bool	double_quote;
+
 	i = -1;
+	single_quote = false;
+	double_quote = false;
 	while (line[++i])
 	{
-		if (line[i] == '$')
+		check_quotes(&single_quote, &double_quote, NULL, line[i]);
+		if (line[i] == '$' && line[i + 1] && !single_quote)
 		{
-			search_env(line, env, glob);
+			i++;
+			line = after_dollar(line, &i, env, glob);
+			if (!line)
+				return (false);
 		}
 	}
-}
-
-/*
-	Fonction mere,
-	on check si il y a un signe dollar et si oui on l'envoie dans search_env
-et on strdup la valeur (ou l'exit value)
-*/
-void	check_dollar_sign(t_structok **toklist, t_env *env, t_global *glob)
-{
-	t_structok	*tmp;
-
-	if (!toklist || !(*toklist))
-		return ;
-	tmp = (*toklist);
-	while (tmp->next)
-	{
-		replace_dollar(tmp->value, env, glob);
-		tmp = tmp->next;
-		if (tmp == (*toklist))
-			break ;
-	}
+	return (true);
 }
