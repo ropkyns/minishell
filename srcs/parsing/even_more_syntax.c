@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/29 19:40:16 by palu             ###   ########.fr       */
+/*   Updated: 2024/11/01 13:12:56 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*search_env(char *value, t_env *env)
 	return ("\0");
 }
 
-char 	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
+char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 {
 	char	*new_line;
 	char	*dollar;
@@ -36,7 +36,7 @@ char 	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 	new_line = NULL;
 	if (line[(*i)] == '?')
 	{
-		new_line = ft_strncpy(new_line, line, (*i));
+		new_line = ft_strncpy(malloc(*i + 1), line, (*i));
 		new_line = ft_strjoin(new_line, ft_itoa(glob->exit_value));
 		new_line = ft_strjoin(new_line, line + (*i) + 1);
 		free(line);
