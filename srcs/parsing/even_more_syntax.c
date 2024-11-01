@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/01 13:12:56 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/01 18:13:34 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ bool	replace_dollar(char *line, t_env *env, t_global *glob)
 	while (line[++i])
 	{
 		check_quotes(&single_quote, &double_quote, NULL, line[i]);
-		if (line[i] == '$' && line[i + 1] && !single_quote)
+		if (line[i] == '$' && line[i + 1] && !double_quote)
 		{
 			i++;
 			line = after_dollar(line, &i, env, glob);

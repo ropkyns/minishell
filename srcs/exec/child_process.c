@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 15:41:16 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/01 17:46:14 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ de lecture comme ca le pere peut lire la sortie de commande de l'enfant
 */
 static void	handle_parent_process(int *input_fd, int *pipes, pid_t pid)
 {
+	(void)pid;
 	close(pipes[1]);
 	if (*input_fd != STDIN_FILENO)
 		close(*input_fd);
 	*input_fd = pipes[0];
-	waitpid(pid, NULL, 0);
 }
 
 /*
@@ -133,4 +133,8 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 			handle_parent_process(&input_fd, pipes, pid);
 		cmd = cmd->next;
 	}
+	while (wait(NULL) > 0)
+	{
+	}
+	signal(SIGINT, SIG_DFL);
 }
