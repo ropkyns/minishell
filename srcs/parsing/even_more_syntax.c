@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/01 18:13:34 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/05 14:50:00 by palu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,15 @@ char	*search_env(char *value, t_env *env)
 	while (env->next)
 	{
 		if (ft_strcmp(value, env->name) == 0)
-			return (env->value);
+		{
+			free(value);
+			value = ft_strdup(env->value);
+			return (value);
+		}
 		env = env->next;
 	}
-	return ("\0");
+	free(value);
+	return (ft_strdup("\0"));
 }
 
 char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
@@ -36,7 +41,7 @@ char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 	new_line = NULL;
 	if (line[(*i)] == '?')
 	{
-		new_line = ft_strncpy(malloc(*i + 1), line, (*i));
+		new_line = ft_strncpy(ft_calloc((*i + 1), sizeof(char)), line, (*i) - 1);
 		new_line = ft_strjoin(new_line, ft_itoa(glob->exit_value));
 		new_line = ft_strjoin(new_line, line + (*i) + 1);
 		free(line);
@@ -54,16 +59,10 @@ char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 				j++;
 		else
 			return (line);
-		dollar = ft_calloc(j - (*i) + 1, sizeof(char));
-		if (!dollar)
-			return (NULL);
-		dollar = ft_strncpy(dollar, line + (*i), j - (*i));
-		new_line = ft_calloc((*i), sizeof(char));
-		new_line = ft_strncpy(new_line, line, (*i) - 1);
-		// printf("%s|\n", line);
-		// printf("%c\n", line[(*i)]);
-		// printf("%s|\n", new_line);
-		new_line = ft_strjoin(new_line, search_env(dollar, env));
+		dollar = ft_strncpy(ft_calloc(j - (*i) + 1, sizeof(char)), line + (*i), j - (*i));
+		new_line = ft_strncpy(ft_calloc((*i), sizeof(char)), line, (*i) - 1);
+		dollar = search_env(dollar, env);
+		new_line = ft_strjoin(new_line, dollar);
 		(*i) = j;
 		new_line = ft_strjoin(new_line, line + (*i));
 		free(line);
@@ -74,7 +73,7 @@ char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 	return (line);
 }
 
-bool	replace_dollar(char *line, t_env *env, t_global *glob)
+bool	replace_dollar(char **line, t_env *env, t_global *glob)
 {
 	size_t	i;
 	bool	single_quote;
@@ -83,14 +82,14 @@ bool	replace_dollar(char *line, t_env *env, t_global *glob)
 	i = -1;
 	single_quote = false;
 	double_quote = false;
-	while (line[++i])
+	while ((*line)[++i])
 	{
-		check_quotes(&single_quote, &double_quote, NULL, line[i]);
-		if (line[i] == '$' && line[i + 1] && !double_quote)
+		check_quotes(&single_quote, &double_quote, NULL, (*line)[i]);
+		if ((*line)[i] == '$' && (*line)[i + 1] && !double_quote)
 		{
 			i++;
-			line = after_dollar(line, &i, env, glob);
-			if (!line)
+			(*line) = after_dollar((*line), &i, env, glob);
+			if (!(*line))
 				return (false);
 		}
 	}
