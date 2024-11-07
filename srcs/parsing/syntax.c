@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/01 17:56:33 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/07 18:18:55 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ static bool	is_invalid(t_structok **tok_list, t_global *glob)
 {
 	if (!*tok_list)
 		return (false);
-	if ((*tok_list)->value[0] == '/')
-	{
-		glob->exit_value = 2;
-		return (printf("bash: %s: Is a directory\n", (*tok_list)->value), true);
-	}
+	// if ((*tok_list)->value[0] == '/')
+	// {
+	// 	glob->exit_value = 2;
+	// 	return (printf("bash: %s: Is a directory\n", (*tok_list)->value), true);
+	// }
 	if ((*tok_list)->value[0] == '&')
 	{
 		glob->exit_value = 2;
