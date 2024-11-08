@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/07 18:42:13 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/08 11:56:53 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 		else
 		{
 			(*glob)->exit_value = 127;
-			return (printf("bash: command not found: %s\n", cmd->cmd_args[0]),
+			return (printf("bash: %s: command not found\n", cmd->cmd_args[0]),
 				false);
 		}
 	}

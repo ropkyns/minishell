@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/01 12:46:20 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/08 11:42:37 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int argc, char **argv, char **env)
 		if (!(glob->line))
 			error_exit("exit\n", glob);
 		add_history(glob->line);
-		if (handle_quotes(glob, glob->line) || !replace_dollar(glob->line,
+		if (handle_quotes(glob, glob->line) || !replace_dollar(&glob->line,
 				glob->env, glob) || !do_list_token(&glob->token_list,
 				glob->line))
 			continue ;

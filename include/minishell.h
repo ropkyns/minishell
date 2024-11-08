@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/07 18:42:17 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/08 14:17:27 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void					print_error_syntax(char *value);
 bool					is_op_after_op(t_structok **tok_list, t_global *glob);
 void					print_error_syntax(char *value);
 bool					check_syntax(t_global *glob, t_structok **token_list);
-bool					replace_dollar(char *line, t_env *env, t_global *glob);
+bool					replace_dollar(char **line, t_env *env, t_global *glob);
 char					*after_dollar(char *line, size_t *i, t_env *env,
 							t_global *glob);
 char					*search_env(char *value, t_env *env);
@@ -156,8 +156,7 @@ void					handle_input_output(t_cmd *last, t_structok *toklist,
 							t_global *glob);
 char					**args_tab(t_structok *toklist, t_global *glob,
 							t_structok *head);
-int						fd_heredoc(char *filename);
-
+int						fd_heredoc(char *filename, t_global *glob);
 // PATH
 char					**init_path(char **env);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/29 12:11:25 by palu             ###   ########.fr       */
+/*   Updated: 2024/11/08 14:17:57 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 	else if (toklist->type == APPEND)
 		last->outfile = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (toklist->type == HEREDOC)
-		last->infile = fd_heredoc(filename);
+		last->infile = fd_heredoc(filename, glob);
 }
 
-static bool	read_heredoc(int fd, char *end_word)
+static bool	read_heredoc(int fd, char *end_word, t_env *env, t_global *glob)
 {
 	char	*buf;
 
@@ -59,11 +59,13 @@ static bool	read_heredoc(int fd, char *end_word)
 			write(2, "warning: here-document delimited by end-of-file ", 48);
 			write(2, "(wanted '", 9);
 			write(2, end_word, ft_strlen(end_word));
-			write(2, "')\n", 3	);
+			write(2, "')\n", 3);
 			break ;
 		}
 		if (!ft_strncmp(end_word, buf, INT_MAX))
 			break ;
+		if (!replace_dollar(&buf, env, glob))
+			error_exit(NULL, glob);
 		write(fd, buf, ft_strlen(buf));
 		write(fd, "\n", 1);
 		free(buf);
@@ -73,14 +75,14 @@ static bool	read_heredoc(int fd, char *end_word)
 	return (true);
 }
 
-int	fd_heredoc(char *filename)
+int	fd_heredoc(char *filename, t_global *glob)
 {
 	int	fd;
 
 	fd = open(".heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
-	if (!read_heredoc(fd, filename))
+	if (!read_heredoc(fd, filename, glob->env, glob))
 	{
 		unlink(".heredoc.tmp");
 		return (-1);
