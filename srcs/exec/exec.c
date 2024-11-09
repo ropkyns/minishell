@@ -6,71 +6,67 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 12:17:46 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 16:33:02 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-* Ici on va creer le fameux path, on va calculer la len necessaire a notre
-malloc auquel on rajoute +2 (pour le / et pour le '\0')
-Ensuite on va copier le path, concatener avec le / et ajouter la cmd
-et TADAH on a le path gg
-*/
-char	*build_path(char *dir, char *cmd)
+// static bool	handle_builtin_command(t_global *glob, t_cmd *cmd)
+// {
+// 	if (is_simple_command(glob->token_list) && is_builtins(cmd->cmd_args[0]))
+// 	{
+// 		return (launch_builtin(glob, cmd));
+// 	}
+// 	return (false);
+// }
+
+// static bool	is_command_absolute_or_relative(t_cmd *cmd, t_global *glob,
+// 		char **path_name)
+// {
+// 	if (cmd->cmd_args[0][0] == '/' || cmd->cmd_args[0][0] == '.')
+// 	{
+// 		if (is_directory(cmd->cmd_args[0]))
+// 		{
+// 			printf("bash: %s: Is a directory\n", cmd->cmd_args[0]);
+// 			glob->exit_value = 126;
+// 			return (false);
+// 		}
+// 		if (access(cmd->cmd_args[0], X_OK) == 0)
+// 		{
+// 			*path_name = ft_strdup(cmd->cmd_args[0]);
+// 			return (true);
+// 		}
+// 		else
+// 		{
+// 			glob->exit_value = 127;
+// 			printf("bash: %s: command not found\n", cmd->cmd_args[0]);
+// 			return (false);
+// 		}
+// 	}
+// 	return (false);
+// }
+
+static void	exit_value(int flag, t_global *glob, t_cmd *cmd)
 {
-	int		len_path;
-	int		cmd_len;
-	char	*path_name;
-
-	len_path = ft_strlen(dir);
-	cmd_len = ft_strlen(cmd);
-	path_name = malloc(sizeof(char) * (len_path + cmd_len + 2));
-	if (!check_allocation(path_name))
-		return (NULL);
-	ft_strlcpy(path_name, dir, len_path + 1);
-	ft_strcat(path_name, "/");
-	ft_strcat(path_name, cmd);
-	return (path_name);
-}
-
-/*
-* Envoie dans la fonction build path pour nous creer le chemin
-et ensuite verifie si build path a reussi et si le chemin mene
-bien a une commande qui est executable
-*/
-static char	*find_executable(char **path_list, char *cmd_name)
-{
-	int		i;
-	char	*path_name;
-
-	i = 0;
-	if (!path_list || !*path_list)
-		return (NULL);
-	while (path_list[i])
+	if (flag == E_ONE)
 	{
-		path_name = build_path(path_list[i], cmd_name);
-		if (path_name && access(path_name, F_OK) == 0)
-			return (path_name);
-		free(path_name);
-		i++;
+		glob->exit_value = 127;
+		printf("bash: %s: command not found\n", cmd->cmd_args[0]);
 	}
-	return (NULL);
+	else if (flag == E_TWO)
+	{
+		glob->exit_value = 126;
+		printf("bash: %s: Is a directory\n", cmd->cmd_args[0]);
+	}
 }
 
-/*
-* Envoie dans la fonction approprie si
-il n'y a qu'une seule commande sans pipe ou l'inverse
-*/
-static void	execute_command(t_cmd *cmd, char *path_name, t_global *glob,
-		t_env **env)
-{
-	if (is_simple_command(glob->token_list))
-		execute_simple(cmd, path_name, env);
-	else
-		execute_piped(cmd, env, glob);
-}
+// static void	handle_command_execution(t_cmd *cmd, char *path_name,
+// 		t_global *glob, t_env **env)
+// {
+// 	execute_choice(cmd, path_name, glob, env);
+// 	free(path_name);
+// }
 
 /*
 * La premiere partie de l'exec, ici on va regarder si il n'y a qu'une
@@ -101,25 +97,35 @@ et la c'est la galere on se revoie la bas ciao (j'aurais du faire pipex)
 // 	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
 // 		return (false);
 // 	temp = *glob;
-// 	if (is_simple_command(temp->token_list))
+// 	if (handle_builtin_command(*glob, cmd))
+// 		return (true);
+// 	if (cmd->cmd_args[0][0] == '/' || cmd->cmd_args[0][0] == '.')
 // 	{
-// 		if (is_builtins(cmd->cmd_args[0]))
-// 			return (launch_builtin(*glob, cmd));
-// 		path_name = find_executable(temp->path, cmd->cmd_args[0]);
-// 		if (path_name)
+// 		if (is_directory(cmd->cmd_args[0]))
 // 		{
-// 			execute_command(cmd, path_name, temp, env);
-// 			return (free(path_name), true);
+// 			printf("bash: %s: Is a directory\n", cmd->cmd_args[0]);
+// 			(*glob)->exit_value = 126;
+// 			return (false);
+// 		}
+// 		if (access(cmd->cmd_args[0], X_OK) == 0)
+// 		{
+// 			path_name = ft_strdup(cmd->cmd_args[0]);
+// 			return (true);
 // 		}
 // 		else
 // 		{
 // 			(*glob)->exit_value = 127;
-// 			return (printf("bash: %s: command not found\n", cmd->cmd_args[0]),
-// 				false);
+// 			printf("bash: %s: command not found\n", cmd->cmd_args[0]);
+// 			return (false);
 // 		}
 // 	}
-// 	execute_piped(cmd, env, *glob);
-// 	return (true);
+// 	return (false);
+// 	if (check_executable_in_path(*glob, cmd, &path_name))
+// 	{
+// 		handle_command_execution(cmd, path_name, *glob, env);
+// 		return (true);
+// 	}
+// 	return (false);
 // }
 
 bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
@@ -130,94 +136,23 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
 		return (false);
 	temp = *glob;
-	if (is_builtins(cmd->cmd_args[0]))
+	if (is_simple_command(temp->token_list) && is_builtins(cmd->cmd_args[0]))
 		return (launch_builtin(*glob, cmd));
 	if (cmd->cmd_args[0][0] == '/' || cmd->cmd_args[0][0] == '.')
 	{
 		if (is_directory(cmd->cmd_args[0]))
-		{
-			printf("bash: %s: Is a directory\n", cmd->cmd_args[0]);
-			(*glob)->exit_value = 126;
-			return (false);
-		}
+			return (exit_value(E_TWO, *glob, cmd), false);
 		if (access(cmd->cmd_args[0], X_OK) == 0)
 		{
 			path_name = ft_strdup(cmd->cmd_args[0]);
-			execute_command(cmd, path_name, temp, env);
-			free(path_name);
-			return (true);
+			return (process(cmd, path_name, temp, env), free(path_name), true);
 		}
 		else
-		{
-			(*glob)->exit_value = 127;
-			printf("bash: %s: command not found\n", cmd->cmd_args[0]);
-			return (false);
-		}
+			return (exit_value(E_ONE, *glob, cmd), false);
 	}
 	path_name = find_executable(temp->path, cmd->cmd_args[0]);
 	if (path_name)
-	{
-		execute_command(cmd, path_name, temp, env);
-		free(path_name);
-		return (true);
-	}
+		return (process(cmd, path_name, temp, env), free(path_name), true);
 	else
-	{
-		(*glob)->exit_value = 127;
-		printf("bash: %s: command not found\n", cmd->cmd_args[0]);
-		return (false);
-	}
-}
-
-/*
-* Execve dans un child process si il n'y a pas de pipe
-(une seule commande en gros)
-*/
-void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
-{
-	pid_t	pid;
-	char	**env_array;
-
-	pid = fork();
-	if (pid < 0)
-		exit(1);
-	if (pid == 0)
-	{
-		if (cmd->infile >= 0)
-		{
-			if (dup2(cmd->infile, STDIN_FILENO) == -1)
-			{
-				perror("dup2 infile");
-				exit(1);
-			}
-			close(cmd->infile);
-		}
-		if (cmd->outfile >= 0)
-		{
-			if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
-			{
-				perror("dup2 outfile");
-				exit(1);
-			}
-			close(cmd->outfile);
-		}
-		env_array = make_env_tab(*env);
-		if (!env_array)
-			exit(1);
-		if (execve(path_name, cmd->cmd_args, env_array) == -1)
-		{
-			free(env_array);
-			exit(1);
-		}
-		free(env_array);
-		exit(0);
-	}
-	else
-	{
-		waitpid(pid, NULL, 0);
-		if (cmd->infile >= 0)
-			close(cmd->infile);
-		if (cmd->outfile >= 0)
-			close(cmd->outfile);
-	}
+		return (exit_value(E_ONE, *glob, cmd), false);
 }

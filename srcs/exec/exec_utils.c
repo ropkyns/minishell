@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:36:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 18:59:08 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 16:54:17 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	handle_builtin_parent(t_cmd **cmd, t_global *glob, int *input_fd,
 		int *pipes)
 {
 	if (is_builtins((*cmd)->cmd_args[0]) && (!ft_strcmp((*cmd)->cmd_args[0],
-				"cd") || !ft_strcmp((*cmd)->cmd_args[0], "unset")))
+				"unset")))
 	{
 		launch_builtin(glob, *cmd);
 		if ((*cmd)->next)

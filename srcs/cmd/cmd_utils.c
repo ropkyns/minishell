@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:11:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/29 12:11:01 by palu             ###   ########.fr       */
+/*   Updated: 2024/11/09 13:57:55 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ t_cmd	*find_last_node_cmd(t_cmd *cmd)
 	}
 	return (cmd);
 }
-
-
 
 /*
  * Comptre le nombre d'arguments dans la list des tokens

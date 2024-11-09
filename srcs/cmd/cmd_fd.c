@@ -6,13 +6,11 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 12:11:58 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 13:58:25 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-/* PETIT PB HEREDOC AVEC ERREUR DE EOF NE DISPLAY PAS LE PROMPT MINISHELL ENSUITE */
 
 /*
  * Gere les redirections > et < et << et >>

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/07 18:42:06 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 17:08:15 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 	path_name = handle_absolute_relative_path(cmd->cmd_args[0]);
 	if (!path_name)
 	{
-	path_name = get_command_path(cmd->cmd_args[0], *env);
+		path_name = get_command_path(cmd->cmd_args[0], *env);
 	}
 	if (!path_name)
 	{
@@ -126,8 +126,6 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 	{
 		if (cmd->next && pipe(pipes) == -1)
 			exit(1);
-		if (handle_builtin_parent(&cmd, glob, &input_fd, pipes))
-			continue ;
 		pid = fork();
 		if (pid < 0)
 			exit(1);

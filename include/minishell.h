@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 11:57:51 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 15:32:58 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 
 # define FAIL 1
 # define SUCCESS 0
+# define E_ONE 127
+# define E_TWO 126
 
 typedef enum e_token
 {
@@ -127,6 +129,7 @@ char					*after_dollar(char *line, size_t *i, t_env *env,
 							t_global *glob);
 char					*search_env(char *value, t_env *env);
 bool					is_directory(const char *path);
+bool					is_invalid(t_structok **tok_list, t_global *glob);
 
 // TOKENS
 int						add_token(t_structok **token_list, char *s, int type);
@@ -184,5 +187,8 @@ char					*get_env_value(t_env *env_list, const char *name);
 bool					launch_builtin(t_global *glob, t_cmd *cmd);
 int						handle_builtin_parent(t_cmd **cmd, t_global *glob,
 							int *input_fd, int *pipes);
+void					process(t_cmd *cmd, char *path_name, t_global *glob,
+							t_env **env);
+char					*find_executable(char **path_list, char *cmd_name);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 11:58:52 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 14:35:16 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,45 +28,46 @@ void	init_global(t_global *glob, int argc, char **argv, char **env)
 }
 
 /*
- * Fonction de debuggage, on peut voir et afficher le type des tokens!
+ * Le readline du cul
  */
-void	print_token(t_structok *token)
+char	*get_user_input(t_global *glob)
 {
-	t_structok	*tmp;
-
-	if (!token)
-		return ;
-	tmp = token;
-	while (tmp->next != token)
-	{
-		printf("Type : %d, [%s]\n", tmp->type, tmp->value);
-		fflush(stdout);
-		tmp = tmp->next;
-	}
-	printf("Type : %d, [%s]\n", tmp->type, tmp->value);
-	fflush(stdout);
+	glob->cmd = NULL;
+	glob->line = readline("minishell > ");
+	if (!(glob->line))
+		error_exit("exit\n", glob);
+	add_history(glob->line);
+	return (glob->line);
 }
 
 /*
- * Fonction de debuggage, on print les cmd !
+* Appel de fonction pour gerer les quotes, remplacer $ par la valeur,
+ensuite fait la liste de token, verifie la syntaxe et va executer la cmd.
+*/
+void	process_command(t_global *glob)
+{
+	if (handle_quotes(glob, glob->line) || !replace_dollar(&glob->line,
+			glob->env, glob) || !do_list_token(&glob->token_list, glob->line))
+		return ;
+	if (check_syntax(glob, &glob->token_list) == true)
+	{
+		init_cmd(&glob->cmd, &glob->token_list, glob);
+		if (glob && glob->cmd && glob->cmd->cmd_args)
+		{
+			get_cmd(glob->cmd, &glob, &glob->env);
+		}
+	}
+}
+
+/*
+ * Les freefree
  */
-// void	print_cmd(t_cmd *cmd)
-// {
-
-// 	if (!cmd)
-// 		return ;
-// 	printf("PRINT CMD !\n");
-// 	fflush(stdout);
-// 	while (cmd)
-// 	{
-
-// 		printf("%s", cmd->cmd);
-// 		fflush(stdout);
-// 		cmd = cmd->next;
-// 	}
-// 	printf("\n");
-// 	fflush(stdout);
-// }
+void	cleanup(t_global *glob)
+{
+	free_cmd(glob->cmd);
+	free(glob->line);
+	free_tok(&glob->token_list);
+}
 
 /*
  * La maison mere un peu, genre mother💅
@@ -82,24 +83,9 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		handle_signal();
-		glob->cmd = NULL;
-		glob->line = readline("minishell > ");
-		if (!(glob->line))
-			error_exit("exit\n", glob);
-		add_history(glob->line);
-		if (handle_quotes(glob, glob->line) || !replace_dollar(&glob->line,
-				glob->env, glob) || !do_list_token(&glob->token_list,
-				glob->line))
-			continue ;
-		if (check_syntax(glob, &glob->token_list) == true)
-		{
-			init_cmd(&glob->cmd, &glob->token_list, glob);
-			if (glob && glob->cmd && glob->cmd->cmd_args)
-				get_cmd(glob->cmd, &glob, &glob->env);
-		}
-		free_cmd(glob->cmd);
-		free(glob->line);
-		free_tok(&glob->token_list);
+		get_user_input(glob);
+		process_command(glob);
+		cleanup(glob);
 	}
 	return (1);
 }
