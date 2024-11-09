@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 11:38:48 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 17:46:56 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,12 @@ bool	export_value(t_env **env, char *str)
 	else if (pos == -1)
 	{
 		if (!add_node_env(env, value))
+		{
+			free(value);
 			return (false);
+		}
 	}
+	free(value);
 	return (true);
 }
 
