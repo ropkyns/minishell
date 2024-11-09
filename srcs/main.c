@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/08 11:42:37 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/09 11:58:52 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(int argc, char **argv, char **env)
 				get_cmd(glob->cmd, &glob, &glob->env);
 		}
 		free_cmd(glob->cmd);
-		// free(glob->line);
+		free(glob->line);
 		free_tok(&glob->token_list);
 	}
 	return (1);

@@ -6,11 +6,23 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 16:23:23 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 11:57:01 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+/*
+ * Fonction pour verifier si le chemin est un repertoire
+ */
+bool	is_directory(const char *path)
+{
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) != 0)
+		return (false);
+	return (S_ISDIR(path_stat.st_mode));
+}
 
 /*
  * Affiche l'erreur de syntaxe

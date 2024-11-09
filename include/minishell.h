@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/08 14:17:27 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/09 11:57:51 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ bool					replace_dollar(char **line, t_env *env, t_global *glob);
 char					*after_dollar(char *line, size_t *i, t_env *env,
 							t_global *glob);
 char					*search_env(char *value, t_env *env);
+bool					is_directory(const char *path);
 
 // TOKENS
 int						add_token(t_structok **token_list, char *s, int type);
@@ -159,7 +160,7 @@ char					**args_tab(t_structok *toklist, t_global *glob,
 int						fd_heredoc(char *filename, t_global *glob);
 // PATH
 char					**init_path(char **env);
-char	*handle_absolute_relative_path(char *cmd);
+char					*handle_absolute_relative_path(char *cmd);
 
 // SIGNAL
 void					handle_signal(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/08 11:56:53 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/09 11:57:11 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,13 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 		return (launch_builtin(*glob, cmd));
 	if (cmd->cmd_args[0][0] == '/' || cmd->cmd_args[0][0] == '.')
 	{
-		if (access(cmd->cmd_args[0], X_OK) == 0)  // Vérifier l'exécution directe
+		if (is_directory(cmd->cmd_args[0]))
+		{
+			printf("bash: %s: Is a directory\n", cmd->cmd_args[0]);
+			(*glob)->exit_value = 126;
+			return (false);
+		}
+		if (access(cmd->cmd_args[0], X_OK) == 0)
 		{
 			path_name = ft_strdup(cmd->cmd_args[0]);
 			execute_command(cmd, path_name, temp, env);
@@ -162,7 +168,6 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 		return (false);
 	}
 }
-
 
 /*
 * Execve dans un child process si il n'y a pas de pipe
