@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 15:32:58 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:19:57 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void					add_first_token(t_structok **token_list,
 void					init_env(t_env **list, char **env);
 bool					add_node_env(t_env **env, char *value);
 void					free_env(t_env *a);
+void					set_env_var(t_env **env, char *name, char *value);
 
 // CMD
 void					init_cmd(t_cmd **cmd, t_structok **tok_list,

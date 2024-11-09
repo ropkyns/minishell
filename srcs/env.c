@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/25 20:31:06 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:30:51 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strcpychr(char *dest, char *src, char c)
 	i = 0;
 	while (src[i] && src[i] != c)
 		i++;
-	dest = malloc(sizeof(char *) * (i + 1));
+	dest = malloc(sizeof(char) * (i + 1));
 	if (!dest)
 		return (NULL);
 	i = 0;
@@ -112,9 +112,13 @@ bool	add_node_env(t_env **env, char *value)
  */
 void	init_env(t_env **current, char **env)
 {
-	int	i;
+	int		i;
+	char	cwd[PATH_MAX];
 
 	i = 0;
+	set_env_var(current, "PWD", getcwd(cwd, PATH_MAX));
+	set_env_var(current, "SHLVL", "2");
+	set_env_var(current, "_", "/usr/bin/env");
 	if (!env || !*env)
 		return ;
 	while (env[i])

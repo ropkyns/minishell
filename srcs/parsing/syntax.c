@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 17:42:05 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:32:16 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,20 @@ sinon on va chercher la value (ex echo $PWD - > truc/truc/minishell)
 */
 char	*search_env(char *value, t_env *env)
 {
+	char	*new_value;
+
 	while (env)
 	{
 		if (ft_strcmp(value, env->name) == 0)
 		{
-			char *new_value = ft_strdup(env->value);
-				// Allouer une nouvelle chaîne avec la valeur de l'environnement
-			free(value);                            
-				// Libérer l'ancienne valeur
-			return (new_value);                     
-				// Retourner la nouvelle valeur
+			new_value = ft_strdup(env->value);
+			free(value);
+			return (new_value);
 		}
 		env = env->next;
 	}
-	free(value);   // Libérer si la variable n'a pas été trouvée
-	return (NULL); // Retourner NULL pour signaler que la variable n'existe pas
+	free(value);
+	return (NULL);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 18:04:25 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:31:23 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static char	*replace_var_with_env(char *line, size_t *i, size_t j, t_env *env)
 
 	dollar = ft_strncpy(ft_calloc(j - (*i) + 1, sizeof(char)), line + (*i), j
 			- (*i));
-	temp = new_line = ft_strncpy(ft_calloc((*i), sizeof(char)), line, (*i) - 1);
+	new_line = ft_strncpy(ft_calloc((*i), sizeof(char)), line, (*i) - 1);
 	env_value = search_env(dollar, env);
 	temp = new_line;
 	new_line = ft_strjoin(new_line, env_value);
