@@ -15,9 +15,9 @@
 /*
 On regarde si la commande dans le path est accessible et executable
  */
-static char	*handle_absolute_relative_path(char *cmd)
+char	*handle_absolute_relative_path(char *cmd)
 {
-	if (access(cmd, X_OK) == 0)
+	if (access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
 	return (NULL);
 }

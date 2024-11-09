@@ -159,6 +159,7 @@ char					**args_tab(t_structok *toklist, t_global *glob,
 int						fd_heredoc(char *filename, t_global *glob);
 // PATH
 char					**init_path(char **env);
+char	*handle_absolute_relative_path(char *cmd);
 
 // SIGNAL
 void					handle_signal(void);

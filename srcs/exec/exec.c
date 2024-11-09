@@ -51,7 +51,7 @@ static char	*find_executable(char **path_list, char *cmd_name)
 	while (path_list[i])
 	{
 		path_name = build_path(path_list[i], cmd_name);
-		if (path_name && access(path_name, X_OK) == 0)
+		if (path_name && access(path_name, F_OK) == 0)
 			return (path_name);
 		free(path_name);
 		i++;
@@ -93,6 +93,35 @@ ne kill pas notre programme.
 Sinon, on va dans execute_piped car il y a plusieurs commandes (et donc pipe)
 et la c'est la galere on se revoie la bas ciao (j'aurais du faire pipex)
 */
+// bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
+// {
+// 	t_global	*temp;
+// 	char		*path_name;
+
+// 	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
+// 		return (false);
+// 	temp = *glob;
+// 	if (is_simple_command(temp->token_list))
+// 	{
+// 		if (is_builtins(cmd->cmd_args[0]))
+// 			return (launch_builtin(*glob, cmd));
+// 		path_name = find_executable(temp->path, cmd->cmd_args[0]);
+// 		if (path_name)
+// 		{
+// 			execute_command(cmd, path_name, temp, env);
+// 			return (free(path_name), true);
+// 		}
+// 		else
+// 		{
+// 			(*glob)->exit_value = 127;
+// 			return (printf("bash: %s: command not found\n", cmd->cmd_args[0]),
+// 				false);
+// 		}
+// 	}
+// 	execute_piped(cmd, env, *glob);
+// 	return (true);
+// }
+
 bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 {
 	t_global	*temp;
@@ -101,26 +130,39 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 	if (!cmd || !cmd->cmd_args || !cmd->cmd_args[0] || !glob || !*glob)
 		return (false);
 	temp = *glob;
-	if (is_simple_command(temp->token_list))
+	if (is_builtins(cmd->cmd_args[0]))
+		return (launch_builtin(*glob, cmd));
+	if (cmd->cmd_args[0][0] == '/' || cmd->cmd_args[0][0] == '.')
 	{
-		if (is_builtins(cmd->cmd_args[0]))
-			return (launch_builtin(*glob, cmd));
-		path_name = find_executable(temp->path, cmd->cmd_args[0]);
-		if (path_name)
+		if (access(cmd->cmd_args[0], X_OK) == 0)  // Vérifier l'exécution directe
 		{
+			path_name = ft_strdup(cmd->cmd_args[0]);
 			execute_command(cmd, path_name, temp, env);
-			return (free(path_name), true);
+			free(path_name);
+			return (true);
 		}
 		else
 		{
 			(*glob)->exit_value = 127;
-			return (printf("bash: %s: command not found\n", cmd->cmd_args[0]),
-				false);
+			printf("bash: %s: command not found\n", cmd->cmd_args[0]);
+			return (false);
 		}
 	}
-	execute_piped(cmd, env, *glob);
-	return (true);
+	path_name = find_executable(temp->path, cmd->cmd_args[0]);
+	if (path_name)
+	{
+		execute_command(cmd, path_name, temp, env);
+		free(path_name);
+		return (true);
+	}
+	else
+	{
+		(*glob)->exit_value = 127;
+		printf("bash: %s: command not found\n", cmd->cmd_args[0]);
+		return (false);
+	}
 }
+
 
 /*
 * Execve dans un child process si il n'y a pas de pipe

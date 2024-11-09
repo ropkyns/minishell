@@ -24,7 +24,11 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 	env_array = make_env_tab(*env);
 	if (!env_array)
 		exit(1);
+	path_name = handle_absolute_relative_path(cmd->cmd_args[0]);
+	if (!path_name)
+	{
 	path_name = get_command_path(cmd->cmd_args[0], *env);
+	}
 	if (!path_name)
 	{
 		fprintf(stderr, "Command not found: %s\n", cmd->cmd_args[0]);
