@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/08 14:17:57 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/09 12:11:58 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static bool	read_heredoc(int fd, char *end_word, t_env *env, t_global *glob)
 			write(2, "')\n", 3);
 			break ;
 		}
-		if (!ft_strncmp(end_word, buf, INT_MAX))
+		if (!ft_strcmp(end_word, buf))
 			break ;
 		if (!replace_dollar(&buf, env, glob))
 			error_exit(NULL, glob);

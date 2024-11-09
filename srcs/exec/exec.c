@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 11:57:11 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 12:17:46 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,24 @@ void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
 		exit(1);
 	if (pid == 0)
 	{
+		if (cmd->infile >= 0)
+		{
+			if (dup2(cmd->infile, STDIN_FILENO) == -1)
+			{
+				perror("dup2 infile");
+				exit(1);
+			}
+			close(cmd->infile);
+		}
+		if (cmd->outfile >= 0)
+		{
+			if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
+			{
+				perror("dup2 outfile");
+				exit(1);
+			}
+			close(cmd->outfile);
+		}
 		env_array = make_env_tab(*env);
 		if (!env_array)
 			exit(1);
@@ -195,5 +213,11 @@ void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
 		exit(0);
 	}
 	else
+	{
 		waitpid(pid, NULL, 0);
+		if (cmd->infile >= 0)
+			close(cmd->infile);
+		if (cmd->outfile >= 0)
+			close(cmd->outfile);
+	}
 }
