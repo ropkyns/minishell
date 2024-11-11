@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 18:30:51 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 13:04:33 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	set_env(t_env *env)
 	env->name = NULL;
 	env->value = NULL;
 	env->next = NULL;
+	env->is_freed = false;
 	env->name = ft_strcpychr(env->name, env->str, '=');
 	if (env->name == NULL)
 	{
@@ -58,7 +59,10 @@ static void	set_env(t_env *env)
 	}
 	equal_sign = ft_strchr(env->str, '=');
 	if (equal_sign)
+	{
+		free(env->value);
 		env->value = ft_strdup(equal_sign + 1);
+	}
 }
 
 /*
@@ -91,7 +95,10 @@ bool	add_node_env(t_env **env, char *value)
 		return (false);
 	node->str = ft_strdup(value);
 	if (!node->str)
+	{
+		free(node);
 		return (false);
+	}
 	set_env(node);
 	if (*env == NULL)
 	{

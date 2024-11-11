@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:01:50 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/25 15:27:19 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:42:39 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	*ft_strdup(const char *s)
 	int		size;
 	char	*tab;
 
+	if (!s)
+		return (NULL);
 	size = ft_strlen(s);
 	tab = malloc(sizeof(char) * size + 1);
 	if (tab == NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/29 17:05:39 by palu             ###   ########.fr       */
+/*   Updated: 2024/11/11 13:05:15 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_env(t_env *a)
 			free(a->name);
 		if (a->value)
 			free(a->value);
-		if (a->str)
+		if (a->str && !a->is_freed)
 			free(a->str);
 		free(a);
 		a = tmp;
@@ -87,9 +87,11 @@ static void	free_args(char **args)
 	while (args[i])
 	{
 		free(args[i]);
+		args[i] = NULL;
 		i++;
 	}
 	free(args);
+	args = NULL;
 }
 
 /*

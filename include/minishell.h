@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 18:19:57 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 13:03:49 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_env
 	char				*value;
 	struct s_env		*next;
 	struct s_env		*prev;
+	bool				is_freed;
 }						t_env;
 
 typedef struct s_cmd
@@ -99,6 +100,7 @@ int						ft_unset(t_env **env, char **args);
 void					ft_exit(char **args, t_global *glob);
 int						ft_echo(char **args);
 int						ft_env(t_env *env);
+bool					unset(char *str, t_env **env);
 
 // UTILS
 bool					is_space(char c);

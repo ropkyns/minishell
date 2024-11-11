@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 14:35:16 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 18:18:04 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	cleanup(t_global *glob)
  */
 int	main(int argc, char **argv, char **env)
 {
-	t_global	*glob;
+	t_global *glob;
 
 	glob = malloc(sizeof(t_global));
 	init_global(glob, argc, argv, env);

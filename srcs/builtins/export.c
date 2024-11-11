@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 18:28:29 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 13:09:07 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,6 @@ static int	exist(char *str, t_env *env)
 		i++;
 	j = 0;
 	tmp = env;
-	if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0'
-			|| tmp->str[i] == '='))
-		return (j);
-	tmp = tmp->next;
-	j++;
 	while (tmp != NULL)
 	{
 		if (!ft_strncmp(tmp->str, str, i) && (tmp->str[i] == '\0'
@@ -107,29 +102,33 @@ et on va a cet index, on free sa value et on la met a jour.
 bool	export_value(t_env **env, char *str)
 {
 	int		pos;
-	int		i;
 	char	*value;
-	t_env	*tmp;
+	int		i;
+	t_env	*current;
 
-	pos = exist(str, (*env));
+	current = *env;
+	pos = exist(str, current);
 	value = ft_strdup(str);
 	if (!value)
 		return (false);
 	if (pos >= 0)
 	{
-		tmp = *env;
-		i = 0;
-		while (i++ < pos)
-			tmp = tmp->next;
-		free(tmp->str);
-		tmp->str = value;
+		i = -1;
+		while (++i < pos && current)
+			current = current->next;
+		if (current == NULL)
+			return (free(value), false);
+		// unset(current->str, env);
+		if (current != NULL)
+		{
+			current->is_freed = true;
+			free(current->str);
+		}
+		current->str = value;
 	}
-	else if (pos == -1)
-	{
-		if (!add_node_env(env, value))
-			return (false);
-	}
-	return (true);
+	else if (!add_node_env(env, value))
+		return (false);
+	return (free(value), true);
 }
 
 /*

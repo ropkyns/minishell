@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:43 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/26 14:50:30 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 12:45:00 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	exist(char *str, t_env *env)
  on va se deplacer jusqu'a cette position avec le ++i<pos
  et ensuite on free tout ce qui n'est pas deja NULL
  */
-static bool	unset(char *str, t_env **env)
+bool	unset(char *str, t_env **env)
 {
 	int		pos;
 	t_env	*tmp;
