@@ -3,121 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   even_more_syntax.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 18:31:23 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 17:26:20 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
-// {
-// 	char	*new_line;
-// 	char	*dollar;
-// 	size_t	j;
-
-// 	new_line = NULL;
-// 	if (line[(*i)] == '?')
-// 	{
-// 		new_line = ft_strncpy(ft_calloc((*i + 1), sizeof(char)), line, (*i)
-// 				- 1);
-// 		new_line = ft_strjoin(new_line, ft_itoa(glob->exit_value));
-// 		new_line = ft_strjoin(new_line, line + (*i) + 1);
-// 		free(line);
-// 		line = ft_strdup(new_line);
-// 		free(new_line);
-// 	}
-// 	else
-// 	{
-// 		j = (*i);
-// 		if (ft_isdigit(line[j]))
-// 			while (ft_isdigit(line[j]))
-// 				j++;
-// 		else if (ft_isalpha(line[j]))
-// 			while (ft_isalnum(line[j]) && line[j])
-// 				j++;
-// 		else
-// 			return (line);
-// 		dollar = ft_strncpy(ft_calloc(j - (*i) + 1, sizeof(char)), line + (*i),
-// 				j - (*i));
-// 		new_line = ft_strncpy(ft_calloc((*i), sizeof(char)), line, (*i) - 1);
-// 		dollar = search_env(dollar, env);
-// 		new_line = ft_strjoin(new_line, dollar);
-// 		(*i) = j;
-// 		new_line = ft_strjoin(new_line, line + (*i));
-// 		free(line);
-// 		line = ft_strdup(new_line);
-// 		free(new_line);
-// 		free(dollar);
-// 	}
-// 	return (line);
-// }
-
-static char	*handle_exit_status(char *line, size_t *i, t_global *glob)
+char	*dollar_exit_value(char *line, size_t *i, t_global *glob)
 {
 	char	*new_line;
-	char	*exit_value_str;
-	char	*temp;
+	char	*tmp;
+	char	*tmp_itoa;
+	char	*tmp_line;
 
-	new_line = ft_strncpy(ft_calloc((*i + 1), sizeof(char)), line, (*i) - 1);
-	exit_value_str = ft_itoa(glob->exit_value);
-	temp = new_line;
-	new_line = ft_strjoin(new_line, exit_value_str);
-	free(temp);
-	free(exit_value_str);
-	temp = new_line;
-	new_line = ft_strjoin(new_line, line + (*i) + 1);
-	free(temp);
+	tmp = ft_calloc((*i + 1), sizeof(char));
+	tmp_itoa = ft_itoa(glob->exit_value);
+	new_line = ft_strncpy(tmp, line, (*i) - 1);
+	new_line = ft_strjoin(new_line, tmp_itoa);
+	tmp_line = ft_strjoin(new_line, line + (*i) + 1);
 	free(line);
-	return (new_line);
+	line = ft_strdup(tmp_line);
+	free(new_line);
+	free(tmp);
+	free(tmp_itoa);
+	free(tmp_line);
+	return (line);
 }
 
-static size_t	find_end_of_var(char *line, size_t i)
+char	*continue_dollar(char *line, char *new_line, char *dollar, int i)
 {
-	if (ft_isdigit(line[i]))
-		while (ft_isdigit(line[i]))
-			i++;
-	else if (ft_isalpha(line[i]))
-		while (ft_isalnum(line[i]) && line[i])
-			i++;
-	return (i);
+	char	*tmp;
+
+	tmp = ft_strjoin(new_line, line + i);
+	free(line);
+	line = ft_strdup(tmp);
+	free(new_line);
+	free(tmp);
+	free(dollar);
+	return (line);
 }
 
-static char	*replace_var_with_env(char *line, size_t *i, size_t j, t_env *env)
+char	*dollar_else(char *line, size_t *i, t_env *env)
 {
 	char	*new_line;
 	char	*dollar;
-	char	*temp;
-	char	*env_value;
+	char	*tmp;
+	size_t	j;
 
-	dollar = ft_strncpy(ft_calloc(j - (*i) + 1, sizeof(char)), line + (*i), j
-			- (*i));
-	new_line = ft_strncpy(ft_calloc((*i), sizeof(char)), line, (*i) - 1);
-	env_value = search_env(dollar, env);
-	temp = new_line;
-	new_line = ft_strjoin(new_line, env_value);
-	free(temp);
-	*i = j;
-	temp = new_line;
-	new_line = ft_strjoin(new_line, line + (*i));
-	free(temp);
-	free(line);
-	free(env_value);
-	return (new_line);
+	j = (*i);
+	if (ft_isdigit(line[j]))
+		while (ft_isdigit(line[j]))
+			j++;
+	else if (ft_isalpha(line[j]))
+		while (ft_isalnum(line[j]) && line[j])
+			j++;
+	else
+		return (line);
+	dollar = ft_strncpy(ft_calloc(j - (*i) + 1, sizeof(char)),
+			line + (*i), j - (*i));
+	tmp = ft_calloc((*i), sizeof(char));
+	new_line = ft_strncpy(tmp, line, (*i) - 1);
+	dollar = search_env(dollar, env);
+	new_line = ft_strjoin(new_line, dollar);
+	(*i) = j;
+	line = continue_dollar(line, new_line, dollar, (*i));
+	free(tmp);
+	return (line);
 }
 
 char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 {
-	size_t	j;
-
 	if (line[(*i)] == '?')
-		return (handle_exit_status(line, i, glob));
-	j = find_end_of_var(line, *i);
-	if (j == *i)
-		return (line);
-	return (replace_var_with_env(line, i, j, env));
+		line = dollar_exit_value(line, i, glob);
+	else
+		line = dollar_else(line, i, env);
+	return (line);
 }
 
 bool	replace_dollar(char **line, t_env *env, t_global *glob)
@@ -138,6 +101,7 @@ bool	replace_dollar(char **line, t_env *env, t_global *glob)
 			(*line) = after_dollar((*line), &i, env, glob);
 			if (!(*line))
 				return (false);
+			i = 0;
 		}
 	}
 	return (true);

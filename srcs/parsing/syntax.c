@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 18:32:16 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/11 16:36:44 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,18 @@ sinon on va chercher la value (ex echo $PWD - > truc/truc/minishell)
 */
 char	*search_env(char *value, t_env *env)
 {
-	char	*new_value;
-
-	while (env)
+	while (env->next)
 	{
 		if (ft_strcmp(value, env->name) == 0)
 		{
-			new_value = ft_strdup(env->value);
 			free(value);
-			return (new_value);
+			value = ft_strdup(env->value);
+			return (value);
 		}
 		env = env->next;
 	}
 	free(value);
-	return (NULL);
+	return (ft_strdup("\0"));
 }
 
 /*
