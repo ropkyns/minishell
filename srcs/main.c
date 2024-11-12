@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/12 14:58:11 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:08:02 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ ensuite fait la liste de token, verifie la syntaxe et va executer la cmd.
 */
 void	process_command(t_global *glob)
 {
-	// ft_env(glob->env);
+	ft_env(glob->env);
 	if (handle_quotes(glob, glob->line) || !replace_dollar(&glob->line,
 			glob->env, glob) || !do_list_token(&glob->token_list, glob->line))
 		return ;
