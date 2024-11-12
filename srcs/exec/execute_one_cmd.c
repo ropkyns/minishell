@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:14:53 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 16:23:17 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 10:07:06 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,16 @@ void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
 	}
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		handle_in_out(cmd);
 		env_array = create_env_array(env);
 		execute_with_execve(path_name, cmd, env_array);
 	}
 	else
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, handle_nl);
+		signal(SIGQUIT, handle_nl);
 		waitpid(pid, NULL, 0);
 		handle_parent_process(cmd);
 	}

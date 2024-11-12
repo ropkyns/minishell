@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:36:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 16:54:17 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 10:23:53 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,22 @@ bool	is_simple_command(t_structok *token_list)
 char	**make_env_tab(t_env *env)
 {
 	t_env	*current_env;
-	int		count;
+	int		i;
 	char	**env_array;
 
 	current_env = env;
-	count = 0;
-	while (current_env)
-	{
-		count++;
-		current_env = current_env->next;
-	}
-	env_array = malloc(sizeof(char *) * (count + 1));
-	if (!check_allocation(env_array))
+	i = 0;
+	env_array = NULL;
+	env_array = malloc(sizeof(char *) * (len_env(env) + 1));
+	if (!env_array)
 		return (NULL);
-	current_env = env;
-	count = 0;
 	while (current_env)
 	{
-		env_array[count] = current_env->str;
+		env_array[i] = current_env->str;
 		current_env = current_env->next;
-		count++;
+		i++;
 	}
-	env_array[count] = NULL;
+	env_array[i] = NULL;
 	return (env_array);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/11 13:09:07 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 11:31:52 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,19 +116,14 @@ bool	export_value(t_env **env, char *str)
 		i = -1;
 		while (++i < pos && current)
 			current = current->next;
-		if (current == NULL)
-			return (free(value), false);
-		// unset(current->str, env);
-		if (current != NULL)
-		{
-			current->is_freed = true;
-			free(current->str);
-		}
+		free(current->str);
 		current->str = value;
 	}
-	else if (!add_node_env(env, value))
-		return (false);
-	return (free(value), true);
+	else if (add_node_env(env, value))
+		return (free(value), true);
+	else
+		return (free(value), false);
+	return (true);
 }
 
 /*
@@ -159,5 +154,6 @@ int	ft_export(t_env **env, char **str)
 			return (1);
 		i++;
 	}
+	free(str[i]);
 	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:24 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/11 13:05:15 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 11:08:52 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_env(t_env *a)
 			free(a->name);
 		if (a->value)
 			free(a->value);
-		if (a->str && !a->is_freed)
+		if (a->str)
 			free(a->str);
 		free(a);
 		a = tmp;

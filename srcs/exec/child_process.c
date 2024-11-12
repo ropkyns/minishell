@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 17:08:15 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 10:06:25 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ lance le builtin d'abord ensuite on execve dans execute command
 void	execute_child_process(t_cmd *cmd, t_global *glob, int input_fd,
 		int *pipes)
 {
+	signal(SIGQUIT, SIG_DFL);
 	handle_redirections(cmd, input_fd, pipes);
 	if (is_builtins(cmd->cmd_args[0]))
 	{
@@ -135,8 +136,10 @@ void	execute_piped(t_cmd *cmd, t_env **env, t_global *glob)
 			handle_parent_process(&input_fd, pipes, pid);
 		cmd = cmd->next;
 	}
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_nl);
+	signal(SIGQUIT, handle_nl);
 	while (wait(NULL) > 0)
-	{
-	}
+		;
 	signal(SIGINT, SIG_DFL);
 }

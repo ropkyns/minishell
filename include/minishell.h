@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/11 13:03:49 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 10:05:36 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ char					*handle_absolute_relative_path(char *cmd);
 // SIGNAL
 void					handle_signal(void);
 void					handle_c(int sig);
+void					handle_nl(int sig);
 
 // EXEC
 void					get_builtins(int save_stdout, t_cmd *cmd,

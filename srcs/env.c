@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:24:50 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/11 13:04:33 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/12 11:21:38 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,6 @@ bool	add_node_env(t_env **env, char *value)
 	if (!node)
 		return (false);
 	node->str = ft_strdup(value);
-	if (!node->str)
-	{
-		free(node);
-		return (false);
-	}
 	set_env(node);
 	if (*env == NULL)
 	{
@@ -119,13 +114,13 @@ bool	add_node_env(t_env **env, char *value)
  */
 void	init_env(t_env **current, char **env)
 {
-	int		i;
-	char	cwd[PATH_MAX];
+	int	i;
 
+	// char	cwd[PATH_MAX];
 	i = 0;
-	set_env_var(current, "PWD", getcwd(cwd, PATH_MAX));
-	set_env_var(current, "SHLVL", "2");
-	set_env_var(current, "_", "/usr/bin/env");
+	// set_env_var(current, "PWD", getcwd(cwd, PATH_MAX));
+	// set_env_var(current, "SHLVL", "2");
+	// set_env_var(current, "_", "/usr/bin/env");
 	if (!env || !*env)
 		return ;
 	while (env[i])
