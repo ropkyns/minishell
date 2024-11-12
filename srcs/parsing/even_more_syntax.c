@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/11 17:26:20 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:02:05 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ char	*continue_dollar(char *line, char *new_line, char *dollar, int i)
 
 	tmp = ft_strjoin(new_line, line + i);
 	free(line);
-	line = ft_strdup(tmp);
-	free(new_line);
+	if (!tmp[0])
+		line = NULL;
+	else
+		line = ft_strdup(tmp);
+	free(new_line
 	free(tmp);
 	free(dollar);
 	return (line);
