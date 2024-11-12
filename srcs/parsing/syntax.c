@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/12 14:50:44 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:09:23 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*search_env(char *value, t_env *env)
 {
 	while (env->next)
 	{
-		// printf("%s\n", env->name);
 		if (ft_strcmp(value, env->name) == 0)
 		{
 			free(value);
