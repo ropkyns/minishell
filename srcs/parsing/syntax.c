@@ -18,7 +18,7 @@ sinon on va chercher la value (ex echo $PWD - > truc/truc/minishell)
 */
 char	*search_env(char *value, t_env *env)
 {
-	while (env->next)
+	while (env)
 	{
 		if (ft_strcmp(value, env->name) == 0)
 		{

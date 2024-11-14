@@ -33,7 +33,7 @@ void	init_global(t_global *glob, int argc, char **argv, char **env)
 char	*get_user_input(t_global *glob)
 {
 	glob->cmd = NULL;
-	glob->line = readline("minishell > ");
+	glob->line = readline("\033[1;35mMinishell > \033[m");;
 	if (!(glob->line))
 		error_exit("exit\n", glob);
 	add_history(glob->line);
