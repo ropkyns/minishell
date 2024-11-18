@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/18 12:09:19 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:24:55 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	process_command(t_global *glob)
 	if (handle_quotes(glob, glob->line) || !replace_dollar(&glob->line,
 			glob->env, glob) || !do_list_token(&glob->token_list, glob->line))
 		return ;
+	// print_token(glob->token_list);
 	if (check_syntax(glob, &glob->token_list) == true)
 	{
 		init_cmd(&glob->cmd, &glob->token_list, glob);
@@ -68,6 +69,23 @@ void	cleanup(t_global *glob)
 	free(glob->line);
 	free_tok(&glob->token_list);
 }
+
+// void	print_token(t_structok *token)
+// {
+// 	t_structok	*tmp;
+
+// 	if (!token)
+// 		return ;
+// 	tmp = token;
+// 	while (tmp->next != token)
+// 	{
+// 		printf("Type : %d, [%s]\n", tmp->type, tmp->value);
+// 		fflush(stdout);
+// 		tmp = tmp->next;
+// 	}
+// 	printf("Type : %d, [%s]\n", tmp->type, tmp->value);
+// 	fflush(stdout);
+// }
 
 /*
  * La maison mere un peu, genre mother💅

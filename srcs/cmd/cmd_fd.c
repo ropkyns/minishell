@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 13:58:25 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/18 15:09:25 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 /*
  * Gere les redirections > et < et << et >>
  */
@@ -60,10 +59,10 @@ static bool	read_heredoc(int fd, char *end_word, t_env *env, t_global *glob)
 			write(2, "')\n", 3);
 			break ;
 		}
-		if (!ft_strcmp(end_word, buf))
-			break ;
 		if (!replace_dollar(&buf, env, glob))
 			error_exit(NULL, glob);
+		if (!ft_strcmp(end_word, buf))
+			break ;
 		write(fd, buf, ft_strlen(buf));
 		write(fd, "\n", 1);
 		free(buf);

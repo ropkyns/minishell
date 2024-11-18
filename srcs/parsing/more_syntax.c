@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/18 12:02:24 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:36:24 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ bool	is_op_after_op(t_structok **tok_list, t_global *glob)
 			|| tmp->next->type == HEREDOC || tmp->next->type == APPEND)
 		{
 			glob->exit_value = 2;
-			print_error_syntax((*tok_list)->next->value);
+			print_error_syntax(tmp->next->value);
 			return (true);
 		}
 		tmp = tmp->next;
