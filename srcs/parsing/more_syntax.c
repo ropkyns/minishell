@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_syntax.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:16:18 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/09 11:57:01 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/18 12:02:24 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	is_directory(const char *path)
 void	print_error_syntax(char *value)
 {
 	write(2, "bash: syntax error near unexpected token `", 42);
-	write(2, value, strlen(value));
+	write(2, value, ft_strlen(value));
 	write(2, "'\n", 2);
 }
 

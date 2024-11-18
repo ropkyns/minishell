@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/12 15:09:23 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:06:54 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,16 @@ approprie.
 bool	check_syntax(t_global *glob, t_structok **token_list)
 {
 	if (is_first_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"),
-			false);
+		return (print_error_syntax("|"), false);
 	else if (is_last_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"),
-			false);
+		return (print_error_syntax("|"), false);
 	else if (is_op_before_pipe(token_list, glob))
-		return (printf("bash: syntax error near unexpected token `|'\n"),
-			false);
+		return (print_error_syntax("|"), false);
 	else if (is_op_after_op(token_list, glob))
 		return (false);
 	else if (is_last_op(token_list, glob))
-		return (printf("syntax error near unexpected token `newline'\n"),
+		return (
+			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2),
 			false);
 	else if (is_invalid(token_list, glob))
 		return (false);

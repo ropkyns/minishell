@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/12 15:09:13 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:09:19 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	init_global(t_global *glob, int argc, char **argv, char **env)
 char	*get_user_input(t_global *glob)
 {
 	glob->cmd = NULL;
-	glob->line = readline("\033[1;35mMinishell > \033[m");;
+	glob->line = readline("\033[1;35mMinishell > \033[m");
 	if (!(glob->line))
 		error_exit("exit\n", glob);
 	add_history(glob->line);
@@ -74,7 +74,7 @@ void	cleanup(t_global *glob)
  */
 int	main(int argc, char **argv, char **env)
 {
-	t_global *glob;
+	t_global	*glob;
 
 	glob = malloc(sizeof(t_global));
 	init_global(glob, argc, argv, env);

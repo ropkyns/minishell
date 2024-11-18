@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:00:12 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 14:03:40 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/18 12:02:05 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ bool	handle_quotes(t_global *data, char *command)
 	}
 	if (double_quote || single_quote)
 	{
-		printf("bash: syntax error quotes aren't closed\n");
+		ft_putstr_fd("bash: syntax error quotes aren't closed\n", 2);
 		data->exit_value = 2;
 		return (true);
 	}
@@ -114,8 +114,7 @@ bool	is_invalid(t_structok **tok_list, t_global *glob)
 	if ((*tok_list)->value[0] == '&')
 	{
 		glob->exit_value = 2;
-		return (printf("bash: syntax error near unexpected token '%s'\n",
-				(*tok_list)->value), true);
+		return (print_error_syntax((*tok_list)->value), true);
 	}
 	if ((*tok_list)->value[0] == ':')
 	{

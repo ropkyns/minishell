@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:36:23 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/12 10:23:53 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:53:51 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	check_allocation(void *ptr)
 {
 	if (!ptr)
 	{
-		printf("malloc error");
+		ft_putstr_fd("malloc error", 2);
 		return (false);
 	}
 	return (true);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 16:33:02 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:59:15 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,16 @@ static void	exit_value(int flag, t_global *glob, t_cmd *cmd)
 	if (flag == E_ONE)
 	{
 		glob->exit_value = 127;
-		printf("bash: %s: command not found\n", cmd->cmd_args[0]);
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd->cmd_args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 	}
 	else if (flag == E_TWO)
 	{
 		glob->exit_value = 126;
-		printf("bash: %s: Is a directory\n", cmd->cmd_args[0]);
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd->cmd_args[0], 2);
+		ft_putstr_fd(": Is a directory\n", 2);
 	}
 }
 
