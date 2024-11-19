@@ -68,7 +68,7 @@ il n'y a qu'une seule commande sans pipe ou l'inverse
 void	process(t_cmd *cmd, char *path_name, t_global *glob, t_env **env)
 {
 	if (is_simple_command(glob->token_list))
-		execute_simple(cmd, path_name, env);
+		execute_simple(cmd, path_name, env, glob);
 	else
 		execute_piped(cmd, env, glob);
 }

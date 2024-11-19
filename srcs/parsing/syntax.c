@@ -16,21 +16,37 @@
 * Pour le $, si $? alors on va chercher l'exit value
 sinon on va chercher la value (ex echo $PWD - > truc/truc/minishell)
 */
-char	*search_env(char *value, t_env *env)
+char *search_env(const char *key, t_env *env) 
 {
-	while (env)
-	{
-		if (ft_strcmp(value, env->name) == 0)
-		{
-			free(value);
-			value = ft_strdup(env->value);
-			return (value);
-		}
-		env = env->next;
-	}
-	free(value);
-	return (ft_strdup("\0"));
+	 while (env)
+ { 
+  if (strcmp(key, env->name) == 0) 
+  { 
+	char *value = strdup(env->value); 
+	printf("Retrieved value from environment: %s\n", value); 
+	return value;
+	} 
+	env = env->next; 
+	} 
+	return strdup(""); // Return empty string if variable not found
 }
+
+char *get_elem_env(t_env *env, const char *key)
+{
+    while (env)
+    {
+        printf("Searching in environment: %s=%s\n", env->name, env->value); // Debug statement
+        if (strcmp(key, env->name) == 0)
+        {
+            char *value = strdup(env->value);
+            printf("Retrieved value from environment: %s\n", value); // Debug statement
+            return value;
+        }
+        env = env->next;
+    }
+    return strdup(""); // Return empty string if variable not found
+}
+
 
 /*
 * Fonction qui va appeler toutes nos petites fonctions "specialises"

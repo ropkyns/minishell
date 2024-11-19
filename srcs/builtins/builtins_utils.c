@@ -112,7 +112,7 @@ void	sort_array(char **arr, int len)
 		j = i + 1;
 		while (j < len)
 		{
-			diff = ft_strncmp(arr[i], arr[j], __INT_MAX__);
+			diff = strcmp(arr[i], arr[j]);
 			if (diff > 0)
 			{
 				ft_swap_str_arr(i, j, arr);
@@ -123,3 +123,4 @@ void	sort_array(char **arr, int len)
 		i++;
 	}
 }
+

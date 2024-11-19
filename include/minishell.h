@@ -103,7 +103,7 @@ void					free_path(char **path);
 int						ft_pwd(void);
 int						ft_cd(t_global *test, char **args);
 int						ft_export(t_env **env, char **str);
-bool					export_value(t_env **env, char *str);
+bool	export_value(t_env **env, char *str);
 int						ft_unset(t_env **env, char **args);
 void					ft_exit(char **args, t_global *glob);
 int						ft_echo(char **args);
@@ -137,7 +137,8 @@ bool					check_syntax(t_global *glob, t_structok **token_list);
 bool					replace_dollar(char **line, t_env *env, t_global *glob);
 char					*after_dollar(char *line, size_t *i, t_env *env,
 							t_global *glob);
-char					*search_env(char *value, t_env *env);
+char *search_env(const char *key, t_env *env) ;
+char *get_elem_env(t_env *env, const char *key);
 bool					is_directory(const char *path);
 bool					is_invalid(t_structok **tok_list, t_global *glob);
 
@@ -190,7 +191,7 @@ void					get_builtins(int save_stdout, t_cmd *cmd,
 bool					is_builtins(char *cmd);
 bool					get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
 void					execute_simple(t_cmd *cmd, char *path_name,
-							t_env **env);
+							t_env **env, t_global *glob);
 void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
 
 void					handle_redirections(t_cmd *cmd, int input_fd,

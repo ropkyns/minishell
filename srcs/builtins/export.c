@@ -43,6 +43,48 @@ static bool	export_no_args(t_env *env)
 	return (true);
 }
 
+
+
+// static bool export_no_args(t_env *env)
+// {
+//     char **arr;
+//     int i;
+//     int j;
+
+//     arr = make_env_tab(env);
+//     if (!arr)
+//     {
+//         printf("Failed to create environment array\n");
+//         return false;
+//     }
+
+//     printf("Array created by make_env_tab:\n");
+//     for (i = 0; arr[i]; i++)
+//     {
+//         printf("%s\n", arr[i]);
+//     }
+
+//     sort_array(arr, len_env(env));
+
+//     i = 0;
+//     while (arr[i])
+//     {
+//         printf("declare -x ");
+//         j = 0;
+//         while (arr[i][j] && arr[i][j] != '=')
+//             printf("%c", arr[i][j++]);
+//         if (arr[i][j] && arr[i][j] == '=')
+//             printf("=\"%s\"\n", &arr[i][j + 1]);
+//         else
+//             printf("\n");
+//         i++;
+//     }
+//     free(arr);
+
+//     return true;
+// }
+
+
 /*
 * On regarde si le nom de la variable commence bien par un alpha
 ou un _, ensuite on regarde si la valeur de la variable n'a bien que
@@ -99,32 +141,132 @@ static int	exist(char *str, t_env *env)
 et on va a cet index, on free sa value et on la met a jour.
  Si elle existe pas on ajoute une nouvelle node
 */
-bool	export_value(t_env **env, char *str)
+bool export_value(t_env **env, char *str)
 {
-	int		pos;
-	char	*value;
-	int		i;
-	t_env	*current;
+    char *value;
+    t_env *current = *env;
+    t_env *prev = NULL;    
+    char *equals_sign = strchr(str, '=');
+    char *key;
+    char *full_str;
+    size_t key_len, value_len;
 
-	current = *env;
-	pos = exist(str, current);
-	value = ft_strdup(str);
-	if (!value)
-		return (false);
-	if (pos >= 0)
-	{
-		i = -1;
-		while (++i < pos && current)
-			current = current->next;
-		free(current->str);
-		current->str = value;
-	}
-	else if (add_node_env(env, value))
-		return (free(value), true);
-	else
-		return (free(value), false);
-	return (true);
+    if (equals_sign)
+    {
+        key = ft_strndup(str, equals_sign - str);
+        value = ft_strdup(equals_sign + 1);
+    }
+    else
+    {
+        key = ft_strdup(str);
+        value = ft_strdup("");
+    }
+    if (strstr(value, key) != NULL && value[0] == '$')
+    {
+        free(key);
+        free(value);
+        return false;
+    }
+    key_len = ft_strlen(key);
+    value_len = ft_strlen(value);
+    full_str = malloc(key_len + 1 + value_len + 1); 
+    if (!full_str)
+    {
+        free(key);
+        free(value);
+        return false;
+    }
+    ft_memcpy(full_str, key, key_len);
+    full_str[key_len] = '=';
+    ft_memcpy(full_str + key_len + 1, value, value_len);
+    full_str[key_len + 1 + value_len] = '\0';
+    while (current)
+    {
+        if (ft_strcmp(current->name, key) == 0)
+        {
+            free(current->value);
+            free(current->str);
+            current->value = value;
+            current->str = full_str;
+            free(key);
+            return true;
+        }
+        prev = current;
+        current = current->next;
+    }
+    if (add_node_env(env, full_str))
+    {
+        free(key);
+        return true;
+    }
+    else
+    {
+        free(key);
+        free(full_str);
+        return false;
+    }
 }
+
+
+
+
+// bool export_value(t_env **env, const char *str)
+// {
+//     char *key;
+//     char *value;
+//     t_env *current = *env;
+//     t_env *prev = NULL;
+
+//     // Handle variables without values
+//     char *equals_sign = strchr(str, '=');
+//     if (equals_sign)
+//     {
+//         key = ft_strndup(str, equals_sign - str);
+//         value = ft_strdup(equals_sign + 1);
+//     }
+//     else
+//     {
+//         key = strdup(str);
+//         value = strdup("");
+//     }
+
+//     // Find the existing key in the environment list
+//     while (current)
+//     {
+//         if (strcmp(current->name, key) == 0)
+//         {
+//             free(current->value);
+//             current->value = value;
+//             free(key);
+//             printf("Updated environment value: %s\n", str); // Debug statement
+//             return true;
+//         }
+//         prev = current;
+//         current = current->next;
+//     }
+
+//     // Add the new key to the environment list
+//     t_env *new_node = malloc(sizeof(t_env));
+//     if (!new_node)
+//     {
+//         printf("Memory allocation failed for new environment node\n");
+//         free(key);
+//         free(value);
+//         return false;
+//     }
+
+//     new_node->name = key;
+//     new_node->value = value;
+//     new_node->next = NULL;
+//     if (prev)
+//         prev->next = new_node;
+//     else
+//         *env = new_node;
+//     printf("Added new value to environment: %s\n", str); // Debug statement
+
+//     return true;
+// }
+
 
 /*
 * Si pas d'arguments on affiche toutes les variables d'env, sinon on check

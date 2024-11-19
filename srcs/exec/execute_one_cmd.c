@@ -74,29 +74,39 @@ static void	handle_parent_process(t_cmd *cmd)
 (une seule commande en gros), on gere aussi les redirections
 car il peut y avoir un heredoc
 */
-void	execute_simple(t_cmd *cmd, char *path_name, t_env **env)
+void	execute_simple(t_cmd *cmd, char *path_name, t_env **env, t_global *glob)
 {
 	pid_t	pid;
 	char	**env_array;
+	char *executable;
 
 	pid = fork();
 	if (pid < 0)
-	{
 		exit(1);
-	}
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		handle_in_out(cmd);
 		env_array = create_env_array(env);
+		executable = get_command_path(cmd->cmd_args[0], *env);
+		if (!executable)
+		{
+			free(env_array);
+			printf("bash: %s: No such file or directory\n", cmd->cmd_args[0]);
+			glob->exit_value = 127;
+			exit(127);
+		}
 		execute_with_execve(path_name, cmd, env_array);
+		free(executable);
 	}
 	else
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, handle_nl);
 		signal(SIGQUIT, handle_nl);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &glob->exit_value, 0);
 		handle_parent_process(cmd);
+		if (WIFEXITED(glob->exit_value)) 
+			glob->exit_value = WEXITSTATUS(glob->exit_value);
 	}
 }
