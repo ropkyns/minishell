@@ -12,6 +12,32 @@
 
 #include "../../include/minishell.h"
 
+void heredoc_signal_handler(int sig) 
+{ 
+	if (sig == SIGINT) 
+	{ 
+		write(STDERR_FILENO, "\n", 1);
+		exit(1);
+	 }
+}
+int	*get_signum(void)
+{
+	static int	signum = 0;
+	printf("Etat de signum : %d\n", signum);
+
+	return (&signum);
+}
+
+bool catch_sigint(char *doc, char *line)
+{
+    if (*get_signum() == SIGINT)
+    {
+		*get_signum() = 0;
+        return (true);
+    }
+    return (false);
+}
+
 void	handle_nl(int sig)
 {
 	if (sig == SIGINT || sig == SIGQUIT)
@@ -43,28 +69,3 @@ void	handle_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_c);
 }
-
-// void	handle_exit_child(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		printf("\n");
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 	}
-// }
-
-// /*
-// * Le handler, il va attrapper les signaux et decider de quoi faire
-// en gros ignorer, ou appeler handle_c
-// */
-// void	handle_signalchild(void)
-// {
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGINT, SIG_IGN);
-// 	while (wait(NULL) > 0)
-// 	{
-// 	}
-// 	signal(SIGINT, handle_c);
-// }

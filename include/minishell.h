@@ -83,7 +83,15 @@ typedef struct s_global
 	t_structok			*token_list;
 	int					exit_value;
 	t_cmd				*cmd;
+	bool				heredoc_interrupted;
 }						t_global;
+
+typedef struct s_heredoc_state { 
+	int signal_pipe[2];
+	bool interrupted; 
+	t_global *glob; 
+	t_env *env; 
+	} t_heredoc_state;
 
 // ERROR
 void					free_env(t_env *env);
@@ -172,6 +180,9 @@ char					*handle_absolute_relative_path(char *cmd);
 void					handle_signal(void);
 void					handle_c(int sig);
 void					handle_nl(int sig);
+int	*get_signum(void);
+bool	catch_sigint(char *doc, char *line);
+void heredoc_signal_handler(int sig);
 
 // EXEC
 void					get_builtins(int save_stdout, t_cmd *cmd,

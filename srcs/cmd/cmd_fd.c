@@ -46,6 +46,12 @@ void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 static bool	read_heredoc(int fd, char *end_word, t_env *env, t_global *glob)
 {
 	char	*buf;
+	struct sigaction sa;
+	sa.sa_handler = heredoc_signal_handler;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return(false);
 
 	while (1)
 	{
@@ -75,17 +81,38 @@ static bool	read_heredoc(int fd, char *end_word, t_env *env, t_global *glob)
 int	fd_heredoc(char *filename, t_global *glob)
 {
 	int	fd;
+	pid_t pid; 
+	int status;
 
 	fd = open(".heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
-	if (!read_heredoc(fd, filename, glob->env, glob))
+	pid = fork();
+	if(pid == -1)
+		return(close(fd), -1);
+	else if (pid == 0)
 	{
-		unlink(".heredoc.tmp");
-		return (-1);
+		if (!read_heredoc(fd, filename, glob->env, glob))
+		{
+			close(fd);
+			unlink(".heredoc.tmp");
+			exit(1);
+		}
+		close(fd);
+		exit(0);
 	}
-	fd = open(".heredoc.tmp", O_RDONLY);
-	if (fd > 0)
-		unlink(".heredoc.tmp");
+	else
+	{
+		close(fd);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+		{
+			fd = open(".heredoc.tmp", O_RDONLY);
+			if (fd > 0)
+				unlink(".heredoc.tmp");
+		}
+		else
+			fd = -1;
+	}
 	return (fd);
 }
