@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:50:14 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/18 11:59:15 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:21:53 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@
 static void	exit_value(int flag, t_global *glob, t_cmd *cmd)
 {
 	if (flag == E_ONE)
+	{
+		glob->exit_value = 127;
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd->cmd_args[0], 2);
+		ft_putstr_fd(": no such file or directory\n", 2);
+	}
+	else if (flag == E_ONE2)
 	{
 		glob->exit_value = 127;
 		ft_putstr_fd("bash: ", 2);
@@ -158,5 +165,5 @@ bool	get_cmd(t_cmd *cmd, t_global **glob, t_env **env)
 	if (path_name)
 		return (process(cmd, path_name, temp, env), free(path_name), true);
 	else
-		return (exit_value(E_ONE, *glob, cmd), false);
+		return (exit_value(E_ONE2, *glob, cmd), false);
 }

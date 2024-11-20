@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 14:30:38 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 15:23:03 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@
 
 # define FAIL 1
 # define SUCCESS 0
-# define E_ONE 127
-# define E_TWO 126
+# define E_ONE 2
+# define E_ONE2 3
+# define E_TWO 4
 
 typedef enum e_token
 {
