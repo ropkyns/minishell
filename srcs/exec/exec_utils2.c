@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:19:21 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 14:13:20 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:30:46 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	simple_exec_fail_pid(t_global *glob, pid_t pid, t_cmd *cmd)
 	signal(SIGINT, handle_nl);
 	signal(SIGQUIT, handle_nl);
 	waitpid(pid, &glob->exit_value, 0);
-	handle_parent_process(cmd);
+	handle_parent_process2(cmd);
 	if (WIFEXITED(glob->exit_value))
 		glob->exit_value = WEXITSTATUS(glob->exit_value);
 }

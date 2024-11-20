@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 14:22:44 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:30:38 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,5 +217,6 @@ void					process(t_cmd *cmd, char *path_name, t_global *glob,
 char					*find_executable(char **path_list, char *cmd_name);
 void					simple_exec_fail_pid(t_global *glob, pid_t pid,
 							t_cmd *cmd);
+void					handle_parent_process2(t_cmd *cmd);
 
 #endif

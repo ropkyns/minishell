@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:14:53 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 14:07:56 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:30:30 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	execute_with_execve(char *path_name, t_cmd *cmd, char **env_array)
 	exit(0);
 }
 
-static void	handle_parent_process(t_cmd *cmd)
+void	handle_parent_process2(t_cmd *cmd)
 {
 	if (cmd->infile >= 0)
 		close(cmd->infile);
