@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/20 14:23:12 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 16:44:11 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 		{
 			ft_putstr_fd("bash: ", 2);
 			ft_putstr_fd(toklist->next->value, 2);
-			ft_putstr_fd(": No such file or directory", 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 			error_exit(NULL, glob);
 		}
 	}
