@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/18 12:06:54 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:50:24 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,36 @@
 * Pour le $, si $? alors on va chercher l'exit value
 sinon on va chercher la value (ex echo $PWD - > truc/truc/minishell)
 */
-char *search_env(const char *key, t_env *env) 
+char	*search_env(const char *key, t_env *env)
 {
-	 while (env)
- { 
-  if (strcmp(key, env->name) == 0) 
-  { 
-	char *value = strdup(env->value); 
-	printf("Retrieved value from environment: %s\n", value); 
-	return value;
-	} 
-	env = env->next; 
-	} 
-	return strdup(""); // Return empty string if variable not found
+	char	*value;
+
+	while (env)
+	{
+		if (strcmp(key, env->name) == 0)
+		{
+			value = strdup(env->value);
+			return (value);
+		}
+		env = env->next;
+	}
+	return (strdup(""));
 }
 
-char *get_elem_env(t_env *env, const char *key)
+char	*get_elem_env(t_env *env, const char *key)
 {
-    while (env)
-    {
-        printf("Searching in environment: %s=%s\n", env->name, env->value); // Debug statement
-        if (strcmp(key, env->name) == 0)
-        {
-            char *value = strdup(env->value);
-            printf("Retrieved value from environment: %s\n", value); // Debug statement
-            return value;
-        }
-        env = env->next;
-    }
-    return strdup(""); // Return empty string if variable not found
+	char	*value;
+
+	while (env)
+	{
+		if (strcmp(key, env->name) == 0)
+		{
+			value = strdup(env->value);
+			return (value);
+		}
+		env = env->next;
+	}
+	return (strdup(""));
 }
 
 

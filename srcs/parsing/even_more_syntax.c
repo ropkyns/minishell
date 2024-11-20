@@ -6,7 +6,7 @@
 /*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 15:05:30 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/12 15:07:55 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:43:25 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,53 +79,33 @@ char	*continue_dollar(char *line, char *new_line, char *dollar, int i)
 // 	return (line);
 // }
 
-char *dollar_else(char *line, size_t *i, t_env *env)
+char	*dollar_else(char *line, size_t *i, t_env *env)
 {
-    char *new_line;
-    char *var_name;
-    char *var_value;
-    size_t j = *i;
+	char	*new_line;
+	char	*var_name;
+	char	*var_value;
+	size_t	j;
 
-    // Determine the length of the variable name
-    if (ft_isdigit(line[j]))
-    {
-        while (ft_isdigit(line[j]))
-            j++;
-    }
-    else if (ft_isalpha(line[j]))
-    {
-        while (ft_isalnum(line[j]) && line[j])
-            j++;
-    }
-    else
-    {
-        return line;
-    }
-
-    // Extract the variable name
-    var_name = ft_strncpy(ft_calloc(j - *i + 1, sizeof(char)), line + *i, j - *i);
-    printf("Extracted variable name: %s\n", var_name); // Debug statement
-
-    // Lookup the value of the variable in the environment
-    var_value = get_elem_env(env, var_name);
-    printf("Retrieved value from environment: %s\n", var_value); // Debug statement
-
-    // Construct the new line with the expanded variable value
-    new_line = ft_calloc(strlen(line) - (j - *i) + strlen(var_value) + 1, sizeof(char));
-    strncpy(new_line, line, *i - 1); // Copy up to the variable name
-    strcat(new_line, var_value); // Append the variable value
-    strcat(new_line, line + j); // Append the rest of the original line
-
-    free(var_value);
-    free(var_name);
-
-    *i = j;
-    free(line); // Free the original line as we have created a new one
-    return new_line;
+	j = *i;
+	if (ft_isdigit(line[j]))
+		while (ft_isdigit(line[j]))
+			j++;
+	else if (ft_isalpha(line[j]))
+		while (ft_isalnum(line[j]) && line[j])
+			j++;
+	else
+		return (line);
+	var_name = ft_strncpy(ft_calloc(j - *i + 1, sizeof(char)),
+			line + *i, j - *i);
+	var_value = get_elem_env(env, var_name);
+	new_line = ft_calloc(strlen(line) - (j - *i) + strlen(var_value) + 1,
+			sizeof(char));
+	strncpy(new_line, line, *i - 1);
+	strcat(new_line, var_value);
+	strcat(new_line, line + j);
+	*i = j;
+	return (free(line), free(var_name), free(var_value), new_line);
 }
-
-
-
 
 char	*after_dollar(char *line, size_t *i, t_env *env, t_global *glob)
 {
