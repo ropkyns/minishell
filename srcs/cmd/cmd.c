@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:22:15 by paulmart          #+#    #+#             */
-/*   Updated: 2024/10/26 16:19:31 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 17:55:17 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	process_cmd_token(t_cmd **cmd, t_structok *tmp, t_global *glob,
 on ajoute les node et on garde le head de notre liste de token dans start
 (parce que j'ai eu la bonne idee de faire une liste chainee circulaire de token)
 */
-void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
+bool	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 {
 	t_structok	*tmp;
 	t_structok	*start;
@@ -79,7 +79,7 @@ void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 
 	tmp = *tok_list;
 	if (!tmp)
-		return ;
+		return (false);
 	start = tmp;
 	add_node_cmd(cmd, NULL);
 	last = find_last_node_cmd(*cmd);
@@ -87,13 +87,15 @@ void	init_cmd(t_cmd **cmd, t_structok **tok_list, t_global *glob)
 	{
 		if (tmp->type == CMD)
 			process_cmd_token(cmd, tmp, glob, *tok_list);
-		else if (tmp->type == INPUT || tmp->type == OUTPUT
-			|| tmp->type == HEREDOC || tmp->type == APPEND)
-			handle_input_output(last, tmp, glob);
 		else if (tmp->type == PIPE)
 			add_node_cmd(cmd, NULL);
+		else if (tmp->type == INPUT || tmp->type == OUTPUT
+			|| tmp->type == HEREDOC || tmp->type == APPEND)
+			if (!handle_input_output(last, tmp, glob))
+				return (false);
 		tmp = tmp->next;
 		if (tmp == start)
 			break ;
 	}
+	return (true);
 }

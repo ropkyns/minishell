@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 16:43:22 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 17:14:32 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	process_command(t_global *glob)
 		return ;
 	if (check_syntax(glob, &glob->token_list) == true)
 	{
-		init_cmd(&glob->cmd, &glob->token_list, glob);
+		if (!init_cmd(&glob->cmd, &glob->token_list, glob))
+			return ;
 		if (glob && glob->cmd && glob->cmd->cmd_args)
 		{
 			get_cmd(glob->cmd, &glob, &glob->env);

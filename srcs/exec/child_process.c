@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:25:10 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 14:28:30 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 17:43:01 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 	if (!env_array)
 		exit(1);
 	path_name = handle_absolute_relative_path(cmd->cmd_args[0]);
+	printf("%s", path_name);
 	if (!path_name)
 	{
 		path_name = get_command_path(cmd->cmd_args[0], *env);
+		printf("%s", path_name);
 	}
 	if (!path_name)
 	{
@@ -35,6 +37,7 @@ static void	execute_command(t_cmd *cmd, t_env **env)
 		free(env_array);
 		exit(127);
 	}
+	printf("%s", path_name);
 	execve(path_name, cmd->cmd_args, env_array);
 	perror("execve error");
 	free(env_array);
@@ -92,7 +95,8 @@ static void	handle_parent_process(int *input_fd, int *pipes, pid_t pid)
 }
 
 /*
-* Ici c'est l'enfant, on le fait gerer les redirections, si c'est un builtin on
+* Ici c'est l'enfant, on le fait gerer les redirections,
+si c'est un builtin on
 lance le builtin d'abord ensuite on execve dans execute command
 */
 void	execute_child_process(t_cmd *cmd, t_global *glob, int input_fd,
@@ -109,7 +113,8 @@ void	execute_child_process(t_cmd *cmd, t_global *glob, int input_fd,
 }
 
 /*
-* On regarde bien si il y a une commande apres, et du coup on cree un pipe.
+* On regarde bien si il y a une commande apres,
+et du coup on cree un pipe.
 on regarde si il ya des builtin qui touche aux env et si
 c'est le cas on les appelle
 ensuite on fork, on appelle le child_process dans le pid 0,

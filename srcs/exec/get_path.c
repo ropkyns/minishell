@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 16:56:02 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/07 18:42:10 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 17:51:26 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ On regarde si la commande dans le path est accessible et executable
  */
 char	*handle_absolute_relative_path(char *cmd)
 {
-	if (access(cmd, F_OK) == 0)
+	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 15:23:03 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 17:13:12 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ size_t					len_env(t_env *env);
 void					ft_swap_str_tab(int i, int j, char **arr);
 void					handle_critical_builtins(t_cmd *cmd, t_global *glob,
 							int *input_fd, int *pipes);
+void					cleanup(t_global *glob);
 
 // SYNTAX
 bool					handle_quotes(t_global *data, char *command);
@@ -175,14 +176,15 @@ void					free_env(t_env *a);
 void					set_env_var(t_env **env, char *name, char *value);
 
 // CMD
-void					init_cmd(t_cmd **cmd, t_structok **tok_list,
+bool					init_cmd(t_cmd **cmd, t_structok **tok_list,
 							t_global *glob);
 t_cmd					*find_last_node_cmd(t_cmd *cmd);
-void					handle_input_output(t_cmd *last, t_structok *toklist,
+bool					handle_input_output(t_cmd *last, t_structok *toklist,
 							t_global *glob);
 char					**args_tab(t_structok *toklist, t_global *glob,
 							t_structok *head);
 int						fd_heredoc(char *filename, t_global *glob);
+void					partial_cleanup(t_cmd *cmd);
 // PATH
 char					**init_path(char **env);
 char					*handle_absolute_relative_path(char *cmd);

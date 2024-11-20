@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/20 16:44:11 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 17:34:55 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 /*
  * Gere les redirections > et < et << et >>
  */
-void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
+bool	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 {
 	char	*filename;
 
-	filename = toklist->next->value;
 	if (last->infile >= 0)
 		close(last->infile);
 	if (last->outfile >= 0)
 		close(last->outfile);
+	filename = toklist->next->value;
 	if (toklist->type == INPUT)
 	{
 		last->infile = open(filename, O_RDONLY, 0644);
 		if (last->infile == -1)
 		{
 			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(toklist->next->value, 2);
+			ft_putstr_fd(filename, 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
-			error_exit(NULL, glob);
+			return (false);
 		}
 	}
 	else if (toklist->type == OUTPUT)
@@ -41,6 +41,7 @@ void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 		last->outfile = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (toklist->type == HEREDOC)
 		last->infile = fd_heredoc(filename, glob);
+	return (true);
 }
 
 static void	write_heredoc(int fd, char *str)
