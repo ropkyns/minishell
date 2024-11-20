@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: palu <palu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:18:22 by mjameau           #+#    #+#             */
-/*   Updated: 2024/10/29 14:51:43 by palu             ###   ########.fr       */
+/*   Updated: 2024/11/20 13:47:14 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define LIBFT_H
 # include <limits.h>
 # include <stdarg.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-#include <stddef.h>
 
 typedef struct s_list
 {
@@ -43,7 +43,7 @@ char				*ft_strncpy(char *dest, char *src, unsigned int n);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strstr(const char *s, const char *to_find);
 char				*ft_strnstr(const char *str, const char *find, size_t len);
-char *ft_strndup(const char *s, size_t n);
+char				*ft_strndup(const char *s, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *str);

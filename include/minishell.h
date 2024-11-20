@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:03:52 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/12 14:58:25 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:14:18 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,13 @@ typedef struct s_global
 	bool				heredoc_interrupted;
 }						t_global;
 
-typedef struct s_heredoc_state { 
-	int signal_pipe[2];
-	bool interrupted; 
-	t_global *glob; 
-	t_env *env; 
-	} t_heredoc_state;
+typedef struct s_heredoc_state
+{
+	int					signal_pipe[2];
+	bool				interrupted;
+	t_global			*glob;
+	t_env				*env;
+}						t_heredoc_state;
 
 // ERROR
 void					free_env(t_env *env);
@@ -103,12 +104,20 @@ void					free_path(char **path);
 int						ft_pwd(void);
 int						ft_cd(t_global *test, char **args);
 int						ft_export(t_env **env, char **str);
-bool	export_value(t_env **env, char *str);
+bool					export_value(t_env **env, char *str);
 int						ft_unset(t_env **env, char **args);
 void					ft_exit(char **args, t_global *glob);
 int						ft_echo(char **args);
 int						ft_env(t_env *env);
 bool					unset(char *str, t_env **env);
+
+// EXPORT UTILS
+char					*extract_key(char *str);
+char					*extract_value(char *str);
+bool					is_valid_value(char *key, char *value);
+char					*build_full_str(char *key, char *value);
+bool					update_or_add_env(t_env **env, char *key, char *value,
+							char *full_str);
 
 // UTILS
 bool					is_space(char c);
@@ -137,8 +146,8 @@ bool					check_syntax(t_global *glob, t_structok **token_list);
 bool					replace_dollar(char **line, t_env *env, t_global *glob);
 char					*after_dollar(char *line, size_t *i, t_env *env,
 							t_global *glob);
-char *search_env(const char *key, t_env *env) ;
-char *get_elem_env(t_env *env, const char *key);
+char					*search_env(const char *key, t_env *env);
+char					*get_elem_env(t_env *env, const char *key);
 bool					is_directory(const char *path);
 bool					is_invalid(t_structok **tok_list, t_global *glob);
 
@@ -181,17 +190,17 @@ char					*handle_absolute_relative_path(char *cmd);
 void					handle_signal(void);
 void					handle_c(int sig);
 void					handle_nl(int sig);
-int	*get_signum(void);
-bool	catch_sigint(char *doc, char *line);
-void heredoc_signal_handler(int sig);
+int						*get_signum(void);
+bool					catch_sigint(char *doc, char *line);
+void					heredoc_signal_handler(int sig);
 
 // EXEC
 void					get_builtins(int save_stdout, t_cmd *cmd,
 							t_global *glob);
 bool					is_builtins(char *cmd);
 bool					get_cmd(t_cmd *cmd, t_global **glob, t_env **env);
-void					execute_simple(t_cmd *cmd, char *path_name,
-							t_env **env, t_global *glob);
+void					execute_simple(t_cmd *cmd, char *path_name, t_env **env,
+							t_global *glob);
 void					execute_piped(t_cmd *cmd, t_env **env, t_global *glob);
 
 void					handle_redirections(t_cmd *cmd, int input_fd,

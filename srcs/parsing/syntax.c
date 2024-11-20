@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:59:38 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/20 11:50:24 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:48:20 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*get_elem_env(t_env *env, const char *key)
 	return (strdup(""));
 }
 
-
 /*
 * Fonction qui va appeler toutes nos petites fonctions "specialises"
 pour les erreurs de syntaxe, en fonction de l'erreur on affiche le mssg
@@ -65,9 +64,8 @@ bool	check_syntax(t_global *glob, t_structok **token_list)
 	else if (is_op_after_op(token_list, glob))
 		return (false);
 	else if (is_last_op(token_list, glob))
-		return (
-			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2),
-			false);
+		return (ft_putstr_fd("syntax error near unexpected token `newline'\n",
+				2), false);
 	else if (is_invalid(token_list, glob))
 		return (false);
 	else

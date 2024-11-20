@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:29:04 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/18 16:28:32 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:50:28 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	process_command(t_global *glob)
 	if (handle_quotes(glob, glob->line) || !replace_dollar(&glob->line,
 			glob->env, glob) || !do_list_token(&glob->token_list, glob->line))
 		return ;
-	// print_token(glob->token_list);
 	if (check_syntax(glob, &glob->token_list) == true)
 	{
 		init_cmd(&glob->cmd, &glob->token_list, glob);

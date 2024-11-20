@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/20 12:35:18 by paulmart         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:15:22 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 /*
  * Gere les redirections > et < et << et >>
  */
-
 void	handle_input_output(t_cmd *last, t_structok *toklist, t_global *glob)
 {
 	char	*filename;
@@ -130,4 +130,3 @@ int	fd_heredoc(char *filename, t_global *glob)
 		wrong_pid(&fd, pid, status);
 	return (fd);
 }
-

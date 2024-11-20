@@ -6,7 +6,7 @@
 #    By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 12:03:49 by mjameau           #+#    #+#              #
-#    Updated: 2024/11/09 18:19:24 by mjameau          ###   ########.fr        #
+#    Updated: 2024/11/20 14:14:33 by mjameau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC		=	main.c builtins/cd.c builtins/export.c builtins/echo.c builtins/pwd.c bui
 			cmd/cmd_utils.c env.c error/free_exit.c tokens/free_tokens.c tokens/create_token.c \
 			tokens/utils_token.c cmd/cmd.c path.c builtins/builtins_utils.c signal/handle_signal.c \
 			parsing/syntax.c parsing/more_syntax.c parsing/even_more_syntax.c cmd/cmd_fd.c parsing/parsing_utils.c\
-			exec/execute_one_cmd.c exec/exec_utils2.c env_utils.c
+			exec/execute_one_cmd.c exec/exec_utils2.c env_utils.c builtins/export_utils.c
 
 NAME	=	minishell
 

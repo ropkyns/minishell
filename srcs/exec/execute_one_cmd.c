@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:14:53 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/12 10:07:06 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 13:48:26 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	execute_simple(t_cmd *cmd, char *path_name, t_env **env, t_global *glob)
 {
 	pid_t	pid;
 	char	**env_array;
-	char *executable;
+	char	*executable;
 
 	pid = fork();
 	if (pid < 0)
@@ -106,7 +106,7 @@ void	execute_simple(t_cmd *cmd, char *path_name, t_env **env, t_global *glob)
 		signal(SIGQUIT, handle_nl);
 		waitpid(pid, &glob->exit_value, 0);
 		handle_parent_process(cmd);
-		if (WIFEXITED(glob->exit_value)) 
+		if (WIFEXITED(glob->exit_value))
 			glob->exit_value = WEXITSTATUS(glob->exit_value);
 	}
 }
