@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:51:39 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/20 14:15:15 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 15:52:11 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,14 @@ int	ft_export(t_env **env, char **str)
 	{
 		if (!valid_identifier(str[i]))
 		{
-			printf("bash: export: '%s': invalid identifier\n", str[i]);
+			ft_putstr_fd("bash: export: '", 2);
+			ft_putstr_fd(str[i], 2);
+			ft_putstr_fd("': invalid identifier\n", 2);
 			exit_code = 1;
 		}
 		else if (!export_value(env, str[i]))
 			return (1);
 		i++;
 	}
-	free(str[i]);
-	return (exit_code);
+	return (free(str[i]), exit_code);
 }
