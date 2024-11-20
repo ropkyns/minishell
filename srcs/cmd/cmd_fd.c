@@ -6,7 +6,7 @@
 /*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 11:02:08 by paulmart          #+#    #+#             */
-/*   Updated: 2024/11/20 14:15:22 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 14:23:12 by mjameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,6 @@ int	fd_heredoc(char *filename, t_global *glob)
 	}
 	else
 		wrong_pid(&fd, pid, status);
+	unlink(".heredoc.tmp");
 	return (fd);
 }
