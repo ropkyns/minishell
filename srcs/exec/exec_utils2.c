@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjameau <mjameau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paulmart <paulmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:19:21 by mjameau           #+#    #+#             */
-/*   Updated: 2024/11/09 16:38:16 by mjameau          ###   ########.fr       */
+/*   Updated: 2024/11/20 14:13:20 by paulmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,15 @@ void	process(t_cmd *cmd, char *path_name, t_global *glob, t_env **env)
 		execute_simple(cmd, path_name, env, glob);
 	else
 		execute_piped(cmd, env, glob);
+}
+
+void	simple_exec_fail_pid(t_global *glob, pid_t pid, t_cmd *cmd)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_nl);
+	signal(SIGQUIT, handle_nl);
+	waitpid(pid, &glob->exit_value, 0);
+	handle_parent_process(cmd);
+	if (WIFEXITED(glob->exit_value))
+		glob->exit_value = WEXITSTATUS(glob->exit_value);
 }
